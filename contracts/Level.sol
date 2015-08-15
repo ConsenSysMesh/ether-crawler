@@ -4,6 +4,12 @@ contract Level {
   uint8[] public monsters;
   uint8[] public monster_attack;
   uint8[] public monster_hp;
+  uint public total_royalties;
+  address public owner;
+
+  function Level() {
+    owner = msg.sender;
+  }
 
   function add_staircase(uint8 location) {
     uint index = staircases.length;
@@ -45,5 +51,10 @@ contract Level {
     monsters.length = 0;
     monster_attack.length = 0;
     monster_hp.length = 0;
+  }
+  
+  function pay_royalty() {
+    total_royalties += msg.value;
+    owner.send(msg.value);
   }
 }

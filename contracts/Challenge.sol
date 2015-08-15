@@ -1,7 +1,7 @@
 import "Game";
 
 contract Challenge {
-  address[] public levels;
+  Level[] public levels;
   uint8 public character;
   uint public bet_value;
   address public player;
@@ -10,7 +10,7 @@ contract Challenge {
   bool public started;
   Game public game;
 
-  function Challenge(uint8 _character, address[] _levels) {
+  function Challenge(uint8 _character, Level[] _levels) {
     character = _character;
     levels = _levels;
     bet_value = msg.value;
@@ -49,10 +49,18 @@ contract Challenge {
   function claim() {
     if (game.over() == false) { return; }
 
+    uint payout = this.balance - (this.balance / 10);
+    uint total_royalty = this.balance - payout;
+    uint royalty = total_royalty / levels.length;
+
+    for (uint i = 0; i < levels.length; i++) {
+      levels[i].pay_royalty.value(royalty)();
+    }
+
     if (game.won() == true) {
-      player.send(this.balance);
+      player.send(payout);
     } else {
-      best_offer.sender.send(this.balance);
+      best_offer.sender.send(payout);
     }
   }
 }

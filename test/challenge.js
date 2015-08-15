@@ -51,4 +51,30 @@ contract('Challenge', function(accounts) {
       then(function() { return challenge.claim() }).
       then(function() { done() }).catch(done)
   });
+
+  it("pays out royalties to levels", function(done) {
+    var level = Level.at(Level.deployed_address);
+
+    level.clear().
+    then(function() { return level.add_monster(2, 200, 50) }).
+    then(function() { return Challenge.new(1, [level.address], {value: 5000}) }).
+    then(function(challenge) {
+      challenge.make_offer({value: 5000}).
+      then(function() { return challenge.accept() }).
+      then(function() { return challenge.game.call() }).
+      then(function(result) {
+        var game = Game.at(result);
+
+        game.move(1).
+        then(function() { return game.over.call() }).
+        then(function(result) { assert.equal(result, true) }).
+        then(function() { return challenge.claim() }).
+        then(function() { return level.total_royalties.call() }).
+        then(function(result) {
+          assert.equal(result, 1000);
+          done();
+        }).catch(done)
+      }).catch(done)
+    }).catch(done)
+  })
 });
