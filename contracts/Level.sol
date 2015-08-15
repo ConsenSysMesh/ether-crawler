@@ -7,11 +7,16 @@ contract Level {
   uint public total_royalties;
   address public owner;
   bool public finalized;
+  string public name;
 
   modifier mutates { if ((owner == msg.sender) && (finalized == false)) _ }
 
   function Level() {
     owner = msg.sender;
+  }
+
+  function set_name(string _name) mutates {
+    name = _name;
   }
 
   function add_staircase(uint8 location) mutates {
