@@ -13,16 +13,36 @@ contract Game {
   uint8 public adventurer_level;
   uint8 public adventurer_square;
   bool public over;
+  bool public won;
+  address public player;
 
-  function set_levels(Level[] _levels) {
-    levels = _levels;
-    load_level(0);
+  function add_level(address level) {
+    levels[levels.length++] = Level(level);
+    if (levels.length == 1) {
+      load_level(0);
+    }
+  }
+
+  function clear() {
+    clear_level();
+    delete levels;
+    delete level_number;
+    delete adventurer_attack;
+    delete adventurer_hp;
+    delete adventurer_level;
+    delete adventurer_square;
+    delete over;
+    delete won;
   }
 
   function set_adventurer(uint8 attack, uint8 hp) {
     adventurer_attack = attack;
     adventurer_hp = hp;
     adventurer_level = 1;
+  }
+
+  function set_player(address _player) {
+    player = _player;
   }
 
   function move(uint8 direction) {
@@ -60,7 +80,12 @@ contract Game {
 
     // staircase
     if (target_object == 2) {
-      load_level(level_number + 1);
+      if (level_number + 1 == levels.length) {
+        over = true;
+        won = true;
+      } else {
+        load_level(level_number + 1);
+      }
     }
 
     // monster
@@ -154,5 +179,7 @@ contract Game {
     delete squares;
     delete monster_hp;
     delete monster_attack;
+    delete monster_square;
+    delete num_monsters;
   }
 }

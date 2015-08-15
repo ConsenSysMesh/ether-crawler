@@ -2,7 +2,8 @@ var Editor = React.createClass({
   getInitialState: function() {
     return {
       menu: null,
-      focussed_cell: null
+      focussed_cell: null,
+      hasStaircase: false
     };
   },
   cellClicked: function(cell, event) {
@@ -27,12 +28,36 @@ var Editor = React.createClass({
       focussed_cell: cell
     });
   },
+  hasStaircase: function(booli) {
+    if (booli == true || booli == false) {
+      this.state.hasStaircase = booli;
+    }
+    return this.state.hasStaircase;
+  },
+  checkFromStaircase: function() {
+    if (this.state.focussed_cell.type == "staircase") {
+      this.state.hasStaircase = false;
+    }
+  },
   menuItemClicked: function(id, event) {
     var focussed_cell = this.state.focussed_cell;
 
     // TODO: Handle actions from multiple items being clicked.
     if (id == "add_monster") {
+      this.checkFromStaircase();
       focussed_cell.type = "monster";
+
+    } else if (id == "add_wall") {
+      this.checkFromStaircase();
+      focussed_cell.type = "wall";
+
+    } else if (id == "add_staircase" && !this.hasStaircase()) {
+      this.hasStaircase(true);
+      focussed_cell.type = "staircase";
+
+    } else if (id == "set_empty") {
+      this.checkFromStaircase();
+      focussed_cell.type = "empty";
     }
 
     // Remove the menu.
@@ -73,6 +98,7 @@ var Editor = React.createClass({
     });
   },
   render: function() {
+    var self = this;
     return (
       <div className="editor">
         <div className="one columns">

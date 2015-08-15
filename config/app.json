@@ -15,8 +15,11 @@
       "javascripts/cell.jsx",
       "javascripts/cells/empty.jsx",
       "javascripts/cells/monster.jsx",
+      "javascripts/cells/wall.jsx",
+      "javascripts/cells/staircase.jsx",
       "javascripts/editor.jsx",
-      "javascripts/context_menu.jsx"
+      "javascripts/context_menu.jsx",
+      "javascripts/playgrid.jsx"
     ],
     "app.css": [
       "stylesheets/normalize.css",
@@ -27,7 +30,9 @@
   },
   "deploy": [
     "Level",
-    "Game"
+    "Game",
+    "LevelRegistry",
+    "Challenge"
   ],
   "provider": "./app/provider.js"
 }

@@ -6,7 +6,8 @@ contract('Game', function(accounts) {
     level.add_staircase(37).
       then(function() { return level.add_wall(22) }).
       then(function() { return level.add_monster(25, 0, 0) }).
-      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
       then(function() { return game.squares.call(22) }).
       then(function(result) { assert.equal(result, 1) }). // 1 is magic value for walls
       then(function() { return game.squares.call(25) }).
@@ -24,7 +25,8 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(37, 80, 40) }).
-      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
       then(function() { return game.squares.call(37) }).
       then(function(result) { assert.equal(result, 100) }). // monster ids start at 100
       then(function() { return game.monster_hp.call(100) }).
@@ -39,7 +41,8 @@ contract('Game', function(accounts) {
   it("stores information about adventurer", function(done) {
     var game = Game.at(Game.deployed_address);
 
-    game.set_adventurer(100, 50).
+    game.clear().
+      then(function() { return game.set_adventurer(100, 50) }).
       then(function() { return game.adventurer_hp.call() }).
       then(function(result) { assert.equal(result, 50) }).
       then(function() { return game.adventurer_attack.call() }).
@@ -53,7 +56,8 @@ contract('Game', function(accounts) {
     var level = Level.at(Level.deployed_address);
     var game = Game.at(Game.deployed_address);
 
-    game.set_levels([level.address]).
+    game.clear().
+      then(function() { return game.add_level(level.address) }).
       then(function() { return game.adventurer_square.call() }).
       then(function(result) {
         assert.equal(result, 0);
@@ -66,7 +70,8 @@ contract('Game', function(accounts) {
     var game = Game.at(Game.deployed_address);
 
     level.clear().
-      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
       then(function() { return game.move(3) }).
       then(function() { return game.squares.call(16) }).
       then(function(result) { assert.equal(result, 3) }). // magic value for adventurer
@@ -82,8 +87,9 @@ contract('Game', function(accounts) {
     var game = Game.at(Game.deployed_address);
 
     level.clear().
+      then(function() { return game.clear() }).
       then(function() { return level.add_wall(1) }).
-      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.add_level(level.address) }).
       then(function() { return game.move(1) }).
       then(function() { return game.adventurer_square.call() }).
       then(function(result) {
@@ -97,7 +103,8 @@ contract('Game', function(accounts) {
     var game = Game.at(Game.deployed_address);
 
     level.clear().
-      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
       then(function() { return game.move(0) }).
       then(function() { return game.adventurer_square.call() }).
       then(function(result) {
@@ -115,7 +122,9 @@ contract('Game', function(accounts) {
     then(function (level_2) {
       level_1.add_staircase(16).
       then(function() { return level_2.add_wall(42) }).
-      then(function() { return game.set_levels([level_1.address, level_2.address]) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level_1.address) }).
+      then(function() { return game.add_level(level_2.address) }).
       then(function() { return game.move(3) }).
       then(function() { return game.squares.call(16) }).
       then(function(result) { assert.equal(result, 0) }).
@@ -133,7 +142,8 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(1, 50, 100) }).
-      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
       then(function() { return game.set_adventurer(20, 50) }).
       then(function() { return game.move(1) }).
       then(function() { return game.adventurer_square.call() }).
@@ -151,7 +161,8 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(16, 50, 10) }).
-      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
       then(function() { return game.set_adventurer(20, 50) }).
       then(function() { return game.move(3) }).
       then(function() { return game.adventurer_square.call() }).
@@ -171,7 +182,8 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(16, 50, 10) }).
-      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
       then(function() { return game.set_adventurer(20, 50) }).
       then(function() { return game.move(3) }).
       then(function() { return game.adventurer_level.call() }).
@@ -191,7 +203,8 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(18, 50, 10) }).
-      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
       then(function() { return game.move(1) }).
       then(function() { return game.monster_square.call(100) }).
       then(function(result) {assert.equal(result, 2) }).
@@ -210,7 +223,8 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(17, 10, 50) }).
-      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
       then(function() { return game.set_adventurer(20, 50) }).
       then(function() { return game.move(1) }).
       then(function() { return game.monster_square.call(100) }).
@@ -228,7 +242,8 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(2, 10, 50) }).
-      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
       then(function() { return game.set_adventurer(20, 5) }).
       then(function() { return game.move(1) }).
       then(function() { return game.over.call() }).
