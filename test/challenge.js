@@ -26,4 +26,29 @@ contract('Challenge', function(accounts) {
         done();
     }).catch(done)
   });
+
+  it("lets player accept an offer, and initializes a game", function(done) {
+    var challenge = Challenge.at(Challenge.deployed_address);
+
+    challenge.make_offer({value: 2000}).
+      then(function() { return challenge.accept() }).
+      then(function() { return challenge.game.call() }).
+      then(function(result) {
+        var game = Game.at(result);
+        game.player.call().
+          then(function(result) {
+            assert.equal(result, accounts[0]);
+            done();
+        }).catch(done)
+    }).catch(done)
+  })
+
+  it("doesn't blow up when you claim", function(done) {
+    var challenge = Challenge.at(Challenge.deployed_address);
+
+    challenge.make_offer({value: 2000}).
+      then(function() { return challenge.accept() }).
+      then(function() { return challenge.claim() }).
+      then(function() { done() }).catch(done)
+  });
 });
