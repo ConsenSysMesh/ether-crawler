@@ -227,7 +227,7 @@ contract('Game', function(accounts) {
     var game = Game.at(Game.deployed_address);
 
     level.clear().
-      then(function() { return level.add_monster(17, 10, 50) }).
+      then(function() { return level.add_monster(2, 10, 50) }).
       then(function() { return game.set_levels([level.address]) }).
       then(function() { return game.set_adventurer(20, 5) }).
       then(function() { return game.move(1) }).
