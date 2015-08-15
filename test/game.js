@@ -203,4 +203,22 @@ contract('Game', function(accounts) {
         done();
     }).catch(done)
   })
+
+  it("attacks when player is adjacent", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_monster(17, 10, 50) }).
+      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.set_adventurer(20, 50) }).
+      then(function() { return game.move(1) }).
+      then(function() { return game.monster_square.call(100) }).
+      then(function(result) { assert.equal(result, 17) }).
+      then(function() { return game.adventurer_hp.call() }).
+      then(function(result) {
+        assert.equal(result, 40);
+        done();
+    }).catch(done)
+  })
 });

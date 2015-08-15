@@ -76,6 +76,8 @@ contract Game {
 
   function move_monsters() {
     for (uint8 i = 0; i < num_monsters; i++) {
+      if (monster_hp[100 + i] == 0) { return; }
+
       uint8 square = monster_square[100 + i];
       
       if (square > adventurer_square) { //adventurer is left or above
@@ -99,6 +101,10 @@ contract Game {
       squares[monster_square[id]] = 0;
       squares[target] = id;
       monster_square[id] = target;
+    }
+
+    if (squares[target] == 3) {
+      adventurer_hp -= monster_attack[id];
     }
   }
 
