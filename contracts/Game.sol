@@ -21,28 +21,28 @@ contract Game {
   }
 
   function move(uint8 direction) {
-    if (direction == 0) {
+    if (direction == 0 && ((adventurer_square % 16) != 0)) {
       uint8 target = adventurer_square - 1;
       if (squares[target] == 0) {
         adventurer_square = target;
       }
     }
 
-    if (direction == 1) {
+    if (direction == 1 && ((adventurer_square % 16) != 15)) {
       target = adventurer_square + 1;
       if (squares[target] == 0) {
         adventurer_square = target;
       }
     }
 
-    if (direction == 2) {
+    if (direction == 2 && adventurer_square > 15) {
       target = adventurer_square - 16;
       if (squares[target] == 0) {
         adventurer_square = target;
       }
     }
 
-    if (direction == 3) {
+    if (direction == 3 && adventurer_square < 144) {
       target = adventurer_square + 16;
       if (squares[target] == 0) {
         adventurer_square = target;

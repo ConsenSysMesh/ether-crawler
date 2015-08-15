@@ -89,4 +89,18 @@ contract('Game', function(accounts) {
         done();
     }).catch(done)
   })
+
+  it("doesn't let adventurer move off the edge of the world", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.move(0) }).
+      then(function() { return game.adventurer_square.call() }).
+      then(function(result) {
+        assert.equal(result, 0);
+        done();
+    }).catch(done)
+  });
 });
