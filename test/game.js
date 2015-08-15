@@ -126,4 +126,81 @@ contract('Game', function(accounts) {
       }).catch(done);
     }).catch(done);
   });
+
+  it("attacks monster if adventurer tries to move onto it", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_monster(1, 50, 100) }).
+      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.set_adventurer(20, 50) }).
+      then(function() { return game.move(1) }).
+      then(function() { return game.adventurer_square.call() }).
+      then(function(result) { assert.equal(result, 0) }).
+      then(function() { return game.monster_hp(100) }).
+      then(function(result) {
+        assert.equal(result, 80);
+        done();
+    }).catch(done)
+  });
+
+  it("kills monster when it drops below 0hp", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_monster(16, 50, 10) }).
+      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.set_adventurer(20, 50) }).
+      then(function() { return game.move(3) }).
+      then(function() { return game.adventurer_square.call() }).
+      then(function(result) { assert.equal(result, 0) }).
+      then(function() { return game.squares.call(16) }).
+      then(function(result) { assert.equal(result, 0) }).
+      then(function() { return game.monster_hp.call(100) }).
+      then(function(result) {
+        assert.equal(result, 0);
+        done();
+    }).catch(done)
+  });
+
+  it("levels adventurer up when they kill monster", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_monster(16, 50, 10) }).
+      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.set_adventurer(20, 50) }).
+      then(function() { return game.move(3) }).
+      then(function() { return game.adventurer_level.call() }).
+      then(function(result) { assert.equal(result, 2) }).
+      then(function() { return game.adventurer_attack.call() }).
+      then(function(result) { assert.equal(result, 22) }).
+      then(function() { return game.adventurer_hp.call() }).
+      then(function(result) {
+        assert.equal(result, 55);
+        done();
+    }).catch(done)
+  });
+
+  it("moves monsters when player moves", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_monster(18, 50, 10) }).
+      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.move(1) }).
+      then(function() { return game.monster_square.call(100) }).
+      then(function(result) {assert.equal(result, 2) }).
+      then(function() { return game.squares.call(16) }).
+      then(function(result) { assert.equal(result, 0) }).
+      then(function() { return game.squares.call(2) }).
+      then(function(result) {
+        assert.equal(result, 100);
+        done();
+    }).catch(done)
+  })
 });
