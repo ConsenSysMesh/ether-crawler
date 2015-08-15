@@ -3,9 +3,26 @@ $grid-height: 10;
 $cell-width: 50px;
 $cell-height: 50px;
 
+.tab-container {
+
+  display: flex;
+  flex-flow: row wrap;
+
+  .tab {
+    flex-grow: 1;
+    text-align: center;
+    border: solid 1px black;
+    padding: 5px;
+  }
+}
+
+
+
 .grid {
   width: ($grid-width * $cell-width) + $cell-width; // Include borders
   height: ($grid-height * $cell-height) + $cell-height; // Include borders
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .cell {

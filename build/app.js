@@ -5146,7 +5146,7 @@ var module = module || undefined;
 
 var __provisioner = {
   provision_contracts: function(scope) {
-    scope.__contracts = JSON.parse("{\n  \"Level\": {\n    \"source\": \"/Users/tim/Documents/workspace/Consensys/ether-crawler/contracts/Level.sol\"\n  }\n}");
+    scope.__contracts = JSON.parse("{\n  \"Game\": {\n    \"source\": \"/Users/tim/Documents/workspace/Consensys/ether-crawler/contracts/Game.sol\"\n  },\n  \"Level\": {\n    \"source\": \"/Users/tim/Documents/workspace/Consensys/ether-crawler/contracts/Level.sol\"\n  }\n}");
 
     for (var key in scope.__contracts) {
       var contract = scope.__contracts[key];
@@ -40089,13 +40089,36 @@ var App = React.createClass({
   render: function render() {
     return React.createElement(
       "div",
-      { className: "app" },
-      "Hello, world! I am an app."
+      { className: "app container" },
+      React.createElement(
+        "div",
+        { className: "tab-container" },
+        React.createElement(
+          "div",
+          { className: "tab" },
+          "Design Game Levels"
+        ),
+        React.createElement(
+          "div",
+          { className: "tab" },
+          "Play a Game"
+        ),
+        React.createElement(
+          "div",
+          { className: "tab" },
+          "Bet on Games"
+        )
+      ),
+      React.createElement(
+        "div",
+        { className: "twelve columns" },
+        React.createElement(Grid, null)
+      )
     );
   }
 });
 window.onload = function () {
-  React.render(React.createElement(Grid, null), document.getElementById("app"));
+  React.render(React.createElement(App, null), document.getElementById("app"));
 };
 
 "use strict";
