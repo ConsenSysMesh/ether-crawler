@@ -1,0 +1,17 @@
+$grid-width: 16;
+$grid-height: 10;
+$cell-width: 50px;
+$cell-height: 50px;
+
+.grid {
+  width: ($grid-width * $cell-width) + $cell-width; // Include borders
+  height: ($grid-height * $cell-height) + $cell-height; // Include borders
+}
+
+.cell {
+  width: $cell-width;
+  height: $cell-height;
+  border-right: solid 1px black;
+  border-bottom: solid 1px black;
+  display: inline-block;
+}

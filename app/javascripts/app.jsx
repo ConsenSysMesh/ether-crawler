@@ -8,5 +8,5 @@ var App = React.createClass({
   }
 });
 window.onload = function() {
-  React.render(<App />, document.getElementById("app"));
+  React.render(<Grid />, document.getElementById("app"));
 }

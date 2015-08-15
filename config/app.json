@@ -10,10 +10,12 @@
     ],
     "app.js": [
       "../build/dependencies.js",
-      "javascripts/app.jsx"
+      "javascripts/app.jsx",
+      "javascripts/grid.jsx",
+      "javascripts/cell.jsx"
     ],
     "app.css": [
-      "stylesheets/app.css"
+      "stylesheets/app.scss"
     ],
     "images/": "images/"
   },

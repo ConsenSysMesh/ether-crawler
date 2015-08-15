@@ -5146,7 +5146,7 @@ var module = module || undefined;
 
 var __provisioner = {
   provision_contracts: function(scope) {
-    scope.__contracts = JSON.parse("{\n  \"Example\": {\n    \"source\": \"/Users/tim/Documents/workspace/Consensys/ether-crawler/contracts/Example.sol\"\n  }\n}");
+    scope.__contracts = JSON.parse("{\n  \"Level\": {\n    \"source\": \"/Users/tim/Documents/workspace/Consensys/ether-crawler/contracts/Level.sol\"\n  }\n}");
 
     for (var key in scope.__contracts) {
       var contract = scope.__contracts[key];
@@ -40095,5 +40095,51 @@ var App = React.createClass({
   }
 });
 window.onload = function () {
-  React.render(React.createElement(App, null), document.getElementById("app"));
-};; __provisioner.set_provider(window);
+  React.render(React.createElement(Grid, null), document.getElementById("app"));
+};
+
+"use strict";
+
+var Grid = React.createClass({
+  displayName: "Grid",
+
+  render: function render() {
+    var width = 16;
+    var height = 10;
+    var grid_elements = [];
+    var grid_number = 0;
+
+    for (var y = 0; y < height; y++) {
+      for (var x = 0; x < width; x++) {
+        grid_elements.push({ x: x, y: y, number: grid_number });
+        grid_number += 1;
+      }
+    }
+    console.log(grid_elements.length);
+
+    console.log(grid_elements);
+    return React.createElement(
+      "div",
+      { className: "grid" },
+      grid_elements.map(function (cell) {
+        return React.createElement(Cell, { x: cell.x, y: cell.x, number: cell.number });
+      })
+    );
+  }
+});
+
+"use strict";
+
+var Cell = React.createClass({
+  displayName: "Cell",
+
+  render: function render() {
+    var cell_id = "cell_" + this.props.x + "_" + this.props.y;
+
+    return React.createElement(
+      "div",
+      { id: cell_id, className: "cell" },
+      this.props.number
+    );
+  }
+});; __provisioner.set_provider(window);
