@@ -11,7 +11,7 @@
     "images/": "images/"
   },
   "deploy": [
-    "Example"
+    "Level"
   ],
   "provider": "./app/provider.js"
 }
