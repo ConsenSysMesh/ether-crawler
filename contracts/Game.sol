@@ -16,11 +16,14 @@ contract Game {
   bool public won;
   address public player;
   address public admin;
+  uint public verify;
+
 
   modifier auth(address user) { if (msg.sender == user) _ }
 
   function Game() {
     admin = msg.sender;
+    verify = 42;
   }
 
   function get_all_squares() returns(uint8[160]) {
