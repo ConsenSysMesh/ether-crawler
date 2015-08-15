@@ -9,6 +9,8 @@ contract Challenge {
   Offer public best_offer;
   bool public started;
   Game public game;
+  
+  modifier auth(address user) { if (msg.sender == user) _ }
 
   function Challenge(uint8 _character, Level[] _levels) {
     character = _character;
@@ -29,7 +31,7 @@ contract Challenge {
     }
   }
 
-  function accept() {
+  function accept() auth(player) {
     started = true;
     game = new Game();
 
