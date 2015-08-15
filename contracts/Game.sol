@@ -2,7 +2,7 @@ import "level";
 
 contract Game {
   Level[] public levels;
-  Level public current_level;
+  uint8 public level_number;
   uint8[160] public squares;
   uint8[1000] public monster_hp;
   uint8[1000] public monster_attack;
@@ -46,12 +46,17 @@ contract Game {
     if (squares[target] == 0) {
       adventurer_square = target;
     }
-  }
 
+    if (squares[target] == 2) {
+      load_level(level_number + 1);
+    }
+  }
 
   function load_level(uint8 id) {
     clear_level();
-    current_level = levels[id];
+
+    level_number = id;
+    Level current_level = levels[id];
 
     uint num_walls = current_level.num_walls();
     for (uint8 i = 0; i < num_walls; i++) {

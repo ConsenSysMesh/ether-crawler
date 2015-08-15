@@ -103,4 +103,25 @@ contract('Game', function(accounts) {
         done();
     }).catch(done)
   });
+
+  it("sends adventurer to the next level if they enter a staircase", function(done) {
+    var level_1 = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level_1.clear().
+    then(Level.new).
+    then(function (level_2) {
+      level_1.add_staircase(16).
+      then(function() { return level_2.add_wall(42) }).
+      then(function() { return game.set_levels([level_1.address, level_2.address]) }).
+      then(function() { return game.move(3) }).
+      then(function() { return game.squares.call(16) }).
+      then(function(result) { assert.equal(result, 0) }).
+      then(function() { return game.squares.call(42) }).
+      then(function(result) {
+        assert.equal(result, 1);
+        done();
+      }).catch(done);
+    }).catch(done);
+  });
 });
