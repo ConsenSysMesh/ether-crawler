@@ -13,4 +13,18 @@ contract('Challenge', function(accounts) {
         }).catch(done)
     }).catch(done)
   });
+
+  it("lets you make an offer", function(done) {
+    var challenge = Challenge.at(Challenge.deployed_address);
+
+    challenge.make_offer({value: 2000}).
+      then(function() { return challenge.num_offers.call() }).
+      then(function(result) { assert.equal(result, 1) }).
+      then(function() { return challenge.offers.call(0) }).
+      then(function(result) {
+        assert.equal(result[0], accounts[0]);
+        assert.equal(result[1], 2000);
+        done();
+    }).catch(done)
+  });
 });
