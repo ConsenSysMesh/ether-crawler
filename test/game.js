@@ -68,6 +68,8 @@ contract('Game', function(accounts) {
     level.clear().
       then(function() { return game.set_levels([level.address]) }).
       then(function() { return game.move(3) }).
+      then(function() { return game.squares.call(16) }).
+      then(function(result) { assert.equal(result, 3) }). // magic value for adventurer
       then(function() { return game.adventurer_square.call() }).
       then(function(result) {
         assert.equal(result, 16);

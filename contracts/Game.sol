@@ -44,6 +44,8 @@ contract Game {
 
   function move_to(uint8 target) {
     if (squares[target] == 0) {
+      squares[adventurer_square] = 0;
+      squares[target] = 3;
       adventurer_square = target;
     }
 
@@ -77,6 +79,7 @@ contract Game {
     }
 
     adventurer_square = 0;
+    squares[0] = 3; // magic value for adventurer
   }
 
   function clear_level() {
