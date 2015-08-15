@@ -4,6 +4,8 @@ contract Game {
   Level[] public levels;
   Level public current_level;
   uint8[160] public squares;
+  uint8[1000] public monster_hp;
+  uint8[1000] public monster_attack;
 
   function set_levels(Level[] _levels) {
     levels = _levels;
@@ -21,6 +23,14 @@ contract Game {
     uint num_staircases = current_level.num_staircases();
     for (i = 0; i < num_staircases; i++) {
       squares[current_level.staircases(i)] = 2;
+    }
+
+    uint num_monsters = current_level.num_monsters();
+    for (i = 0; i < num_monsters; i++) {
+      id = 100 + i;
+      squares[current_level.monsters(i)] = id;
+      monster_hp[id] = current_level.monster_hp(i);
+      monster_attack[id] = current_level.monster_attack(i);
     }
   }
 }
