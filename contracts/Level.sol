@@ -6,12 +6,15 @@ contract Level {
   uint8[] public monster_hp;
   uint public total_royalties;
   address public owner;
+  bool public finalized;
+
+  modifier mutates { if ((owner == msg.sender) && (finalized == false)) _ }
 
   function Level() {
     owner = msg.sender;
   }
 
-  function add_staircase(uint8 location) {
+  function add_staircase(uint8 location) mutates {
     uint index = staircases.length;
     staircases.length++;
     staircases[index] = location;
@@ -21,7 +24,7 @@ contract Level {
     return staircases.length;
   }
 
-  function add_wall(uint8 location) {
+  function add_wall(uint8 location) mutates {
     uint index = walls.length;
     walls.length++;
     walls[index] = location;
@@ -31,7 +34,7 @@ contract Level {
     return walls.length;
   }
 
-  function add_monster(uint8 location, uint8 attack, uint8 hp) {
+  function add_monster(uint8 location, uint8 attack, uint8 hp) mutates {
     uint index = monsters.length;
     monsters.length++;
     monster_attack.length++;
@@ -45,12 +48,16 @@ contract Level {
     return monsters.length;
   }
 
-  function clear() {
+  function clear() mutates {
     staircases.length = 0;
     walls.length = 0;
     monsters.length = 0;
     monster_attack.length = 0;
     monster_hp.length = 0;
+  }
+
+  function finalize() mutates {
+    finalized = true;
   }
   
   function pay_royalty() {
