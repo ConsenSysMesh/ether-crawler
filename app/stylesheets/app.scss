@@ -13,6 +13,7 @@ $dark-blue: #22537c;
 
 $red: #e53b51;
 $blue: #223765;
+$green: #3CB371;
 
 $gridbackground: #000;
 
@@ -38,8 +39,16 @@ label {
   margin-right: 10px;
 }
 
-p, ol, ul {
+p, ol, ul, dl {
   margin-bottom: 1rem;
+}
+li {
+  margin-bottom: .5rem;
+}
+
+button.button-primary {
+  background-color: $blue;
+  border-color: $blue;
 }
 
 .tab-container {
@@ -58,6 +67,7 @@ p, ol, ul {
     text-transform: uppercase;
     font-size: .9em;
     cursor: pointer;
+    max-width: 33%;
 
     &.active{
       background-color: $red;
@@ -134,12 +144,63 @@ p, ol, ul {
   border: solid 1px black;
   background: #FFF;
   color: $dark-gray;
+  box-shadow: 3px 3px 1px #333;
 
   .choice {
     width: 200px;
     &:hover {
       background: #EEE;
       cursor: pointer;
+    }
+  }
+}
+
+/*  Player Mode */
+
+.playgrid {
+  .four.columns {
+    margin-right: 2%;
+    margin-left: 2%;
+    width: 28%;
+  }
+
+  dl.your_score, dl.opponent_score {
+    border: 1px solid $gray;
+    padding: 5px;
+    font-size: 0.9em;
+    margin: 0 auto 1rem;
+    color: $light-gray;
+    .num {
+      float: right;
+    }
+  }
+  dl.your_score {
+    color: $green;
+  }
+  dl.opponent_score {
+    color: $light-blue;
+  }
+
+  .four.columns.end {
+    float: right;
+    margin-right: 0;
+    margin-left: 0;
+    width: 33%;
+
+    p {
+      color: $gray;
+      margin-left: 3px;
+      .levelname {
+        color: $light-gray;
+      }
+    }
+
+    label, #end_game {
+      float: right;
+    }
+    label {
+      line-height: 36px;
+      color: $gray;
     }
   }
 }

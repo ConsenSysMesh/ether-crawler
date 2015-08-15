@@ -2,8 +2,8 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      view: <Editor />,
-      activeTab: "tab-editor"
+      view: <Playgrid />,
+      activeTab: "tab-play"
     }
   },
 
@@ -12,7 +12,7 @@ var App = React.createClass({
   },
 
   showPlayView: function() {
-    this.setState( { view: <Editor />, activeTab: "tab-play" });
+    this.setState( { view: <Playgrid />, activeTab: "tab-play" });
   },
 
   showBetView: function() {
