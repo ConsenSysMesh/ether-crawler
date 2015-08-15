@@ -105,6 +105,10 @@ button.button-primary {
       background: $gridbackground url(images/staircase.png) no-repeat center center;
       background-size: 50px 50px;
     }
+    &.character {
+      background: $gridbackground url(images/characters/vitalik.png) no-repeat center center;
+      background-size: 50px 50px;
+    }
   }
 }
 

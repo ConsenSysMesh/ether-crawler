@@ -1,10 +1,20 @@
+var KEYS = {
+  left: 37,
+  up: 38,
+  right: 39,
+  down: 40,
+  spacebar: 32
+};
+
 var Playgrid = React.createClass({
+
   getInitialState: function() {
     return {
       focussed_cell: null,
       defense: 1000,
       attack: 1000,
-      level: "Some Level Name"
+      level: "Some Level Name",
+      characterLocation: 0
     };
   },
   getAttack: function() {
@@ -16,9 +26,70 @@ var Playgrid = React.createClass({
   getLevelName: function() {
     return this.state.level;
   },
+
   componentDidMount: function() {
-    this.refs.grid.setState(this.refs.grid.getMockPlayState());
+    this.refs.grid.setState(
+      this.refs.grid.placeCharacter(this.state.characterLocation));
+
+    document.addEventListener('keydown', this.onKeyDown);
   },
+
+  componentWillUnmount: function() {
+    document.removeEventListener('keydown', this.onKeyDown);
+  },
+
+  checkOutOfBounds: function(val) {
+    if (val < 0 || val > 160) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  onKeyDown: function(e) {
+    var loc = this.state.characterLocation;
+
+    switch(e.which) {
+      case KEYS.left:         
+        if (!this.checkOutOfBounds(loc-1)) {
+          loc = loc-1;
+          this.refs.grid.setState(this.refs.grid.placeCharacter(loc));
+          this.state.characterLocation = loc;
+        }
+        break;
+
+      case KEYS.right: 
+        if (!this.checkOutOfBounds(loc+1)) {
+          loc = loc+1;
+          this.refs.grid.setState(this.refs.grid.placeCharacter(loc));
+          this.state.characterLocation = loc;
+        }
+        break;
+
+      case KEYS.down: 
+        if (!this.checkOutOfBounds(loc+16)) {
+          loc = loc+16;
+          this.refs.grid.setState(this.refs.grid.placeCharacter(loc));
+          this.state.characterLocation = loc;
+        }
+        break;
+
+      case KEYS.up: 
+        if (!this.checkOutOfBounds(loc-16)) {
+          loc = loc-16;
+          this.refs.grid.setState(this.refs.grid.placeCharacter(loc));
+          this.state.characterLocation = loc;
+        }
+        break;
+
+      case KEYS.spacebar:
+        console.log("spacebar");
+        break;
+      default:
+        console.log("other");
+    }
+  },
+
   cellClicked: function(cell, event) {
     var element = event.target;
     var grid_container = this.refs.grid_container.getDOMNode();
@@ -40,7 +111,7 @@ var Playgrid = React.createClass({
       <div className="playgrid">
         <div className="four columns">
           <dl className="your_score">
-            <dt><strong>YOU</strong></dt>
+            <dt><strong>YOU (Vitalik)</strong></dt>
             <dt>Defense: <span className="num">{self.getDefense()}</span></dt>
             <dt>Attack: <span className="num">{self.getAttack()}</span></dt>
           </dl>
