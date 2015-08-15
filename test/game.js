@@ -144,4 +144,24 @@ contract('Game', function(accounts) {
         done();
     }).catch(done)
   });
+
+  it("kills monster when it drops below 0hp", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_monster(16, 50, 10) }).
+      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.set_adventurer(20, 50) }).
+      then(function() { return game.move(3) }).
+      then(function() { return game.adventurer_square.call() }).
+      then(function(result) { assert.equal(result, 0) }).
+      then(function() { return game.squares.call(16) }).
+      then(function(result) { assert.equal(result, 0) }).
+      then(function() { return game.monster_hp.call(100) }).
+      then(function(result) {
+        assert.equal(result, 0);
+        done();
+    }).catch(done)
+  });
 });

@@ -58,7 +58,12 @@ contract Game {
 
     // monster
     if (target_object > 99) {
-      monster_hp[target_object] -= adventurer_attack;
+      if (monster_hp[target_object] <= adventurer_attack) {
+        monster_hp[target_object] = 0;
+        squares[target] = 0;
+      } else {
+        monster_hp[target_object] -= adventurer_attack;
+      }
     }
   }
 
