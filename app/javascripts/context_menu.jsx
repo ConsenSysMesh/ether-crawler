@@ -1,8 +1,4 @@
 var ContextMenu = React.createClass({
-  handleClick: function(id, event) {
-    //this.props.onChoice()
-    console.log(id, event);
-  },
   render: function() {
     var self = this;
     return (

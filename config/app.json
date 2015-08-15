@@ -13,6 +13,8 @@
       "javascripts/app.jsx",
       "javascripts/grid.jsx",
       "javascripts/cell.jsx",
+      "javascripts/cells/empty.jsx",
+      "javascripts/cells/monster.jsx",
       "javascripts/editor.jsx",
       "javascripts/context_menu.jsx"
     ],

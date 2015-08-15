@@ -1,19 +1,19 @@
 var Editor = React.createClass({
   getInitialState: function() {
     return {
-      menu: null
+      menu: null,
+      focussed_cell: null
     };
   },
-  cellClicked: function(x, y, event) {
+  cellClicked: function(cell, event) {
     var element = event.target;
     var grid_container = this.refs.grid_container.getDOMNode();
 
     var choices = [
-      {id: "choice_1", name: "Add Monster"},
-      {id: "choice_2", name: "Add Wall"},
-      {id: "choice_3", name: "Add Item"},
-      {id: "choice_4", name: "Add Staircase"},
-      {id: "choice_5", name: "Delete What's Here"},
+      {id: "add_monster", name: "Add Monster"},
+      {id: "add_wall", name: "Add Wall"},
+      {id: "add_staircase", name: "Add Staircase"},
+      {id: "set_empty", name: "Delete What's Here"},
     ];
 
     var elementRect = element.getBoundingClientRect();
@@ -23,13 +23,22 @@ var Editor = React.createClass({
     var top = (elementRect.top + elementRect.height / 2) - containerRect.top;
 
     this.setState({
-      menu: <ContextMenu choices={choices} top={top} left={left} choiceClicked={this.menuItemClicked}/>
+      menu: <ContextMenu choices={choices} top={top} left={left} choiceClicked={this.menuItemClicked}/>,
+      focussed_cell: cell
     });
   },
   menuItemClicked: function(id, event) {
-    console.log("menu item clicked: " + id)
+    var focussed_cell = this.state.focussed_cell;
+
+    // TODO: Handle actions from multiple items being clicked.
+    if (id == "add_monster") {
+      focussed_cell.type = "monster";
+    }
+
+    // Remove the menu.
     this.setState({
-      menu: null
+      menu: null,
+      focussed_cell: null
     });
   },
   render: function() {
@@ -52,7 +61,7 @@ var Editor = React.createClass({
             <button id="submit_level" className="button-primary">Submit Level</button>
         </div>
         <div className="grid-container twelve columns" ref="grid_container">
-          <Grid editor={true} cellClicked={this.cellClicked} ref="grid"/>
+          <Grid key="__editor" editor={true} cellClicked={this.cellClicked} ref="grid"/>
           {this.state.menu}
         </div>
       </div>
