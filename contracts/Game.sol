@@ -6,6 +6,8 @@ contract Game {
   uint8[160] public squares;
   uint8[1000] public monster_hp;
   uint8[1000] public monster_attack;
+  uint8[1000] public monster_square;
+  uint public num_monsters;
   uint8 public adventurer_attack;
   uint8 public adventurer_hp;
   uint8 public adventurer_level;
@@ -42,6 +44,8 @@ contract Game {
       target = adventurer_square + 16;
       move_to(target);
     }
+
+    move_monsters();
   }
 
   function move_to(uint8 target) {
@@ -70,6 +74,34 @@ contract Game {
     }
   }
 
+  function move_monsters() {
+    for (uint8 i = 0; i < num_monsters; i++) {
+      uint8 square = monster_square[100 + i];
+      
+      if (square > adventurer_square) { //adventurer is left or above
+        if ((square / 16) == (adventurer_square / 16)) { //same row, aka to the left
+          move_monster(100 + i, square - 1);
+        } else { //above
+          move_monster(100 + i, square - 16);
+        }
+      } else { //adventurer is right or below
+        if ((square / 16) == (adventurer_square / 16)) { //same row, aka to the right
+          move_monster(100 + i, square + 1);
+        } else { //below
+          move_monster(100 + i, square + 16);
+        }
+      }
+    }
+  }
+
+  function move_monster(uint8 id, uint8 target) {
+    if (squares[target] == 0) {
+      squares[monster_square[id]] = 0;
+      squares[target] = id;
+      monster_square[id] = target;
+    }
+  }
+
   function level_up() {
     adventurer_level++;
     adventurer_attack += (adventurer_attack / 10);
@@ -92,10 +124,12 @@ contract Game {
       squares[current_level.staircases(i)] = 2;
     }
 
-    uint num_monsters = current_level.num_monsters();
+    num_monsters = current_level.num_monsters();
     for (i = 0; i < num_monsters; i++) {
       id = 100 + i;
-      squares[current_level.monsters(i)] = id;
+      uint8 square = current_level.monsters(i);
+      squares[square] = id;
+      monster_square[id] = square;
       monster_hp[id] = current_level.monster_hp(i);
       monster_attack[id] = current_level.monster_attack(i);
     }

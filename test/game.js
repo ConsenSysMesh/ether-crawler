@@ -183,5 +183,24 @@ contract('Game', function(accounts) {
         assert.equal(result, 55);
         done();
     }).catch(done)
+  });
+
+  it("moves monsters when player moves", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_monster(18, 50, 10) }).
+      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.move(1) }).
+      then(function() { return game.monster_square.call(100) }).
+      then(function(result) {assert.equal(result, 2) }).
+      then(function() { return game.squares.call(16) }).
+      then(function(result) { assert.equal(result, 0) }).
+      then(function() { return game.squares.call(2) }).
+      then(function(result) {
+        assert.equal(result, 100);
+        done();
+    }).catch(done)
   })
 });
