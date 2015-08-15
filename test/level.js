@@ -22,4 +22,15 @@ contract('Level', function(accounts) {
         done();
     });
   });
+
+  it("should let you pass arrays of walls", function(done) {
+    var level = Level.at(Level.deployed_address);
+
+    level.set_walls([1,2,44]).
+      then(function() { return level.walls.call(2) }).
+      then(function(result) {
+        assert.equal(result, 44);
+        done();
+    }).catch(done)
+  })
 });

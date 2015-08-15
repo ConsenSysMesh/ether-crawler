@@ -25,6 +25,10 @@ contract Level {
     staircases[index] = location;
   }
 
+  function set_staircases(uint8[] _staircases) mutates {
+    staircases = _staircases;
+  }
+
   function num_staircases() returns(uint) {
     return staircases.length;
   }
@@ -33,6 +37,10 @@ contract Level {
     uint index = walls.length;
     walls.length++;
     walls[index] = location;
+  }
+
+  function set_walls(uint8[] _walls) mutates {
+    walls = _walls;
   }
 
   function num_walls() returns(uint) {
