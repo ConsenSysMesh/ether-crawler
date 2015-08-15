@@ -35,4 +35,17 @@ contract('Game', function(accounts) {
         done();
     }).catch(done)
   });
+
+  it("stores information about adventurer", function(done) {
+    var game = Game.at(Game.deployed_address);
+
+    game.set_adventurer(100, 50).
+      then(function() { return game.adventurer_hp.call() }).
+      then(function(result) { assert.equal(result, 50) }).
+      then(function() { return game.adventurer_attack.call() }).
+      then(function(result) {
+        assert.equal(result, 100);
+        done();
+      }).catch(done)
+  });
 });

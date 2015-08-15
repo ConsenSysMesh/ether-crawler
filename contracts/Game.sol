@@ -6,10 +6,17 @@ contract Game {
   uint8[160] public squares;
   uint8[1000] public monster_hp;
   uint8[1000] public monster_attack;
+  uint8 public adventurer_attack;
+  uint8 public adventurer_hp;
 
   function set_levels(Level[] _levels) {
     levels = _levels;
     load_level(0);
+  }
+
+  function set_adventurer(uint8 attack, uint8 hp) {
+    adventurer_attack = attack;
+    adventurer_hp = hp;
   }
 
   function load_level(uint8 id) {
