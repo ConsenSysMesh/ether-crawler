@@ -1,4 +1,7 @@
 var Editor = React.createClass({
+  cellClicked: function(x, y) {
+    console.log("cell clicked in editor", x, y);
+  },
   render: function() {
     return (
       <div className="editor">
@@ -18,7 +21,7 @@ var Editor = React.createClass({
           <label for="submit_level">Finished designing?</label><button id="submit_level">Submit Level</button>
         </div>
         <div className="twelve columns">
-          <Grid editor={true} />
+          <Grid editor={true} cellClicked={this.cellClicked}/>
         </div>
       </div>
     );

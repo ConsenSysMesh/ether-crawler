@@ -12,12 +12,13 @@ var Grid = React.createClass({
       }
     }
 
+    var self = this;
     var className = "grid";
     return (
       <div className={className}>
       {
         grid_elements.map(function(cell) {
-            return <Cell x={cell.x} y={cell.x} number={cell.number}/>
+          return <Cell x={cell.x} y={cell.y} number={cell.number} handleClick={self.props.cellClicked}/>
         })
       }
       </div>

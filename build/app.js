@@ -40141,12 +40141,13 @@ var Grid = React.createClass({
       }
     }
 
+    var self = this;
     var className = "grid";
     return React.createElement(
       "div",
       { className: className },
       grid_elements.map(function (cell) {
-        return React.createElement(Cell, { x: cell.x, y: cell.x, number: cell.number });
+        return React.createElement(Cell, { x: cell.x, y: cell.y, number: cell.number, handleClick: self.props.cellClicked });
       })
     );
   }
@@ -40157,10 +40158,19 @@ var Grid = React.createClass({
 var Cell = React.createClass({
   displayName: "Cell",
 
+  handleClick: function handleClick(event) {
+    console.log(event.target.id);
+    var id = event.target.id;
+    var intermediate = id.replace("cell_", "");
+    intermediate = intermediate.split("_");
+    var x = intermediate[0];
+    var y = intermediate[1];
+    this.props.handleClick(x, y);
+  },
   render: function render() {
     var cell_id = "cell_" + this.props.x + "_" + this.props.y;
 
-    return React.createElement("div", { id: cell_id, className: "cell" });
+    return React.createElement("div", { id: cell_id, className: "cell", onClick: this.handleClick });
   }
 });
 
@@ -40169,6 +40179,9 @@ var Cell = React.createClass({
 var Editor = React.createClass({
   displayName: "Editor",
 
+  cellClicked: function cellClicked(x, y) {
+    console.log("cell clicked in editor", x, y);
+  },
   render: function render() {
     return React.createElement(
       "div",
@@ -40225,8 +40238,32 @@ var Editor = React.createClass({
       React.createElement(
         "div",
         { className: "twelve columns" },
-        React.createElement(Grid, { editor: true })
+        React.createElement(Grid, { editor: true, cellClicked: this.cellClicked })
       )
+    );
+  }
+});
+
+"use strict";
+
+var ContextMenu = React.createClass({
+  displayName: "ContextMenu",
+
+  handleClick: function handleClick(event) {
+    //this.props.onChoice()
+    console.log(event);
+  },
+  render: function render() {
+    return React.createElement(
+      "div",
+      { className: "context-menu" },
+      this.props.items.map(function (name) {
+        return React.createElement(
+          "div",
+          { className: "item", onClick: this.handleClick },
+          item
+        );
+      })
     );
   }
 });; __provisioner.set_provider(window);
