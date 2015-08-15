@@ -20,6 +20,7 @@ contract Game {
   }
 
   function load_level(uint8 id) {
+    clear_level();
     current_level = levels[id];
 
     uint num_walls = current_level.num_walls();
@@ -39,5 +40,13 @@ contract Game {
       monster_hp[id] = current_level.monster_hp(i);
       monster_attack[id] = current_level.monster_attack(i);
     }
+
+    squares[0] = 3; // magic value for adventurer
+  }
+
+  function clear_level() {
+    delete squares;
+    delete monster_hp;
+    delete monster_attack;
   }
 }
