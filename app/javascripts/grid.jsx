@@ -12,6 +12,7 @@ var Grid = React.createClass({
       }
     }
 
+    var cell_type = Cell;
     var self = this;
     var className = "grid";
     return (

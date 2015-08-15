@@ -1,14 +1,15 @@
 var ContextMenu = React.createClass({
-  handleClick: function(event) {
+  handleClick: function(id, event) {
     //this.props.onChoice()
-    console.log(event);
+    console.log(id, event);
   },
   render: function() {
+    var self = this;
     return (
-      <div className="context-menu">
+      <div style={{top: self.props.top, left: self.props.left}} className="context-menu">
       {
-        this.props.items.map(function(name) {
-          return <div className="item" onClick={this.handleClick}>{item}</div>
+        this.props.choices.map(function(choice) {
+          return <div className="choice" onClick={self.props.choiceClicked.bind(null, choice.id)}>{choice.name}</div>
         })
       }
       </div>

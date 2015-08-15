@@ -6,7 +6,7 @@ var Cell = React.createClass({
     intermediate = intermediate.split("_");
     var x = intermediate[0];
     var y = intermediate[1];
-    this.props.handleClick(x, y);
+    this.props.handleClick(x, y, event);
   },
   render: function() {
     var cell_id = "cell_" + this.props.x + "_" + this.props.y;

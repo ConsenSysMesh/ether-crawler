@@ -36,6 +36,7 @@ label {
   font-size: 0px;
 
   .cell {
+    position: relative;
     width: $cell-width;
     height: $cell-height;
     border-right: solid 1px black;
@@ -53,6 +54,25 @@ label {
   .cell {
     &:hover {
       background: #EEE;
+    }
+  }
+}
+
+.grid-container {
+  position: relative;
+}
+
+.context-menu {
+  position: absolute;
+  padding: 10px;
+  border: solid 1px black;
+  background: #FFF;
+
+  .choice {
+    width: 200px;
+    &:hover {
+      background: #EEE;
+      cursor: pointer;
     }
   }
 }

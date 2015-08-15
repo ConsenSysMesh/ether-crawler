@@ -1,6 +1,36 @@
 var Editor = React.createClass({
-  cellClicked: function(x, y) {
-    console.log("cell clicked in editor", x, y);
+  getInitialState: function() {
+    return {
+      menu: null
+    };
+  },
+  cellClicked: function(x, y, event) {
+    var element = event.target;
+    var grid_container = this.refs.grid_container.getDOMNode();
+
+    var choices = [
+      {id: "choice_1", name: "Add Monster"},
+      {id: "choice_2", name: "Add Wall"},
+      {id: "choice_3", name: "Add Item"},
+      {id: "choice_4", name: "Add Staircase"},
+      {id: "choice_5", name: "Delete What's Here"},
+    ];
+
+    var elementRect = element.getBoundingClientRect();
+    var containerRect = grid_container.getBoundingClientRect();
+
+    var left = (elementRect.left + elementRect.width / 2) - containerRect.left;
+    var top = (elementRect.top + elementRect.height / 2) - containerRect.top;
+
+    this.setState({
+      menu: <ContextMenu choices={choices} top={top} left={left} choiceClicked={this.menuItemClicked}/>
+    });
+  },
+  menuItemClicked: function(id, event) {
+    console.log("menu item clicked: " + id)
+    this.setState({
+      menu: null
+    });
   },
   render: function() {
     return (
@@ -20,8 +50,9 @@ var Editor = React.createClass({
           <br/>
           <label for="submit_level">Finished designing?</label><button id="submit_level">Submit Level</button>
         </div>
-        <div className="twelve columns">
-          <Grid editor={true} cellClicked={this.cellClicked}/>
+        <div className="grid-container twelve columns" ref="grid_container">
+          <Grid editor={true} cellClicked={this.cellClicked} ref="grid"/>
+          {this.state.menu}
         </div>
       </div>
     );

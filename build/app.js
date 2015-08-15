@@ -40141,6 +40141,7 @@ var Grid = React.createClass({
       }
     }
 
+    var cell_type = Cell;
     var self = this;
     var className = "grid";
     return React.createElement(
@@ -40165,7 +40166,7 @@ var Cell = React.createClass({
     intermediate = intermediate.split("_");
     var x = intermediate[0];
     var y = intermediate[1];
-    this.props.handleClick(x, y);
+    this.props.handleClick(x, y, event);
   },
   render: function render() {
     var cell_id = "cell_" + this.props.x + "_" + this.props.y;
@@ -40179,8 +40180,32 @@ var Cell = React.createClass({
 var Editor = React.createClass({
   displayName: "Editor",
 
-  cellClicked: function cellClicked(x, y) {
-    console.log("cell clicked in editor", x, y);
+  getInitialState: function getInitialState() {
+    return {
+      menu: null
+    };
+  },
+  cellClicked: function cellClicked(x, y, event) {
+    var element = event.target;
+    var grid_container = this.refs.grid_container.getDOMNode();
+
+    var choices = [{ id: "choice_1", name: "Add Monster" }, { id: "choice_2", name: "Add Wall" }, { id: "choice_3", name: "Add Item" }, { id: "choice_4", name: "Add Staircase" }, { id: "choice_5", name: "Delete What's Here" }];
+
+    var elementRect = element.getBoundingClientRect();
+    var containerRect = grid_container.getBoundingClientRect();
+
+    var left = elementRect.left + elementRect.width / 2 - containerRect.left;
+    var top = elementRect.top + elementRect.height / 2 - containerRect.top;
+
+    this.setState({
+      menu: React.createElement(ContextMenu, { choices: choices, top: top, left: left, choiceClicked: this.menuItemClicked })
+    });
+  },
+  menuItemClicked: function menuItemClicked(id, event) {
+    console.log("menu item clicked: " + id);
+    this.setState({
+      menu: null
+    });
   },
   render: function render() {
     return React.createElement(
@@ -40237,8 +40262,9 @@ var Editor = React.createClass({
       ),
       React.createElement(
         "div",
-        { className: "twelve columns" },
-        React.createElement(Grid, { editor: true, cellClicked: this.cellClicked })
+        { className: "grid-container twelve columns", ref: "grid_container" },
+        React.createElement(Grid, { editor: true, cellClicked: this.cellClicked, ref: "grid" }),
+        this.state.menu
       )
     );
   }
@@ -40249,19 +40275,20 @@ var Editor = React.createClass({
 var ContextMenu = React.createClass({
   displayName: "ContextMenu",
 
-  handleClick: function handleClick(event) {
+  handleClick: function handleClick(id, event) {
     //this.props.onChoice()
-    console.log(event);
+    console.log(id, event);
   },
   render: function render() {
+    var self = this;
     return React.createElement(
       "div",
-      { className: "context-menu" },
-      this.props.items.map(function (name) {
+      { style: { top: self.props.top, left: self.props.left }, className: "context-menu" },
+      this.props.choices.map(function (choice) {
         return React.createElement(
           "div",
-          { className: "item", onClick: this.handleClick },
-          item
+          { className: "choice", onClick: self.props.choiceClicked.bind(null, choice.id) },
+          choice.name
         );
       })
     );
