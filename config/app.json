@@ -12,7 +12,8 @@
       "../build/dependencies.js",
       "javascripts/app.jsx",
       "javascripts/grid.jsx",
-      "javascripts/cell.jsx"
+      "javascripts/cell.jsx",
+      "javascripts/editor.jsx"
     ],
     "app.css": [
       "stylesheets/normalize.css",

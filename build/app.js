@@ -40086,6 +40086,12 @@ if ((typeof module !== "undefined" && module !== null) && (module.exports != nul
 var App = React.createClass({
   displayName: "App",
 
+  getInitialState: function getInitialState() {
+    return {
+      view: React.createElement(Editor, null)
+    };
+  },
+
   render: function render() {
     return React.createElement(
       "div",
@@ -40109,11 +40115,7 @@ var App = React.createClass({
           "Bet on Games"
         )
       ),
-      React.createElement(
-        "div",
-        { className: "twelve columns" },
-        React.createElement(Grid, null)
-      )
+      this.state.view
     );
   }
 });
@@ -40138,12 +40140,11 @@ var Grid = React.createClass({
         grid_number += 1;
       }
     }
-    console.log(grid_elements.length);
 
-    console.log(grid_elements);
+    var className = "grid";
     return React.createElement(
       "div",
-      { className: "grid" },
+      { className: className },
       grid_elements.map(function (cell) {
         return React.createElement(Cell, { x: cell.x, y: cell.x, number: cell.number });
       })
@@ -40159,10 +40160,73 @@ var Cell = React.createClass({
   render: function render() {
     var cell_id = "cell_" + this.props.x + "_" + this.props.y;
 
+    return React.createElement("div", { id: cell_id, className: "cell" });
+  }
+});
+
+"use strict";
+
+var Editor = React.createClass({
+  displayName: "Editor",
+
+  render: function render() {
     return React.createElement(
       "div",
-      { id: cell_id, className: "cell" },
-      this.props.number
+      { className: "editor" },
+      React.createElement(
+        "div",
+        { className: "one columns" },
+        "Steps:"
+      ),
+      React.createElement(
+        "div",
+        { className: "five columns" },
+        React.createElement(
+          "ol",
+          null,
+          React.createElement(
+            "li",
+            null,
+            "Create a level (click on squares below)"
+          ),
+          React.createElement(
+            "li",
+            null,
+            "Submit your level for others to play"
+          ),
+          React.createElement(
+            "li",
+            null,
+            "Earn Ether"
+          )
+        )
+      ),
+      React.createElement(
+        "div",
+        { className: "six columns right" },
+        React.createElement(
+          "label",
+          { "for": "level_name" },
+          "Level Name:"
+        ),
+        React.createElement("input", { id: "level_name", type: "text" }),
+        React.createElement("br", null),
+        React.createElement(
+          "label",
+          { "for": "submit_level" },
+          "Finished designing?"
+        ),
+        React.createElement(
+          "button",
+          { id: "submit_level" },
+          "Submit Level"
+        )
+      ),
+      React.createElement(
+        "div",
+        { className: "twelve columns" },
+        React.createElement(Grid, { editor: true })
+      )
     );
   }
 });; __provisioner.set_provider(window);

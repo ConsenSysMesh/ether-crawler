@@ -3,6 +3,18 @@ $grid-height: 10;
 $cell-width: 50px;
 $cell-height: 50px;
 
+.container {
+  max-width: ($grid-width * $cell-width) + $grid-width; // Borders will be removed eventually.
+}
+
+input {
+  display: inline-block;
+}
+
+label {
+  display: inline-block;
+}
+
 .tab-container {
 
   display: flex;
@@ -16,19 +28,31 @@ $cell-height: 50px;
   }
 }
 
-
-
 .grid {
-  width: ($grid-width * $cell-width) + $cell-width; // Include borders
-  height: ($grid-height * $cell-height) + $cell-height; // Include borders
+  width: ($grid-width * $cell-width) + $cell-width; // Include borders - will be removed eventually.
+  height: ($grid-height * $cell-height) + $cell-height; // Include borders - will be removed eventually.
   margin-left: auto;
   margin-right: auto;
+  font-size: 0px;
+
+  .cell {
+    width: $cell-width;
+    height: $cell-height;
+    border-right: solid 1px black;
+    border-bottom: solid 1px black;
+    display: inline-block;
+    cursor: pointer;
+  }
 }
 
-.cell {
-  width: $cell-width;
-  height: $cell-height;
-  border-right: solid 1px black;
-  border-bottom: solid 1px black;
-  display: inline-block;
+.editor {
+  .right {
+    text-align: right;
+  }
+
+  .cell {
+    &:hover {
+      background: #EEE;
+    }
+  }
 }

@@ -11,11 +11,10 @@ var Grid = React.createClass({
         grid_number += 1;
       }
     }
-    console.log(grid_elements.length);
 
-    console.log(grid_elements);
+    var className = "grid";
     return (
-      <div className="grid">
+      <div className={className}>
       {
         grid_elements.map(function(cell) {
             return <Cell x={cell.x} y={cell.x} number={cell.number}/>

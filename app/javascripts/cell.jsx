@@ -4,7 +4,7 @@ var Cell = React.createClass({
 
     return (
       <div id={cell_id} className="cell" >
-        {this.props.number}
+
       </div>
     );
   }

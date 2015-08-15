@@ -1,4 +1,11 @@
 var App = React.createClass({
+
+  getInitialState: function() {
+    return {
+      view: <Editor />
+    }
+  },
+
   render: function() {
     return (
       <div className="app container">
@@ -7,9 +14,7 @@ var App = React.createClass({
           <div className="tab">Play a Game</div>
           <div className="tab">Bet on Games</div>
         </div>
-        <div className="twelve columns">
-          <Grid />
-        </div>
+        {this.state.view}
       </div>
     );
   }
