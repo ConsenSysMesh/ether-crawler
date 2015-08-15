@@ -40,6 +40,14 @@ var Grid = React.createClass({
           if (cell.type == "monster") {
             return <Monster key={key} cell={cell} handleClick={self.cellClicked}/>
           }
+
+          if (cell.type == "wall") {
+            return <Wall key={key} cell={cell} handleClick={self.cellClicked}/>
+          }
+
+          if (cell.type == "staircase") {
+            return <Staircase key={key} cell={cell} handleClick={self.cellClicked}/>
+          }
         })
       }
       </div>

@@ -14,6 +14,8 @@ $dark-blue: #22537c;
 $red: #e53b51;
 $blue: #223765;
 
+$gridbackground: #000;
+
 
 .container {
   max-width: ($grid-width * $cell-width) + $grid-width; // Borders will be removed eventually.
@@ -68,7 +70,7 @@ p, ol, ul {
   margin-left: auto;
   margin-right: auto;
   font-size: 0px;
-  background: black;
+  background: $gridbackground;
 
   .cell {
     position: relative;
@@ -80,23 +82,40 @@ p, ol, ul {
     cursor: pointer;
 
     &.empty {
-
     }
-
     &.monster {
-      background: red;
+      background: $gridbackground url(images/monsters/kraken.png) no-repeat center center;
+      background-size: 50px 50px;
+    }
+    &.wall {
+      background: $gridbackground url(images/wall/wall0.png) no-repeat center center;
+      background-size: 50px 50px;
+    }
+    &.staircase {
+      background: $gridbackground url(images/staircase.png) no-repeat center center;
+      background-size: 50px 50px;
     }
   }
 }
 
+#output {
+  display: inline-block;
+  width: 200px;
+  min-height: 500px;
+  background-color: #ccc;
+}
+
 .editor {
+  display: inline-block;
+  max-width: 816px;
+
   .right {
     text-align: right;
   }
 
   .cell {
     &:hover {
-      background: #EEE;
+      background-color: rgba(0,255,255,0.5);
     }
   }
 
@@ -114,6 +133,7 @@ p, ol, ul {
   padding: 10px;
   border: solid 1px black;
   background: #FFF;
+  color: $dark-gray;
 
   .choice {
     width: 200px;
