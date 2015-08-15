@@ -68,33 +68,60 @@ var Editor = React.createClass({
   },
   submitLevel: function() {
     var grid = this.refs.grid.state.grid;
-    Level.new().then(function(level) {
-      var index = -1;
 
-      var handleError = function(e) {
-        alert("Error! Oh no!");
-        console.log(e);
-      };
+    var handleError = function(e) {
+      alert("Error! Oh no!");
+      console.log(e);
+    };
 
-      var callNext = function() {
-        index += 1;
-        if (index == grid.length - 1) {
-          alert("Done!");
-          return;
-        }
+    var level = null;
+    var game = null;
+    Level.new().then(function(l) {
+      level = l;
+      console.log("Created level: " + level.address);
+      return new Promise(function(resolve, reject) {
+        var index = -1;
+        var callNext = function() {
+          index += 1;
+          if (index == grid.length) {
+            resolve();
+            return;
+          }
 
-        var cell = grid[index];
+          var cell = grid[index];
 
-        if (cell.type == "empty") {
-          callNext(index + 1);
-        }
+          if (cell.type == "empty") {
+            callNext(index + 1);
+          }
 
-        if (cell.type == "monster") {
-          level.add_monster(cell.location, 10, 100).then(callNext).catch(handleError);
-        }
-      };
+          if (cell.type == "monster") {
+            console.log("Adding monster @ " + cell.location);
+            level.add_monster(cell.location, 10, 100).then(callNext).catch(reject);
+          }
 
-      callNext();
+          if (cell.type == "wall") {
+            console.log("Adding wall @ " + cell.location);
+            level.add_wall(cell.location).then(callNext).catch(reject);
+          }
+
+          if (cell.type == "staircase") {
+            console.log("Adding staircase @ " + cell.location);
+            level.add_staircase(cell.location).then(callNext).catch(reject);
+          }
+        };
+
+        callNext();
+      });
+    }).then(function() {
+      return Game.new()
+    }).then(function(g) {
+      game = g;
+      console.log("Created Game: " + g.address);
+      console.log(game);
+
+      return game.add_level(level.address);
+    }).then(function() {
+      alert("Done!");
     });
   },
   render: function() {

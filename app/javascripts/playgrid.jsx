@@ -4,7 +4,8 @@ var Playgrid = React.createClass({
       focussed_cell: null,
       defense: 1000,
       attack: 1000,
-      level: "Some Level Name"
+      level: "Some Level Name",
+      game: null
     };
   },
   getAttack: function() {
@@ -17,7 +18,47 @@ var Playgrid = React.createClass({
     return this.state.level;
   },
   componentDidMount: function() {
-    this.refs.grid.setState(this.refs.grid.getMockPlayState());
+    var address = prompt("Please enter your game address", "0xf1eeb3e73f0e59ed1754259e28b4b9d2909dfac5");
+
+    var self = this;
+    var game = Game.at(address);
+
+    this.setState({
+      game: game
+    });
+  },
+  redrawGrid: function() {
+    var self = this;
+    this.state.game.get_all_squares.call().then(function(squares) {
+      var grid = [];
+
+      for (var location = 0; location < squares.length; location++) {
+        var type_id = squares[location].toNumber();
+        var x = (location % 16);
+        var y = parseInt(location / 16);
+        var type = "empty";
+
+        if (type_id == 1) {
+          type = "wall";
+        }
+
+        if (type_id == 2) {
+          type = "staircase";
+        }
+
+        if (type_id == 3) {
+          console.log("DON'T HAVE ADVENTURER!!!");
+        }
+
+        if (type_id >= 100) {
+          type = "monster";
+        }
+
+        grid.push({type: type, x: x, y: y, location: location});
+      }
+
+      self.refs.grid.setState({grid: grid});
+    });
   },
   cellClicked: function(cell, event) {
     var element = event.target;
@@ -54,7 +95,7 @@ var Playgrid = React.createClass({
         </div>
         <div className="four columns right end">
           <p>LEVEL: <span className="levelname">{self.getLevelName()}</span></p>
-          
+
           <button id="end_game" className="button-primary">End Game</button>
           <label for="end_game"><small>Give up?</small></label>
         </div>
@@ -65,5 +106,8 @@ var Playgrid = React.createClass({
         </div>
       </div>
     );
+  },
+  componentDidUpdate: function() {
+    this.redrawGrid();
   }
 });
