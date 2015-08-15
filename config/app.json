@@ -28,7 +28,8 @@
   "deploy": [
     "Level",
     "Game",
-    "LevelRegistry"
+    "LevelRegistry",
+    "Challenge"
   ],
   "provider": "./app/provider.js"
 }
