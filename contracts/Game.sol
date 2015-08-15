@@ -8,6 +8,7 @@ contract Game {
   uint8[1000] public monster_attack;
   uint8 public adventurer_attack;
   uint8 public adventurer_hp;
+  uint8 public adventurer_level;
   uint8 public adventurer_square;
 
   function set_levels(Level[] _levels) {
@@ -18,6 +19,7 @@ contract Game {
   function set_adventurer(uint8 attack, uint8 hp) {
     adventurer_attack = attack;
     adventurer_hp = hp;
+    adventurer_level = 1;
   }
 
   function move(uint8 direction) {
@@ -61,10 +63,17 @@ contract Game {
       if (monster_hp[target_object] <= adventurer_attack) {
         monster_hp[target_object] = 0;
         squares[target] = 0;
+        level_up();
       } else {
         monster_hp[target_object] -= adventurer_attack;
       }
     }
+  }
+
+  function level_up() {
+    adventurer_level++;
+    adventurer_attack += (adventurer_attack / 10);
+    adventurer_hp += (adventurer_hp / 10);
   }
 
   function load_level(uint8 id) {
