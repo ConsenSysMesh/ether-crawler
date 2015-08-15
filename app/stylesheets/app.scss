@@ -3,8 +3,27 @@ $grid-height: 10;
 $cell-width: 50px;
 $cell-height: 50px;
 
+$dark-gray: #333;
+$light-gray: #ccc;
+$gray: #666;
+
+$light-blue: #63a0d4;
+$blue: #337bb8;
+$dark-blue: #22537c;
+
+$red: #e53b51;
+$blue: #223765;
+
+
 .container {
   max-width: ($grid-width * $cell-width) + $grid-width; // Borders will be removed eventually.
+}
+
+.title {
+  font-family: "Creepster", "HelveticaNeue", "Helvetica Neue", Arial, sans-serif;
+  font-size: 48px;
+  text-align: center;
+  color: $red;
 }
 
 input {
@@ -13,18 +32,35 @@ input {
 
 label {
   display: inline-block;
+  font-weight: 300;
+  margin-right: 10px;
+}
+
+p, ol, ul {
+  margin-bottom: 1rem;
 }
 
 .tab-container {
 
   display: flex;
   flex-flow: row wrap;
+  margin-bottom: 15px;
 
   .tab {
     flex-grow: 1;
     text-align: center;
-    border: solid 1px black;
-    padding: 5px;
+    color: $dark-gray;
+    background-color: $gray;
+    border: solid 1px $dark-gray;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    font-size: .9em;
+    cursor: pointer;
+
+    &.active{
+      background-color: $red;
+      cursor: arrow;
+    }
   }
 }
 
@@ -34,13 +70,14 @@ label {
   margin-left: auto;
   margin-right: auto;
   font-size: 0px;
+  background: black;
 
   .cell {
     position: relative;
     width: $cell-width;
     height: $cell-height;
-    border-right: solid 1px black;
-    border-bottom: solid 1px black;
+    border-right: solid 1px $gray;
+    border-bottom: solid 1px $gray;
     display: inline-block;
     cursor: pointer;
   }
@@ -55,6 +92,10 @@ label {
     &:hover {
       background: #EEE;
     }
+  }
+
+  #level-name {
+    width: 250px;
   }
 }
 

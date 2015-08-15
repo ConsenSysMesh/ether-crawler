@@ -48,7 +48,8 @@ var Editor = React.createClass({
         <div className="six columns right">
           <label for="level_name">Level Name:</label><input id="level_name" type="text" />
           <br/>
-          <label for="submit_level">Finished designing?</label><button id="submit_level">Submit Level</button>
+          <label for="submit_level"><small>Finished designing?</small></label>
+            <button id="submit_level" className="button-primary">Submit Level</button>
         </div>
         <div className="grid-container twelve columns" ref="grid_container">
           <Grid editor={true} cellClicked={this.cellClicked} ref="grid"/>
