@@ -48,4 +48,16 @@ contract('Game', function(accounts) {
         done();
       }).catch(done)
   });
+
+  it("starts the adventurer in the upper left corner", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    game.set_levels([level.address]).
+      then(function() { return game.squares.call(0) }).
+      then(function(result) {
+        assert.equal(result, 3); // magic value for adventurer
+        done();
+    }).catch(done);
+  })
 });
