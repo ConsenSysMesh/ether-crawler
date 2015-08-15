@@ -16,6 +16,9 @@ var Playgrid = React.createClass({
   getLevelName: function() {
     return this.state.level;
   },
+  componentDidMount: function() {
+    this.refs.grid.setState(this.refs.grid.getMockPlayState());
+  },
   cellClicked: function(cell, event) {
     var element = event.target;
     var grid_container = this.refs.grid_container.getDOMNode();
@@ -30,6 +33,7 @@ var Playgrid = React.createClass({
       focussed_cell: cell
     });
   },
+
   render: function() {
     var self = this;
     return (

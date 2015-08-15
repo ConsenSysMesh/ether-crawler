@@ -25,6 +25,21 @@ var Grid = React.createClass({
       grid: grid_elements
     };
   },
+  getMockPlayState: function() {
+    var grid_elements = [];
+    var grid_number = 0;
+
+    for (var y = 0; y < this.gridHeight(); y++) {
+      for (var x = 0; x < this.gridWidth(); x++) {
+        grid_elements.push({type: "wall", x: x, y: y, number: grid_number});
+        grid_number += 1;
+      }
+    }
+
+    return {
+      grid: grid_elements
+    };
+  },
   render: function() {
     var self = this;
     var className = "grid";
