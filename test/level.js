@@ -11,4 +11,15 @@ contract('Level', function(accounts) {
         done();
     }).catch(done)
   });
+
+  it("should let you set the name", function(done) {
+    var level = Level.at(Level.deployed_address);
+
+    level.set_name("DEATH AND DOOM").
+      then(function() { return level.name.call() }).
+      then(function(result) {
+        assert.equal(result, "DEATH AND DOOM");
+        done();
+    });
+  });
 });

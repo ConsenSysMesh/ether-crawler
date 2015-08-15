@@ -15,15 +15,26 @@ contract Game {
   bool public over;
   bool public won;
   address public player;
+  address public admin;
 
-  function add_level(address level) {
+  modifier auth(address user) { if (msg.sender == user) _ }
+
+  function Game() {
+    admin = msg.sender;
+  }
+
+  function get_all_squares() returns(uint8[160]) {
+    return squares;
+  }
+
+  function add_level(address level) auth(admin) {
     levels[levels.length++] = Level(level);
     if (levels.length == 1) {
       load_level(0);
     }
   }
 
-  function clear() {
+  function clear() auth(admin) {
     clear_level();
     delete levels;
     delete level_number;
@@ -35,17 +46,17 @@ contract Game {
     delete won;
   }
 
-  function set_adventurer(uint8 attack, uint8 hp) {
+  function set_adventurer(uint8 attack, uint8 hp) auth(admin) {
     adventurer_attack = attack;
     adventurer_hp = hp;
     adventurer_level = 1;
   }
 
-  function set_player(address _player) {
+  function set_player(address _player) auth(admin) {
     player = _player;
   }
 
-  function move(uint8 direction) {
+  function move(uint8 direction) auth(player) {
     if (direction == 0 && ((adventurer_square % 16) != 0)) {
       uint8 target = adventurer_square - 1;
       move_to(target);
@@ -69,7 +80,7 @@ contract Game {
     move_monsters();
   }
 
-  function move_to(uint8 target) {
+  function move_to(uint8 target) private {
     uint target_object = squares[target];
     // empty
     if (target_object == 0) {
@@ -100,7 +111,7 @@ contract Game {
     }
   }
 
-  function move_monsters() {
+  function move_monsters() private {
     for (uint8 i = 0; i < num_monsters; i++) {
       if (monster_hp[100 + i] == 0) { return; }
 
@@ -122,7 +133,7 @@ contract Game {
     }
   }
 
-  function move_monster(uint8 id, uint8 target) {
+  function move_monster(uint8 id, uint8 target) private {
     if (squares[target] == 0) {
       squares[monster_square[id]] = 0;
       squares[target] = id;
@@ -139,13 +150,13 @@ contract Game {
     }
   }
 
-  function level_up() {
+  function level_up() private {
     adventurer_level++;
     adventurer_attack += (adventurer_attack / 10);
     adventurer_hp += (adventurer_hp / 10);
   }
 
-  function load_level(uint8 id) {
+  function load_level(uint8 id) private {
     clear_level();
 
     level_number = id;
@@ -175,7 +186,7 @@ contract Game {
     squares[0] = 3; // magic value for adventurer
   }
 
-  function clear_level() {
+  function clear_level() private {
     delete squares;
     delete monster_hp;
     delete monster_attack;
