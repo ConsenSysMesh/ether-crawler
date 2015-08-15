@@ -1,5 +1,7 @@
 if (module != null) {
-  var BlockAppsWeb3Provider = require("../app/blockapps-web3");
+  var BlockAppsWeb3Provider = require("../node_modules/blockapps-web3/build/blockapps-web3");
+} else {
+  var BlockAppsWeb3Provider = window.BlockAppsWeb3Provider;
 }
 
 var accounts = {
@@ -18,6 +20,4 @@ var provider = new BlockAppsWeb3Provider({
   }
 });
 
-if (module != null) {
-  module.exports = provider;
-}
+web3.setProvider(provider);

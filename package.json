@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "react": "*",
-    "blockapps-web3": "git://github.com/ConsenSys/blockapps-web3.git#hacknet"
+    "blockapps-web3": "git://github.com/ConsenSys/blockapps-web3.git#hacknet",
+    "ethereumjs-tx": "*",
+    "bignumber.js": "*"
   },
   "license": "MIT License. Copyright Consensys LLC, and authors. All rights reserved."
 }
