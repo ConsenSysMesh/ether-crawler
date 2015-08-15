@@ -15,6 +15,12 @@ contract Level {
     owner = msg.sender;
   }
 
+  function set_owner(address _owner) {
+    if (msg.sender == owner) {
+      owner = _owner;
+    }
+  }
+
   function set_name(string _name) mutates {
     name = _name;
   }
