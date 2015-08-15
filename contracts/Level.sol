@@ -1,11 +1,10 @@
 contract Level {
-  struct Location { uint8 x; uint8 y; }
-  Location[] public staircases;
+  uint8[] public staircases;
 
-  function add_staircase(uint8 x, uint8 y) {
+  function add_staircase(uint8 location) {
     uint index = staircases.length;
     staircases.length++;
-    staircases[index] = Location(x, y);
+    staircases[index] = location;
   }
 
   function num_staircases() returns(uint) {

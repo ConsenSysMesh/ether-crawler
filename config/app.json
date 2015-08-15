@@ -18,7 +18,8 @@
     "images/": "images/"
   },
   "deploy": [
-    "Level"
+    "Level",
+    "Game"
   ],
   "provider": "./app/provider.js"
 }
