@@ -18,12 +18,11 @@ contract('Challenge', function(accounts) {
     var challenge = Challenge.at(Challenge.deployed_address);
 
     challenge.make_offer({value: 2000}).
-      then(function() { return challenge.num_offers.call() }).
-      then(function(result) { assert.equal(result, 1) }).
-      then(function() { return challenge.offers.call(0) }).
+      then(function() { return challenge.make_offer({value: 3000}) }).
+      then(function() { return challenge.best_offer.call() }).
       then(function(result) {
         assert.equal(result[0], accounts[0]);
-        assert.equal(result[1], 2000);
+        assert.equal(result[1], 3000);
         done();
     }).catch(done)
   });

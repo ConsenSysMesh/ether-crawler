@@ -4,7 +4,7 @@ contract Challenge {
   uint public bet_value;
   address public player;
   struct Offer { address sender; uint value; }
-  Offer[] public offers;
+  Offer public best_offer;
 
   function Challenge(uint8 _character, address[] _levels) {
     character = _character;
@@ -18,10 +18,9 @@ contract Challenge {
   }
 
   function make_offer() {
-    offers[offers.length++] = Offer(msg.sender, msg.value);
-  }
-
-  function num_offers() returns(uint) {
-    return offers.length;
+    if (msg.value > best_offer.value) {
+      best_offer.sender.send(best_offer.value);
+      best_offer = Offer(msg.sender, msg.value);
+    }
   }
 }
