@@ -264,4 +264,19 @@ contract('Game', function(accounts) {
         done();
     }).catch(done)
   })
+
+  it("lets you get all squares", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_monster(2, 10, 50) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
+      then(function() { return game.get_all_squares.call() }).
+      then(function(result) {
+        assert.equal(result.length, 160);
+        done();
+    }).catch(done)
+  })
 });

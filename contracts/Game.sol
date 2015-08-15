@@ -23,6 +23,10 @@ contract Game {
     admin = msg.sender;
   }
 
+  function get_all_squares() returns(uint8[160]) {
+    return squares;
+  }
+
   function add_level(address level) auth(admin) {
     levels[levels.length++] = Level(level);
     if (levels.length == 1) {
