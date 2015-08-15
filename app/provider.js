@@ -1,3 +1,4 @@
+//var module = module || undefined;
 if (module != null) {
   var BlockAppsWeb3Provider = require("../node_modules/blockapps-web3/build/blockapps-web3");
 } else {
@@ -19,5 +20,8 @@ var provider = new BlockAppsWeb3Provider({
     callback(null, accounts[address].private);
   }
 });
-
-web3.setProvider(provider);
+if (module) {
+  module.exports = provider;
+} else {
+  web3.setProvider(provider);
+}

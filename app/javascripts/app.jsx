@@ -38,5 +38,16 @@ var App = React.createClass({
   }
 });
 window.onload = function() {
-  React.render(<App />, document.getElementById("app"));
+  web3.eth.getCoinbase(function(error, coinbase) {
+    if (error != null) {
+      alert("Couldn't connect to your web3 provider. Is your client connected?");
+    } else {
+      // Set default value for transactions.
+      Pudding.defaults({
+        from: coinbase,
+        gas: 3141592
+      });
+      React.render(<App />, document.getElementById("app"));
+    }
+  });
 }

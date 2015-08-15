@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "react": "*",
-    "blockapps-web3": "git://github.com/ConsenSys/blockapps-web3.git#hacknet",
+    "blockapps-web3": "file:../blockapps-web3",
     "ethereumjs-tx": "*",
     "bignumber.js": "*"
   },

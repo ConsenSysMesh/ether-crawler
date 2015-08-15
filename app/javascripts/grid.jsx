@@ -12,12 +12,12 @@ var Grid = React.createClass({
   },
   getInitialState: function() {
     var grid_elements = [];
-    var grid_number = 0;
+    var grid_location = 0;
 
     for (var y = 0; y < this.gridHeight(); y++) {
       for (var x = 0; x < this.gridWidth(); x++) {
-        grid_elements.push({type: "empty", x: x, y: y, number: grid_number});
-        grid_number += 1;
+        grid_elements.push({type: "empty", x: x, y: y, location: grid_location});
+        grid_location += 1;
       }
     }
 

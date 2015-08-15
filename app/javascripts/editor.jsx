@@ -41,6 +41,37 @@ var Editor = React.createClass({
       focussed_cell: null
     });
   },
+  submitLevel: function() {
+    var grid = this.refs.grid.state.grid;
+    Level.new().then(function(level) {
+      var index = -1;
+
+      var handleError = function(e) {
+        alert("Error! Oh no!");
+        console.log(e);
+      };
+
+      var callNext = function() {
+        index += 1;
+        if (index == grid.length - 1) {
+          alert("Done!");
+          return;
+        }
+
+        var cell = grid[index];
+
+        if (cell.type == "empty") {
+          callNext(index + 1);
+        }
+
+        if (cell.type == "monster") {
+          level.add_monster(cell.location, 10, 100).then(callNext).catch(handleError);
+        }
+      };
+
+      callNext();
+    });
+  },
   render: function() {
     return (
       <div className="editor">
@@ -58,7 +89,7 @@ var Editor = React.createClass({
           <label for="level_name">Level Name:</label><input id="level_name" type="text" />
           <br/>
           <label for="submit_level"><small>Finished designing?</small></label>
-            <button id="submit_level" className="button-primary">Submit Level</button>
+          <button id="submit_level" className="button-primary" onClick={this.submitLevel}>Submit Level</button>
         </div>
         <div className="grid-container twelve columns" ref="grid_container">
           <Grid key="__editor" editor={true} cellClicked={this.cellClicked} ref="grid"/>
