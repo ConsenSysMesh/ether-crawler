@@ -43,14 +43,22 @@ contract Game {
   }
 
   function move_to(uint8 target) {
-    if (squares[target] == 0) {
+    uint target_object = squares[target];
+    // empty
+    if (target_object == 0) {
       squares[adventurer_square] = 0;
       squares[target] = 3;
       adventurer_square = target;
     }
 
-    if (squares[target] == 2) {
+    // staircase
+    if (target_object == 2) {
       load_level(level_number + 1);
+    }
+
+    // monster
+    if (target_object > 99) {
+      monster_hp[target_object] -= adventurer_attack;
     }
   }
 
