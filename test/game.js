@@ -54,10 +54,39 @@ contract('Game', function(accounts) {
     var game = Game.at(Game.deployed_address);
 
     game.set_levels([level.address]).
-      then(function() { return game.squares.call(0) }).
+      then(function() { return game.adventurer_square.call() }).
       then(function(result) {
-        assert.equal(result, 3); // magic value for adventurer
+        assert.equal(result, 0);
         done();
     }).catch(done);
+  })
+
+  it("lets adventurer move to an empty adjacent square", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.move(3) }).
+      then(function() { return game.adventurer_square.call() }).
+      then(function(result) {
+        assert.equal(result, 16);
+        done();
+    }).catch(done)
+  });
+
+  it("doesn't let adventurer move onto walls", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_wall(1) }).
+      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.move(1) }).
+      then(function() { return game.adventurer_square.call() }).
+      then(function(result) {
+        assert.equal(result, 0);
+        done();
+    }).catch(done)
   })
 });
