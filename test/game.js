@@ -221,4 +221,22 @@ contract('Game', function(accounts) {
         done();
     }).catch(done)
   })
+
+  it("ends game if player goes to 0hp", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_monster(17, 10, 50) }).
+      then(function() { return game.set_levels([level.address]) }).
+      then(function() { return game.set_adventurer(20, 5) }).
+      then(function() { return game.move(1) }).
+      then(function() { return game.over.call() }).
+      then(function(result) { assert.equal(result, true) }).
+      then(function() { return game.adventurer_hp.call() }).
+      then(function(result) {
+        assert.equal(result, 0);
+        done();
+    }).catch(done)
+  })
 });

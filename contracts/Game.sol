@@ -12,6 +12,7 @@ contract Game {
   uint8 public adventurer_hp;
   uint8 public adventurer_level;
   uint8 public adventurer_square;
+  bool public over;
 
   function set_levels(Level[] _levels) {
     levels = _levels;
@@ -104,7 +105,12 @@ contract Game {
     }
 
     if (squares[target] == 3) {
-      adventurer_hp -= monster_attack[id];
+      if (adventurer_hp <= monster_attack[id]) {
+        adventurer_hp = 0;
+        over = true;
+      } else {
+        adventurer_hp -= monster_attack[id];
+      }
     }
   }
 
