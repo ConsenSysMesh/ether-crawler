@@ -1,1 +1,13 @@
-{}
+{
+  "Example": {
+    "source": "/Users/peterbb/ether-crawler/contracts/Example.sol",
+    "binary": "0x60606040525b5b600a8060136000396000f30060606040526008565b00",
+    "abi": [
+      {
+        "inputs": [],
+        "type": "constructor"
+      }
+    ],
+    "address": "0xc305c901078781c232a2a521c2af7980f8385ee9"
+  }
+}
