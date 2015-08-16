@@ -20,7 +20,8 @@
       "javascripts/cells/character.jsx",
       "javascripts/editor.jsx",
       "javascripts/context_menu.jsx",
-      "javascripts/playgrid.jsx"
+      "javascripts/playgrid.jsx",
+      "javascripts/simple_modal.jsx"
     ],
     "app.css": [
       "stylesheets/normalize.css",

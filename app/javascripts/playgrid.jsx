@@ -18,7 +18,8 @@ var Playgrid = React.createClass({
       adventurer_hp: null,
       adventurer_attack: null,
       adventurer_level: null,
-      turn_changing: true
+      turn_changing: true,
+      modal: null
     };
   },
   getAttack: function() {
@@ -38,14 +39,16 @@ var Playgrid = React.createClass({
     var game = Game.at(address);
 
     this.setState({
-      game: game
+      game: game,
+      modal: <SimpleModal title="Loading level..." />
     }, function() {
       var self = this;
       this.reloadGrid().then(function() {
         return self.updateStats();
       }).then(function() {
         self.setState({
-          turn_changing: false
+          turn_changing: false,
+          modal: null
         });
       });
     });
@@ -122,7 +125,8 @@ var Playgrid = React.createClass({
     var game = this.state.game;
 
     this.setState({
-      turn_changing: true
+      turn_changing: true,
+      modal: <SimpleModal title="Changing turns..." />
     });
 
     game.move(direction).then(function() {
@@ -132,7 +136,8 @@ var Playgrid = React.createClass({
       return self.updateStats();
     }).then(function() {
       self.setState({
-        turn_changing: false
+        turn_changing: false,
+        modal: false
       });
     }).catch(function(e) {
       alert("Error! Oh no!");
@@ -197,6 +202,7 @@ var Playgrid = React.createClass({
           <Grid key="__editor" editor={false} cellClicked={this.cellClicked} ref="grid"/>
           {this.state.menu}
         </div>
+        {this.state.modal}
       </div>
     );
   }

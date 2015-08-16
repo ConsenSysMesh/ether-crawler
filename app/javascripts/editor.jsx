@@ -2,9 +2,18 @@ var Editor = React.createClass({
   getInitialState: function() {
     return {
       menu: null,
+      modal: null,
       focussed_cell: null,
       hasStaircase: false
     };
+  },
+  componentDidMount: function() {
+    document.addEventListener('keydown', this.onKeyDown);
+  },
+  onKeyDown: function() {
+    this.setState({
+      menu: null
+    })
   },
   cellClicked: function(cell, event) {
     var element = event.target;
@@ -67,7 +76,12 @@ var Editor = React.createClass({
     });
   },
   submitLevel: function() {
+    var self = this;
     var grid = this.refs.grid.state.grid;
+
+    this.setState({
+      modal: <SimpleModal title="Submitting level..." />
+    });
 
     var handleError = function(e) {
       alert("Error! Oh no!");
@@ -136,7 +150,16 @@ var Editor = React.createClass({
       console.log("Adding level...")
       return game.add_level(level.address);
     }).then(function() {
-      alert("Done!");
+      console.log("Adding level...")
+      return game.add_level(level.address);
+    }).then(function() {
+      console.log("Setting adventurer...")
+      return game.set_adventurer(20, 100);
+    }).then(function() {
+      self.setState({
+        modal: null
+      });
+      console.log("Finished!");
     });
   },
   render: function() {
@@ -163,6 +186,7 @@ var Editor = React.createClass({
           <Grid key="__editor" editor={true} cellClicked={this.cellClicked} ref="grid"/>
           {this.state.menu}
         </div>
+        {this.state.modal}
       </div>
     );
   }
