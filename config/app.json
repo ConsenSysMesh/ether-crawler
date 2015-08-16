@@ -29,6 +29,9 @@
       "javascripts/wizard.jsx",
       "javascripts/wizard/choose_character.jsx",
       "javascripts/wizard/choose_levels.jsx",
+      "javascripts/wizard/choose_bet.jsx",
+      "javascripts/wizard/creating_challenge.jsx",
+      "javascripts/wizard/wait_for_challenger.jsx",
       "javascripts/bet.jsx"
     ],
     "app.css": [

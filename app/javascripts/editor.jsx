@@ -164,7 +164,7 @@ var Editor = React.createClass({
     }).then(function() {
       console.log("Adding level to the registry: " + level.address + " , " + self.state.level_name);
       registry = LevelRegistry.at(LevelRegistry.deployed_address);
-      return registry.add_level(level.address, self.state.level_name);
+      return registry.add_level(level.address, self.state.level_name || "Unnamed Level");
     }).then(function() {
     // }).then(function() {
     //   return Game.new()
