@@ -118,9 +118,22 @@ contract Game {
       adventurer_square = target;
     }
 
+    // sword
+    if (target_object == 6) {
+      equipped_item = 6;
+      squares[adventurer_square] = 0;
+      squares[target] = 3;
+      adventurer_square = target;
+    }
+
     // monster
     if (target_object > 99) {
       uint16 damage = random_damage(adventurer_attack);
+
+      if (equipped_item == 6) {
+        damage += (damage * 25 / 100);
+      }
+
       if (monster_hp[target_object] <= damage) {
         monster_hp[target_object] = 0;
         squares[target] = 0;
@@ -224,6 +237,11 @@ contract Game {
     uint num_shields = current_level.num_shields();
     for (i = 0; i < num_shields; i++) {
       squares[current_level.shields(i)] = 5;
+    }
+
+    uint num_swords = current_level.num_swords();
+    for (i = 0; i < num_swords; i++) {
+      squares[current_level.swords(i)] = 6;
     }
 
     num_monsters = current_level.num_monsters();
