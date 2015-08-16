@@ -119,19 +119,30 @@ contract Game {
       if (monster_hp[100 + i] == 0) { return; }
 
       uint8 square = monster_square[100 + i];
+      
+      uint8 lr_loc;
+      uint8 ud_loc;
 
-      if (square > adventurer_square) { //adventurer is left or above
-        if ((square / 16) == (adventurer_square / 16)) { //same row, aka to the left
-          move_monster(100 + i, square - 1);
-        } else { //above
-          move_monster(100 + i, square - 16);
-        }
-      } else { //adventurer is right or below
-        if ((square / 16) == (adventurer_square / 16)) { //same row, aka to the right
-          move_monster(100 + i, square + 1);
-        } else { //below
-          move_monster(100 + i, square + 16);
-        }
+      if (square % 16 > adventurer_square % 16) { //adventurer is to the left
+        lr_loc = square - 1;
+      } else {
+        lr_loc = square + 1;
+      }
+
+      if (square > adventurer_square && square > 16) { //adventurer is above
+        ud_loc = square - 16;
+      } else {
+        ud_loc = square + 16;
+      }
+
+      if (square % 16 == adventurer_square % 16) { //same column
+        move_monster(100 + i, ud_loc);
+      } else if (square / 16 == adventurer_square / 16) { //same row
+        move_monster(100 + i, lr_loc);
+      } else if (uint(block.blockhash(block.number)) % 2 == 0) {
+        move_monster(100 + i, ud_loc);
+      } else {
+        move_monster(100 + i, lr_loc);
       }
     }
   }
