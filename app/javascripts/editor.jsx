@@ -118,7 +118,22 @@ var Editor = React.createClass({
       game = g;
       console.log("Created Game: " + g.address);
       console.log(game);
-
+    }).then(function(g) {
+      return new Promise(function(resolve, reject) {
+        web3.eth.getCoinbase(function(error, coinbase) {
+          console.log("got coinbase", coinbase);
+          if (error != null) {
+            reject(error);
+          } else {
+            resolve(coinbase);
+          }
+        });
+      });
+    }).then(function(coinbase) {
+      console.log(coinbase);
+      return game.set_player(coinbase);
+    }).then(function() {
+      console.log("Adding level...")
       return game.add_level(level.address);
     }).then(function() {
       alert("Done!");

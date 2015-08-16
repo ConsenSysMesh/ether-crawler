@@ -1,11 +1,24 @@
+var KEYS = {
+  left: 37,
+  up: 38,
+  right: 39,
+  down: 40,
+  spacebar: 32
+};
+
 var Playgrid = React.createClass({
+
   getInitialState: function() {
     return {
       focussed_cell: null,
       defense: 1000,
       attack: 1000,
       level: "Some Level Name",
-      game: null
+      game: null,
+      adventurer_hp: null,
+      adventurer_attack: null,
+      adventurer_level: null,
+      turn_changing: true
     };
   },
   getAttack: function() {
@@ -17,62 +30,146 @@ var Playgrid = React.createClass({
   getLevelName: function() {
     return this.state.level;
   },
+
   componentDidMount: function() {
-    var address = prompt("Please enter your game address", "0xf1eeb3e73f0e59ed1754259e28b4b9d2909dfac5");
+    var address = prompt("Please enter your game address", "0x792de2f00f40319ec0eeff15291da431e45fc6cc");
 
     var self = this;
     var game = Game.at(address);
 
     this.setState({
       game: game
+    }, function() {
+      var self = this;
+      this.reloadGrid().then(function() {
+        return self.updateStats();
+      }).then(function() {
+        self.setState({
+          turn_changing: false
+        });
+      });
     });
+
+    document.addEventListener('keydown', this.onKeyDown);
   },
-  redrawGrid: function() {
+  updateStats: function() {
     var self = this;
-    this.state.game.get_all_squares.call().then(function(squares) {
-      var grid = [];
-
-      for (var location = 0; location < squares.length; location++) {
-        var type_id = squares[location].toNumber();
-        var x = (location % 16);
-        var y = parseInt(location / 16);
-        var type = "empty";
-
-        if (type_id == 1) {
-          type = "wall";
-        }
-
-        if (type_id == 2) {
-          type = "staircase";
-        }
-
-        if (type_id == 3) {
-          console.log("DON'T HAVE ADVENTURER!!!");
-        }
-
-        if (type_id >= 100) {
-          type = "monster";
-        }
-
-        grid.push({type: type, x: x, y: y, location: location});
-      }
-
-      self.refs.grid.setState({grid: grid});
+    return new Promise(function(resolve, reject) {
+      var game = self.state.game;
+      var adventurer_hp;
+      var adventurer_attack;
+      var adventurer_level;
+      game.adventurer_hp.call().then(function(hp) {
+        adventurer_hp = hp.toNumber();
+        return game.adventurer_attack.call();
+      }).then(function(attack) {
+        adventurer_attack = attack.toNumber();
+        return game.adventurer_level.call();
+      }).then(function(level) {
+        adventurer_level = level.toNumber();
+        self.setState({
+          adventurer_hp: adventurer_hp,
+          adventurer_attack: adventurer_attack,
+          adventurer_level: adventurer_level
+        }, resolve);
+      }).catch(reject);
     });
   },
-  cellClicked: function(cell, event) {
-    var element = event.target;
-    var grid_container = this.refs.grid_container.getDOMNode();
+  reloadGrid: function() {
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      self.state.game.get_all_squares.call().then(function(squares) {
+        var grid = [];
 
-    var elementRect = element.getBoundingClientRect();
-    var containerRect = grid_container.getBoundingClientRect();
+        for (var location = 0; location < squares.length; location++) {
+          var type_id = squares[location].toNumber();
+          var x = (location % 16);
+          var y = parseInt(location / 16);
+          var type = "empty";
 
-    var left = (elementRect.left + elementRect.width / 2) - containerRect.left;
-    var top = (elementRect.top + elementRect.height / 2) - containerRect.top;
+          if (type_id == 1) {
+            type = "wall";
+          }
+
+          if (type_id == 2) {
+            type = "staircase";
+          }
+
+          if (type_id == 3) {
+            type = "character";
+          }
+
+          if (type_id >= 100) {
+            type = "monster";
+          }
+
+          grid.push({type: type, x: x, y: y, location: location});
+        }
+
+        self.refs.grid.setState({
+          grid: grid
+        }, resolve);
+      }).catch(reject);
+    });
+  },
+
+  componentWillUnmount: function() {
+    document.removeEventListener('keydown', this.onKeyDown);
+  },
+
+  takeTurn: function(direction) {
+    var self = this;
+    var game = this.state.game;
 
     this.setState({
-      focussed_cell: cell
+      turn_changing: true
     });
+
+    game.move(direction).then(function() {
+      console.log("move done");
+      return self.reloadGrid();
+    }).then(function() {
+      return self.updateStats();
+    }).then(function() {
+      self.setState({
+        turn_changing: false
+      });
+    }).catch(function(e) {
+      alert("Error! Oh no!");
+      console.log(e);
+    });
+  },
+
+  checkOutOfBounds: function(val) {
+    if (val < 0 || val > 160) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  onKeyDown: function(e) {
+    if (this.state.turn_changing) {
+      return;
+    }
+
+    switch(e.which) {
+      case KEYS.left:
+        this.takeTurn(0);
+        break;
+
+      case KEYS.right:
+        this.takeTurn(1);
+        break;
+
+      case KEYS.up:
+        this.takeTurn(2);
+        break;
+
+      case KEYS.down:
+        this.takeTurn(3);
+        break;
+    }
   },
 
   render: function() {
@@ -81,17 +178,13 @@ var Playgrid = React.createClass({
       <div className="playgrid">
         <div className="four columns">
           <dl className="your_score">
-            <dt><strong>YOU</strong></dt>
-            <dt>Defense: <span className="num">{self.getDefense()}</span></dt>
-            <dt>Attack: <span className="num">{self.getAttack()}</span></dt>
+            <dt><strong>YOU (Vitalik)</strong><span className="num">{self.state.adventurer_hp}</span></dt>
+            <dt>Attack: <span className="num">{self.state.adventurer_attack}</span></dt>
+            <dt>Level: <span className="num">{self.state.adventurer_level}</span></dt>
           </dl>
         </div>
         <div className="four columns">
-          <dl className="opponent_score">
-            <dt><strong>MONSTER</strong></dt>
-            <dt>Defense: <span className="num">{self.getDefense()}</span></dt>
-            <dt>Attack: <span className="num">{self.getAttack()}</span></dt>
-          </dl>
+
         </div>
         <div className="four columns right end">
           <p>LEVEL: <span className="levelname">{self.getLevelName()}</span></p>
@@ -106,8 +199,5 @@ var Playgrid = React.createClass({
         </div>
       </div>
     );
-  },
-  componentDidUpdate: function() {
-    this.redrawGrid();
   }
 });

@@ -119,7 +119,7 @@ contract Game {
       if (monster_hp[100 + i] == 0) { return; }
 
       uint8 square = monster_square[100 + i];
-      
+
       if (square > adventurer_square) { //adventurer is left or above
         if ((square / 16) == (adventurer_square / 16)) { //same row, aka to the left
           move_monster(100 + i, square - 1);

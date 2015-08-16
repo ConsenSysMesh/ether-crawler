@@ -5,6 +5,7 @@ var Grid = React.createClass({
   gridHeight: function() {
     return 10;
   },
+
   cellClicked: function(x, y, event) {
     var cell_index = (y * this.gridWidth()) + x;
     var cell = this.state.grid[cell_index];
@@ -25,21 +26,15 @@ var Grid = React.createClass({
       grid: grid_elements
     };
   },
-  getMockPlayState: function() {
-    var grid_elements = [];
-    var grid_number = 0;
 
-    for (var y = 0; y < this.gridHeight(); y++) {
-      for (var x = 0; x < this.gridWidth(); x++) {
-        grid_elements.push({type: "wall", x: x, y: y, number: grid_number});
-        grid_number += 1;
-      }
+  convertIndexToXY: function(index) {
+    if (index < 16) {
+      return [0, index];
+    } else {
+      return [index % 16, index/16];
     }
-
-    return {
-      grid: grid_elements
-    };
   },
+
   render: function() {
     var self = this;
     var className = "grid";
@@ -62,6 +57,10 @@ var Grid = React.createClass({
 
           if (cell.type == "staircase") {
             return <Staircase key={key} cell={cell} handleClick={self.cellClicked}/>
+          }
+
+          if (cell.type == "character") {
+            return <Character key={key} cell={cell} handleClick={self.cellClicked}/>
           }
         })
       }
