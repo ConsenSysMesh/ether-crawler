@@ -1,9 +1,9 @@
 contract Level {
-  uint8[] public staircases;
-  uint8[] public walls;
-  uint8[] public monsters;
-  uint8[] public monster_attack;
-  uint8[] public monster_hp;
+  uint16[] public staircases;
+  uint16[] public walls;
+  uint16[] public monsters;
+  uint16[] public monster_attack;
+  uint16[] public monster_hp;
   uint public total_royalties;
   address public owner;
   bool public finalized;
@@ -25,13 +25,13 @@ contract Level {
     name = _name;
   }
 
-  function add_staircase(uint8 location) mutates {
+  function add_staircase(uint16 location) mutates {
     uint index = staircases.length;
     staircases.length++;
     staircases[index] = location;
   }
 
-  function set_staircases(uint8[] _staircases) mutates {
+  function set_staircases(uint16[] _staircases) mutates {
     staircases = _staircases;
   }
 
@@ -39,13 +39,13 @@ contract Level {
     return staircases.length;
   }
 
-  function add_wall(uint8 location) mutates {
+  function add_wall(uint16 location) mutates {
     uint index = walls.length;
     walls.length++;
     walls[index] = location;
   }
 
-  function set_walls(uint8[] _walls) mutates {
+  function set_walls(uint16[] _walls) mutates {
     walls = _walls;
   }
 
@@ -53,7 +53,7 @@ contract Level {
     return walls.length;
   }
 
-  function add_monster(uint8 location, uint8 attack, uint8 hp) mutates {
+  function add_monster(uint16 location, uint16 attack, uint16 hp) mutates {
     uint index = monsters.length;
     monsters.length++;
     monster_attack.length++;

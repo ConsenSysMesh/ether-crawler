@@ -20,7 +20,7 @@ contract('Level', function(accounts) {
       then(function(result) {
         assert.equal(result, "DEATH AND DOOM");
         done();
-    });
+    }).catch(done)
   });
 
   it("should let you pass arrays of walls", function(done) {
