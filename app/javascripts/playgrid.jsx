@@ -21,6 +21,7 @@ var Playgrid = React.createClass({
       outcome_modal: null,
       playerWon: false,
       playerEtherOutcome: 0,
+      audio: null,
       items: [
         { name: "sword", attack: "40", hp: "50" },
         { name: "potion", attack: "20", hp: "30" },
@@ -57,6 +58,14 @@ var Playgrid = React.createClass({
     });
 
     document.addEventListener('keydown', this.onKeyDown);
+
+    var myAudio = document.getElementById("audio");
+    if (myAudio) {
+      this.setState( { audio: myAudio } );
+      if (myAudio.paused) {
+        myAudio.play();
+      }
+    }
   },
 
   modalItemClicked: function(id, event) {
@@ -186,6 +195,13 @@ var Playgrid = React.createClass({
 
   componentWillUnmount: function() {
     document.removeEventListener('keydown', this.onKeyDown);
+
+    var myAudio = this.state.audio;
+    if (myAudio) {
+      if (!myAudio.paused) {
+        myAudio.pause();
+      }
+    }
   },
 
   takeTurn: function(direction) {
@@ -309,6 +325,9 @@ var Playgrid = React.createClass({
         </div>
         {this.state.modal}
         {this.state.outcome_modal}
+        <audio id="audio">  
+          <source src="images/audio.mp3" />  
+        </audio> 
       </div>
     );
   }
