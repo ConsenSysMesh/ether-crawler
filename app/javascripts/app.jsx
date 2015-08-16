@@ -2,7 +2,7 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      view: <Wizard />,
+      view: <Playgrid />,
       activeTab: "tab-play"
     }
   },

@@ -18,7 +18,10 @@ var Playgrid = React.createClass({
       adventurer_attack: null,
       adventurer_level: null,
       turn_changing: true,
-      modal: null
+      modal: null,
+      outcome_modal: null,
+      playerWon: false,
+      playerEtherOutcome: 0
     };
   },
   getAttack: function() {
@@ -102,6 +105,22 @@ var Playgrid = React.createClass({
           adventurer_attack: adventurer_attack,
           adventurer_level: adventurer_level
         }, resolve);
+        // Won or Lost
+
+        // get ether waged
+        /*
+        console.log(Challenge.deployed_address);
+        var challenge = Challenge.at(Challenge.deployed_address);
+        var ether_waged = challenge.best_offer.call();
+        console.log(ether_waged);
+
+        if (adventurer_hp <= 0) {
+          this.setState({ playerWon: ether_waged, playerEtherOutcome: challenge });
+          this.setState({ outcome_modal: 
+            <PlayOutcomeModal playerWon={this.state.playerWon} ether={this.state.playerEtherOutcome} />});
+        }
+        */
+
       }).catch(reject);
     });
   },
@@ -242,6 +261,7 @@ var Playgrid = React.createClass({
           {this.state.menu}
         </div>
         {this.state.modal}
+        {this.state.outcome_modal}
       </div>
     );
   }

@@ -26,6 +26,7 @@
       "javascripts/playgrid.jsx",
       "javascripts/simple_modal.jsx",
       "javascripts/playgrid.jsx",
+      "javascripts/playoutcome_modal.jsx",
       "javascripts/wizard.jsx",
       "javascripts/wizard/choose_character.jsx",
       "javascripts/wizard/choose_levels.jsx",

@@ -229,6 +229,66 @@ button.button-primary {
   transform: translate(-50%, -50%);
 }
 
+.play-outcome-modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(239,239,239, 0.8);
+  border: 5px solid $red;
+  height: 600px;
+  width: 700px;
+  text-align: center;
+  color: $gray;
+
+
+  .title {
+    text-align: center;
+    font-size: 60px;
+    margin: 20px auto 10px;
+    font-family: "Creepster", "HelveticaNeue", "Helvetica Neue", Arial, sans-serif;
+
+    &.win { 
+      color: $green;
+    }
+  }
+  .bet_outcome {
+    text-transform: uppercase;
+    font-size: 18px;
+    .ether {
+      &.win::after { 
+        content: ' won ';
+      }
+      &.lose::after { 
+        content: ' lost ';
+      }
+    }
+    .tofrom {
+      &.win::after { 
+        content: ' from ';
+      }
+      &.lose::after { 
+        content: ' to ';
+      }
+    }
+    
+  }
+  .outcome_image {
+    &.win {
+      background: transparent url(images/outcomes/you_won.gif) no-repeat center center;
+      height: 325px;
+      width: 340px;
+      margin: -50px auto 50px;
+    }
+    &.lose {
+      background: transparent url(images/outcomes/you_lose.png) no-repeat center center;
+      height: 400px;
+      width: 640px;
+      margin: -30px auto 0;
+    }
+  }
+}
+
 .wizard-screen {
   border: solid 5px $red;
   background: #efefef;
