@@ -1,5 +1,9 @@
 # Ether Crawler
 
+A dungeon crawler and challenge market based on Ethereum.
+
+![example](http://i.imgur.com/WstmuKv.png)
+
 ### Install
 
 ```
