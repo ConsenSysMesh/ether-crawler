@@ -155,7 +155,7 @@ contract('Game', function(accounts) {
       then(function(result) { assert.equal(result, 0) }).
       then(function() { return game.monster_hp(100) }).
       then(function(result) {
-        assert.equal(result, 80);
+        assert.closeTo(result.toNumber(), 80, 6);
         done();
     }).catch(done)
   });
@@ -238,7 +238,7 @@ contract('Game', function(accounts) {
       then(function(result) { assert.equal(result, 17) }).
       then(function() { return game.adventurer_hp.call() }).
       then(function(result) {
-        assert.equal(result, 40);
+        assert.closeTo(result.toNumber(), 40, 3);
         done();
     }).catch(done)
   })

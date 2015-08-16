@@ -103,12 +103,13 @@ contract Game {
 
     // monster
     if (target_object > 99) {
-      if (monster_hp[target_object] <= adventurer_attack) {
+      uint8 damage = random_damage(adventurer_attack);
+      if (monster_hp[target_object] <= damage) {
         monster_hp[target_object] = 0;
         squares[target] = 0;
         level_up();
       } else {
-        monster_hp[target_object] -= adventurer_attack;
+        monster_hp[target_object] -= damage;
       }
     }
   }
@@ -154,14 +155,25 @@ contract Game {
     }
 
     if (squares[target] == 3) {
-      if (adventurer_hp <= monster_attack[id]) {
+      uint8 damage = random_damage(monster_attack[id]);
+      if (adventurer_hp <= damage) {
         adventurer_hp = 0;
         over = true;
       } else {
-        adventurer_hp -= monster_attack[id];
+        adventurer_hp -= damage;
       }
     }
   }
+
+  function random_damage(uint attack) private returns(uint8) {
+    uint base = attack * 8 / 10;  
+    uint bonus_percent = uint(block.blockhash(block.number - 1)) % 42;
+    uint result = base + (attack * bonus_percent / 100);
+
+    return uint8(result);
+  }
+
+
 
   function level_up() private {
     adventurer_level++;
