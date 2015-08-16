@@ -25,7 +25,8 @@
       "javascripts/playgrid.jsx",
       "javascripts/wizard.jsx",
       "javascripts/wizard/choose_character.jsx",
-      "javascripts/wizard/choose_levels.jsx"
+      "javascripts/wizard/choose_levels.jsx",
+      "javascripts/bet.jsx"
     ],
     "app.css": [
       "stylesheets/normalize.css",
@@ -36,6 +37,7 @@
   },
   "deploy": [
     "LevelRegistry"
+    "Gamebuilder"
   ],
   "provider": "./app/provider.js"
 }

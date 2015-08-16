@@ -29,8 +29,10 @@ contract('Challenge', function(accounts) {
 
   it("lets player accept an offer, and initializes a game", function(done) {
     var challenge = Challenge.at(Challenge.deployed_address);
+    var gamebuilder = Gamebuilder.at(Gamebuilder.deployed_address);
 
     challenge.make_offer({value: 2000}).
+      then(function() { return challenge.set_gamebuilder(gamebuilder.address) }).
       then(function() { return challenge.accept() }).
       then(function() { return challenge.game.call() }).
       then(function(result) {
@@ -54,12 +56,14 @@ contract('Challenge', function(accounts) {
 
   it("pays out royalties to levels", function(done) {
     var level = Level.at(Level.deployed_address);
+    var gamebuilder = Gamebuilder.at(Gamebuilder.deployed_address);
 
     level.clear().
     then(function() { return level.add_monster(2, 200, 50) }).
     then(function() { return Challenge.new(1, [level.address], {value: 5000}) }).
     then(function(challenge) {
       challenge.make_offer({value: 5000}).
+      then(function() { return challenge.set_gamebuilder(gamebuilder.address) }).
       then(function() { return challenge.accept() }).
       then(function() { return challenge.game.call() }).
       then(function(result) {

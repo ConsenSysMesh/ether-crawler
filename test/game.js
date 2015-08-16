@@ -83,6 +83,26 @@ contract('Game', function(accounts) {
     }).catch(done)
   });
 
+  it("lets adventurer consume potion", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_potion(16) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
+      then(function() { return game.set_adventurer(20, 50) }).
+      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.move(3) }).
+      then(function() { return game.squares.call(16) }).
+      then(function(result) { assert.equal(result, 3) }). // magic value for adventurer
+      then(function() { return game.adventurer_hp.call() }).
+      then(function(result) {
+        assert.equal(result, 80);
+        done();
+    }).catch(done)
+  });
+
   it("doesn't let adventurer move onto walls", function(done) {
     var level = Level.at(Level.deployed_address);
     var game = Game.at(Game.deployed_address);
@@ -153,9 +173,31 @@ contract('Game', function(accounts) {
       then(function() { return game.move(1) }).
       then(function() { return game.adventurer_square.call() }).
       then(function(result) { assert.equal(result, 0) }).
-      then(function() { return game.monster_hp(100) }).
+      then(function() { return game.monster_hp.call(100) }).
       then(function(result) {
         assert.closeTo(result.toNumber(), 80, 6);
+        done();
+    }).catch(done)
+  });
+
+  it("lets player equip swords", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_monster(2, 50, 1000) }).
+      then(function() { return level.add_sword(1) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
+      then(function() { return game.set_adventurer(200, 50) }).
+      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.move(1) }).
+      then(function() { return game.move(1) }).
+      then(function() { return game.equipped_item.call() }).
+      then(function(result) { assert.equal(result, 6) }).
+      then(function() { return game.monster_hp.call(100) }).
+      then(function(result) {
+        assert.closeTo(result.toNumber(), 750, 60);
         done();
     }).catch(done)
   });
@@ -239,6 +281,27 @@ contract('Game', function(accounts) {
       then(function() { return game.adventurer_hp.call() }).
       then(function(result) {
         assert.closeTo(result.toNumber(), 40, 3);
+        done();
+    }).catch(done)
+  })
+
+  it("lets player equip shields", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_monster(17, 100, 50) }).
+      then(function() { return level.add_shield(1) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
+      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.set_adventurer(20, 500) }).
+      then(function() { return game.move(1) }).
+      then(function() { return game.equipped_item.call() }).
+      then(function(result) { assert.equal(result, 5) }).
+      then(function() { return game.adventurer_hp.call() }).
+      then(function(result) {
+        assert.closeTo(result.toNumber(), 425, 30);
         done();
     }).catch(done)
   })

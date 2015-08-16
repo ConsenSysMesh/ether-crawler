@@ -1,7 +1,23 @@
-import "Level";
+contract LevelStub {
+  function num_walls() returns(uint) {}
+  function num_staircases() returns(uint) {}
+  function num_potions() returns(uint) {}
+  function num_shields() returns(uint) {}
+  function num_swords() returns(uint) {}
+  function num_monsters() returns(uint) {}
+
+  function walls(uint id) returns(uint16) {}
+  function staircases(uint id) returns(uint16) {}
+  function potions(uint id) returns(uint16) {}
+  function shields(uint id) returns(uint16) {}
+  function swords(uint id) returns(uint16) {}
+  function monsters(uint id) returns(uint16) {}
+  function monster_hp(uint id) returns(uint16) {}
+  function monster_attack(uint id) returns(uint16) {}
+}
 
 contract Game {
-  Level[] public levels;
+  LevelStub[] public levels;
   uint16 public level_number;
   uint16[160] public squares;
   uint16[1000] public monster_hp;
@@ -17,6 +33,7 @@ contract Game {
   address public player;
   address public admin;
   uint public verify;
+  uint16 public equipped_item;
 
   modifier auth(address user) { if (msg.sender == user) _ }
 
@@ -30,7 +47,7 @@ contract Game {
   }
 
   function add_level(address level) auth(admin) {
-    levels[levels.length++] = Level(level);
+    levels[levels.length++] = LevelStub(level);
     if (levels.length == 1) {
       load_level(0);
     }
@@ -101,9 +118,38 @@ contract Game {
       }
     }
 
+    // potion
+    if (target_object == 4) {
+      adventurer_hp += 30;
+      squares[adventurer_square] = 0;
+      squares[target] = 3;
+      adventurer_square = target;
+    }
+
+    // shield
+    if (target_object == 5) {
+      equipped_item = 5;
+      squares[adventurer_square] = 0;
+      squares[target] = 3;
+      adventurer_square = target;
+    }
+
+    // sword
+    if (target_object == 6) {
+      equipped_item = 6;
+      squares[adventurer_square] = 0;
+      squares[target] = 3;
+      adventurer_square = target;
+    }
+
     // monster
     if (target_object > 99) {
       uint16 damage = random_damage(adventurer_attack);
+
+      if (equipped_item == 6) {
+        damage += (damage * 25 / 100);
+      }
+
       if (monster_hp[target_object] <= damage) {
         monster_hp[target_object] = 0;
         squares[target] = 0;
@@ -156,6 +202,10 @@ contract Game {
 
     if (squares[target] == 3) {
       uint16 damage = random_damage(monster_attack[id]);
+      if (equipped_item == 5) {
+        damage -= (damage * 25 / 100); //protected by shield
+      }
+      
       if (adventurer_hp <= damage) {
         adventurer_hp = 0;
         over = true;
@@ -173,8 +223,6 @@ contract Game {
     return uint16(result);
   }
 
-
-
   function level_up() private {
     adventurer_level++;
     adventurer_attack += (adventurer_attack / 10);
@@ -185,7 +233,7 @@ contract Game {
     clear_level();
 
     level_number = id;
-    Level current_level = levels[id];
+    LevelStub current_level = levels[id];
 
     uint num_walls = current_level.num_walls();
     for (uint16 i = 0; i < num_walls; i++) {
@@ -195,6 +243,21 @@ contract Game {
     uint num_staircases = current_level.num_staircases();
     for (i = 0; i < num_staircases; i++) {
       squares[current_level.staircases(i)] = 2;
+    }
+
+    uint num_potions = current_level.num_potions();
+    for (i = 0; i < num_potions; i++) {
+      squares[current_level.potions(i)] = 4;
+    }
+
+    uint num_shields = current_level.num_shields();
+    for (i = 0; i < num_shields; i++) {
+      squares[current_level.shields(i)] = 5;
+    }
+
+    uint num_swords = current_level.num_swords();
+    for (i = 0; i < num_swords; i++) {
+      squares[current_level.swords(i)] = 6;
     }
 
     num_monsters = current_level.num_monsters();

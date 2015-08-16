@@ -20,8 +20,8 @@ var App = React.createClass({
   },
 
   showBetView: function() {
-    this.setState( { view: <Editor />, activeTab: "tab-bet" });
-  },
+    this.setState( { view: <Bet bets={this.state.bets} />, activeTab: "tab-bet" });
+  }, 
 
   render: function() {
     var self=this;

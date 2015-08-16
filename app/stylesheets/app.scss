@@ -48,7 +48,7 @@ li {
 
 button.button-primary {
   background-color: $blue;
-  border-color: $blue;
+  border: 2px solid #454545;
 }
 
 .tab-container {
@@ -312,6 +312,48 @@ button.button-primary {
   p.err {
     color: $red;
     margin-top: 0;
+  }
+}
+
+
+/* Bet Tab */
+
+.bet {
+
+  .tab-title {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: $red;
+    margin-bottom: 10px;
+    margin-top: 20px;
+  }
+
+  td, th {
+    text-align: center;
+    padding: 8px 15px;
+
+    &.game_id, &.player_id {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      max-width: 80px;
+      cursor: pointer;
+    }
+  }
+
+  input[type="number"] {
+    height: 32px;
+    margin-bottom: 10px;
+    width: 100px;
+  }
+
+  .simple-modal {
+    border: 1px solid black;
+    box-shadow: 2px 2px 2px black;
+    background-color: #ccc;
+    color: #333;
+    font-size: .9em;
   }
 }
 
