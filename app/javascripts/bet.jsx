@@ -1,7 +1,7 @@
 var Bet = React.createClass({
   getInitialState: function() {
     return {
-      levelModal: null,
+      modal: null,
       valid_bet: null,
       showModal: true,
       challenge_addresses: [],
@@ -42,21 +42,23 @@ var Bet = React.createClass({
     });
   },
 
-  // handleInfoClick: function(event) {
-  //   var element_x = event.clientX;
-  //   var element_y = event.clientY;
-  //   this.setState({
-  //     levelModal: <SimpleModal title="Some useful info" />
-  //   });
-  // },
-
   submitBet: function(address, event) {
+    var self = this;
     var input = this.refs["input_" + address];
     var value = input.getDOMNode().value;
 
     var challenge = Challenge.at(address);
     challenge.make_offer({value: web3.toWei(value, "ether")}).then(function() {
-      console.log("Offer accepted.");
+      self.setState({
+        modal: <SimpleModal title="Offer sent!"/>
+      });
+
+      setTimeout(function() {
+        self.setState({
+          modal: null
+        });
+      }, 1000);
+      console.log("Offer sent.");
     }).catch(function(e) {
       alert("Error making offer! Oh no!");
       console.log(e);
@@ -90,7 +92,7 @@ var Bet = React.createClass({
       }
 
       if (this.state.bet_values.length > 0) {
-        challenge.stake = web3.fromWei(this.state.bet_values[i], "ether");
+        challenge.stake = web3.fromWei(this.state.bet_values[i].toString(), "ether");
       } else {
         challenge.stake = "...";
       }
@@ -122,7 +124,7 @@ var Bet = React.createClass({
                       <td className="game_id">{challenge.address}</td>
                       <td className="levels">{challenge.num_levels}</td>
                       <td className="player_id">{challenge.player}</td>
-                      <td className="player_stake">1 <span>ETH</span></td>
+                      <td className="player_stake">{challenge.stake} <span>ETH</span></td>
                       <td className="bet_input"><input type="number" min="0" className="u-full-width" ref={"input_" + challenge.address}/></td>
                       <td className="bet_button"><button className="button-primary" onClick={self.submitBet.bind(null, challenge.address)}>Challenge</button></td>
                     </tr>
@@ -131,7 +133,7 @@ var Bet = React.createClass({
               }
             </tbody>
           </table>
-          {this.state.levelModal}
+          {this.state.modal}
         </div>
       </div>
     );

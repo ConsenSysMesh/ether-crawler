@@ -3,7 +3,7 @@ var Character = React.createClass({
   render: function() {
     var self = this;
     return (
-      <div id={self.getCellId()} className="cell character" onClick={this.handleClick}>
+      <div id={self.getCellId()} className={"cell character " + self.props.character} onClick={this.handleClick}>
 
       </div>
     );

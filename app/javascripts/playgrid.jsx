@@ -21,7 +21,7 @@ var Playgrid = React.createClass({
       outcome_modal: null,
       playerWon: false,
       playerEtherOutcome: 0,
-      items: [ 
+      items: [
         { name: "sword", attack: "40", hp: "50" },
         { name: "potion", attack: "20", hp: "30" },
         { name: "shield", attack: "0", hp: "60" },
@@ -239,11 +239,20 @@ var Playgrid = React.createClass({
   render: function() {
     var self = this;
     var item_id = 0;
+
+    var name = "Vitalik";
+
+    if (this.props.character == "nick") {
+      name = "Nick";
+    } else if (this.props.character == "satoshi") {
+      name = "Satoshi";
+    }
+
     return (
       <div className="playgrid">
         <div className="four columns">
           <dl className="infobox your_score">
-            <dt><strong>YOU (Vitalik)</strong><span className="num">{self.state.adventurer_hp}</span></dt>
+            <dt><strong>YOU ({name})</strong><span className="num">{self.state.adventurer_hp}</span></dt>
             <dt>Attack: <span className="num">{self.state.adventurer_attack}</span></dt>
             <dt>Level: <span className="num">{self.state.adventurer_level}</span></dt>
           </dl>
@@ -251,7 +260,7 @@ var Playgrid = React.createClass({
         <div className="four columns">
           <dl className="infobox your_items">
             <dt>
-              <strong>Your Items</strong> 
+              <strong>Your Items</strong>
               <div className="row_stats">
                 <span className="label">Attack</span>
                 <span className="label label_second">HP</span>
@@ -263,10 +272,10 @@ var Playgrid = React.createClass({
                 return <dt key={item_id} className="item item_row">
                   <span className="name">{item.name}</span>
                   <div className="row_stats">
-                    <span className="num item_stat"> &#43; {item.hp}</span> 
+                    <span className="num item_stat"> &#43; {item.hp}</span>
                     <span className="num item_stat"> &#43; {item.attack}</span></div>
                 </dt>
-                  
+
               })
             }
           </dl>
@@ -279,7 +288,7 @@ var Playgrid = React.createClass({
         </div>
 
         <div className="grid-container twelve columns" ref="grid_container">
-          <Grid key="__editor" editor={false} cellClicked={this.cellClicked} ref="grid"/>
+          <Grid key="__editor" editor={false} cellClicked={this.cellClicked} character={self.props.character} ref="grid"/>
           {this.state.menu}
         </div>
         {this.state.modal}

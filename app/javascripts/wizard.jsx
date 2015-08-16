@@ -38,8 +38,8 @@ var Wizard = React.createClass({
     }
 
     var challenge;
-    console.log(this.state.levels);
-    Challenge.new(ChallengeRegistry.deployed_address, character_id, {value: bet}).then(function(c) {
+    console.log(web3.toWei(bet, "ether"));
+    Challenge.new(ChallengeRegistry.deployed_address, character_id, {value: web3.toWei(bet, "ether")}).then(function(c) {
       challenge = c;
       return challenge.add_levels(self.state.levels);
     }).then(function() {
@@ -62,7 +62,7 @@ var Wizard = React.createClass({
     }).then(function(game_address) {
       var game = Game.at(game_address);
       self.setState({
-        view: <Playgrid game={game} challenge={challenge}/>
+        view: <Playgrid game={game} challenge={challenge} character={self.state.character}/>
       });
     }).catch(function(e) {
       alert("Error accepting offer! Oh no!");

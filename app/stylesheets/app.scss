@@ -106,8 +106,16 @@ button.button-primary {
       background-size: 50px 50px;
     }
     &.character {
-      background: $gridbackground url(images/characters/vitalik.png) no-repeat center center;
       background-size: 50px 50px;
+      background: $gridbackground url(images/characters/vitalik.png) no-repeat center center;
+
+      &.nick {
+        background: $gridbackground url(images/characters/szabo.png) no-repeat center center;
+      }
+
+      &.satoshi {
+        background: $gridbackground url(images/characters/satoshi.png) no-repeat center center;
+      }
     }
     &.sword {
       background: $gridbackground url(images/items/sword.png) no-repeat center center;
@@ -271,6 +279,15 @@ button.button-primary {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  background: #EEE;
+  border-radius: 10px;
+  color: black;
+  padding: 20px;
+  margin: 0px;
+
+  h2 {
+    margin: 0px;
+  }
 }
 
 .play-outcome-modal {
@@ -467,14 +484,6 @@ button.button-primary {
     margin-bottom: 10px;
     width: 100px;
     color: $dark-gray;
-  }
-
-  .simple-modal {
-    border: 1px solid black;
-    box-shadow: 2px 2px 2px black;
-    background-color: #ccc;
-    color: #333;
-    font-size: .9em;
   }
 }
 

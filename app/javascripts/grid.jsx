@@ -60,7 +60,7 @@ var Grid = React.createClass({
           }
 
           if (cell.type == "character") {
-            return <Character key={key} cell={cell} handleClick={self.cellClicked}/>
+            return <Character key={key} cell={cell} character={self.props.character} handleClick={self.cellClicked}/>
           }
 
           if (cell.type == "potion") {
