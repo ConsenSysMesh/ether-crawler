@@ -9,14 +9,14 @@ contract('ChallengeRegistry', function(accounts) {
         then(function(result) { assert.equal(result, 1) }).
         then(function() { return challenge.add_level(level.address) }).
         then(function() { return cr.get_all_players.call() }).
-        then(function(result) { assert.isArray(result, [accounts[0]]) }).
+        then(function(result) { assert.equal(result[0], accounts[0]) }).
         then(function() { return cr.get_all_num_levels.call() }).
-        then(function(result) { assert.isArray(result, [1]) }).
+        then(function(result) { assert.equal(result[0], 1) }).
         then(function() { return cr.get_all_bet_values.call() }).
-        then(function(result) { assert.isArray(result, [1000]) }).
+        then(function(result) { assert.equal(result[0], 1000) }).
         then(function() { return cr.get_all_challenges.call() }).
         then(function(result) {
-          assert.isArray(result, [challenge.address]);
+          assert.equal(result[0], challenge.address);
           done();
       }).catch(done);
     }).catch(done);

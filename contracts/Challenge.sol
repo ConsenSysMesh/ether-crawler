@@ -1,9 +1,4 @@
-contract RegistryStub {
-  function register() returns(uint) {}
-  function new_offer(uint id, uint amount) {}
-  function accept(uint id) {}
-  function set_num_levels(uint id, uint num) {}
-}
+import "ChallengeRegistry";
 
 contract GameStub {
   function over() returns(bool) {}
@@ -30,18 +25,18 @@ contract Challenge {
   bool public started;
   GamebuilderStub public gamebuilder;
   GameStub public game;
-  RegistryStub registry;
+  ChallengeRegistry registry;
   uint reg_id;
   
   modifier auth(address user) { if (msg.sender == user) _ }
 
-  function Challenge(RegistryStub _registry, uint16 _character) {
+  function Challenge(ChallengeRegistry _registry, uint16 _character) {
     registry = _registry;
     character = _character;
     bet_value = msg.value;
     player = msg.sender;
 
-    reg_id = registry.register();
+    reg_id = registry.register(player, bet_value);
   }
 
   function add_level(LevelStub _level) {
