@@ -208,6 +208,10 @@ button.button-primary {
         background-color: rgba(0, 0, 0, .5);
         -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
       }
+      .name {
+        width: 40px;
+        text-overflow: ellipsis;
+      }
     }
 
     .item_row {
@@ -218,13 +222,22 @@ button.button-primary {
       margin-left: 20px;
     }
     .label {
-      margin-left: 30px;
+      margin-left: 20px;
       &.label_second {
-        margin-left: 50px;
+        margin-left: 30px;
+        margin-right: 20px;
       }
     }
-    .item_stat {
-      margin-left: 50px;
+    .row_stats {
+      float: right;
+
+      span.item_stat {
+        margin-left: 20px;
+        min-width: 40px;
+        max-width: 40px;
+        width: 40px;
+        display: inline-block;
+      }
     }
   }
 
@@ -452,6 +465,7 @@ button.button-primary {
     height: 32px;
     margin-bottom: 10px;
     width: 100px;
+    color: $dark-gray;
   }
 
   .simple-modal {

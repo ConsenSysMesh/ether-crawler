@@ -16,17 +16,10 @@ var Bet = React.createClass({
     };
   },
 
-  handleInfoClick: function(event) {
-    var element_x = event.clientX;
-    var element_y = event.clientY;
-    this.setState({
-      levelModal: <SimpleModal title="Some useful info" />
-    });
-  },
-
   render: function() {
     var self = this;
     var hide_modal = this.state.showModal ? ' ' : 'hidden';
+    var bet_key = 0;
 
     return (
       <div className="bet">
@@ -49,7 +42,7 @@ var Bet = React.createClass({
             <tbody>
               {
                 this.state.bets.map(function(bet) {
-                  return <tr className="bet">
+                  return <tr className="bet" key={bet_key}>
                     <td className="id">{ bet.id }</td>
                     <td className="game_id"  onClick={self.handleInfoClick}>{ bet.game_id }</td>
                     <td className="levels">{ bet.levels }</td>

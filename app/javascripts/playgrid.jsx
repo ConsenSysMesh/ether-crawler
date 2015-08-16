@@ -257,15 +257,21 @@ var Playgrid = React.createClass({
           <dl className="infobox your_items">
             <dt>
               <strong>Your Items</strong> 
-              <span className="label">Attack</span>
-              <span className="label label_second">HP</span>
+              <div className="row_stats">
+                <span className="label">Attack</span>
+                <span className="label label_second">HP</span>
+              </div>
             </dt>
             {
               this.state.items.map(function(item) {
                 item_id++;
-                return <dt key={item_id} className="item item_row">{item.name} 
-                  <span className="num item_stat"> &#43; {item.hp}</span> 
-                  <span className="num item_stat"> &#43; {item.attack}</span></dt>
+                return <dt key={item_id} className="item item_row">
+                  <span className="name">{item.name}</span>
+                  <div className="row_stats">
+                    <span className="num item_stat"> &#43; {item.hp}</span> 
+                    <span className="num item_stat"> &#43; {item.attack}</span></div>
+                </dt>
+                  
               })
             }
           </dl>
