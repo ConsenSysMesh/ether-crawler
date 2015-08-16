@@ -22,6 +22,8 @@
       "javascripts/context_menu.jsx",
       "javascripts/playgrid.jsx",
       "javascripts/simple_modal.jsx"
+      "javascripts/modal.jsx",
+      "javascripts/playgrid.jsx"
     ],
     "app.css": [
       "stylesheets/normalize.css",

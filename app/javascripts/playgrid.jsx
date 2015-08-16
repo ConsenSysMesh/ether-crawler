@@ -9,6 +9,7 @@ var KEYS = {
 var Playgrid = React.createClass({
 
   getInitialState: function() {
+
     return {
       focussed_cell: null,
       defense: 1000,
@@ -54,6 +55,46 @@ var Playgrid = React.createClass({
     });
 
     document.addEventListener('keydown', this.onKeyDown);
+
+    var choices = [
+      {id: "add_monster", name: "Add Monster"},
+      {id: "add_wall", name: "Add Wall"},
+      {id: "add_staircase", name: "Add Staircase"},
+      {id: "set_empty", name: "Delete What's Here"}
+    ];
+
+    // Launch Game Start Modal
+    this.setState({
+      menu: <Modal choices={choices} top="100px" left="100px" choiceClicked={this.modalItemClicked}/>
+    });
+  },
+
+  modalItemClicked: function(id, event) {
+    var focussed_cell = this.state.focussed_cell;
+
+    // TODO: Handle actions from multiple items being clicked.
+    if (id == "add_monster") {
+      this.checkFromStaircase();
+      focussed_cell.type = "monster";
+
+    } else if (id == "add_wall") {
+      this.checkFromStaircase();
+      focussed_cell.type = "wall";
+
+    } else if (id == "add_staircase" && !this.hasStaircase()) {
+      this.hasStaircase(true);
+      focussed_cell.type = "staircase";
+
+    } else if (id == "set_empty") {
+      this.checkFromStaircase();
+      focussed_cell.type = "empty";
+    }
+
+    // Remove the menu.
+    this.setState({
+      menu: null,
+      focussed_cell: null
+    });
   },
   updateStats: function() {
     var self = this;
