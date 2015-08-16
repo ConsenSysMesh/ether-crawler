@@ -1,3 +1,9 @@
+contract RegistryStub {
+  function register() returns(uint) {}
+  function new_offer(uint id, uint amount) {}
+  function accept(uint id) {}
+}
+
 contract GameStub {
   function over() returns(bool) {}
   function won() returns(bool) {}
@@ -23,14 +29,19 @@ contract Challenge {
   bool public started;
   GamebuilderStub public gamebuilder;
   GameStub public game;
+  RegistryStub registry;
+  uint reg_id;
   
   modifier auth(address user) { if (msg.sender == user) _ }
 
-  function Challenge(uint16 _character, LevelStub[] _levels) {
+  function Challenge(RegistryStub _registry, uint16 _character, LevelStub[] _levels) {
+    registry = _registry;
     character = _character;
     levels = _levels;
     bet_value = msg.value;
     player = msg.sender;
+
+    reg_id = registry.register();
   }
 
   function set_gamebuilder(GamebuilderStub _gamebuilder) {
@@ -47,11 +58,15 @@ contract Challenge {
     if (msg.value > best_offer.value) {
       best_offer.sender.send(best_offer.value);
       best_offer = Offer(msg.sender, msg.value);
+      registry.new_offer(reg_id, msg.value);
+    } else {
+      msg.sender.send(msg.value);
     }
   }
 
   function accept() auth(player) {
     started = true;
+    registry.accept(reg_id);
     game.initialize(character, player, levels);
   }
 

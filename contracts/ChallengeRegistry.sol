@@ -5,12 +5,27 @@ contract ChallengeRegistry {
   uint[] public num_levels;
   address[] public players;
   uint[] public bet_values;
+  uint[] public best_offers;
+  bool[] public accepted;
 
-  function add_challenge(Challenge challenge) {
+  function register() returns (uint id) {
+    Challenge challenge = Challenge(msg.sender);
+    id = challenges.length;
+
     challenges[challenges.length++] = challenge;
     num_levels[num_levels.length++] = challenge.num_levels();
     players[players.length++] = challenge.player();
     bet_values[bet_values.length++] = challenge.bet_value();
+    accepted[accepted.length++] = false;
+    best_offers[best_offers.length++] = 0;
+  }
+
+  function new_offer(uint id, uint amount) {
+    best_offers[id] = amount;
+  }
+
+  function accept(uint id) {
+    accepted[id] = true;
   }
 
   function num_challenges() returns(uint) {
