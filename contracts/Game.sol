@@ -1,16 +1,9 @@
 contract LevelStub {
-  function num_walls() returns(uint) {}
-  function num_staircases() returns(uint) {}
-  function num_potions() returns(uint) {}
-  function num_shields() returns(uint) {}
-  function num_swords() returns(uint) {}
+  function num_objects() returns(uint) {}
   function num_monsters() returns(uint) {}
 
-  function walls(uint id) returns(uint16) {}
-  function staircases(uint id) returns(uint16) {}
-  function potions(uint id) returns(uint16) {}
-  function shields(uint id) returns(uint16) {}
-  function swords(uint id) returns(uint16) {}
+  function object_locations(uint id) returns(uint16) {}
+  function object_types(uint id) returns(uint16) {}
   function monsters(uint id) returns(uint16) {}
   function monster_hp(uint id) returns(uint16) {}
   function monster_attack(uint id) returns(uint16) {}
@@ -23,23 +16,21 @@ contract Game {
   uint16[1000] public monster_hp;
   uint16[1000] public monster_attack;
   uint16[1000] public monster_square;
-  uint public num_monsters;
+  uint num_monsters;
   uint16 public adventurer_attack;
   uint16 public adventurer_hp;
   uint16 public adventurer_level;
-  uint16 public adventurer_square;
+  uint16 adventurer_square;
   bool public over;
   bool public won;
   address public player;
-  address public admin;
-  uint public verify;
+  address admin;
   uint16 public equipped_item;
 
   modifier auth(address user) { if (msg.sender == user) _ }
 
   function Game() {
     admin = msg.sender;
-    verify = 42;
   }
 
   function get_all_squares() returns(uint16[160]) {
@@ -100,12 +91,10 @@ contract Game {
   }
 
   function move_to(uint16 target) private {
-    uint target_object = squares[target];
+    uint16 target_object = squares[target];
     // empty
     if (target_object == 0) {
-      squares[adventurer_square] = 0;
-      squares[target] = 3;
-      adventurer_square = target;
+      allow_move(target);
     }
 
     // staircase
@@ -121,25 +110,13 @@ contract Game {
     // potion
     if (target_object == 4) {
       adventurer_hp += 30;
-      squares[adventurer_square] = 0;
-      squares[target] = 3;
-      adventurer_square = target;
+      allow_move(target);
     }
 
-    // shield
-    if (target_object == 5) {
-      equipped_item = 5;
-      squares[adventurer_square] = 0;
-      squares[target] = 3;
-      adventurer_square = target;
-    }
-
-    // sword
-    if (target_object == 6) {
-      equipped_item = 6;
-      squares[adventurer_square] = 0;
-      squares[target] = 3;
-      adventurer_square = target;
+    // shield or sword
+    if (target_object == 5 || target_object == 6) {
+      equipped_item = target_object;
+      allow_move(target);
     }
 
     // monster
@@ -158,6 +135,12 @@ contract Game {
         monster_hp[target_object] -= damage;
       }
     }
+  }
+
+  function allow_move(uint16 target) {
+    squares[adventurer_square] = 0;
+    squares[target] = 3;
+    adventurer_square = target;
   }
 
   function move_monsters() private {
@@ -218,9 +201,8 @@ contract Game {
   function random_damage(uint attack) private returns(uint16) {
     uint base = attack * 8 / 10;  
     uint bonus_percent = uint(block.blockhash(block.number - 1)) % 42;
-    uint result = base + (attack * bonus_percent / 100);
 
-    return uint16(result);
+    return uint16(base + (attack * bonus_percent / 100));
   }
 
   function level_up() private {
@@ -235,29 +217,9 @@ contract Game {
     level_number = id;
     LevelStub current_level = levels[id];
 
-    uint num_walls = current_level.num_walls();
-    for (uint16 i = 0; i < num_walls; i++) {
-      squares[current_level.walls(i)] = 1;
-    }
-
-    uint num_staircases = current_level.num_staircases();
-    for (i = 0; i < num_staircases; i++) {
-      squares[current_level.staircases(i)] = 2;
-    }
-
-    uint num_potions = current_level.num_potions();
-    for (i = 0; i < num_potions; i++) {
-      squares[current_level.potions(i)] = 4;
-    }
-
-    uint num_shields = current_level.num_shields();
-    for (i = 0; i < num_shields; i++) {
-      squares[current_level.shields(i)] = 5;
-    }
-
-    uint num_swords = current_level.num_swords();
-    for (i = 0; i < num_swords; i++) {
-      squares[current_level.swords(i)] = 6;
+    uint num_objects = current_level.num_objects();
+    for (uint16 i = 0; i < num_objects; i++) {
+      squares[current_level.object_locations(i)] = current_level.object_types(i);
     }
 
     num_monsters = current_level.num_monsters();
