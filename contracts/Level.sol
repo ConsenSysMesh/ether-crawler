@@ -1,12 +1,9 @@
 contract Level {
-  uint16[] public staircases;
-  uint16[] public walls;
+  struct Object { uint16 location; uint16 object_type; }
+  Object[] objects;
   uint16[] public monsters;
   uint16[] public monster_attack;
   uint16[] public monster_hp;
-  uint16[] public potions;
-  uint16[] public shields;
-  uint16[] public swords;
   uint public total_royalties;
   address public owner;
   bool public finalized;
@@ -24,53 +21,35 @@ contract Level {
   }
 
   function add_potion(uint16 location) mutates {
-    uint index = potions.length;
-    potions.length++;
-    potions[index] = location;
-  }
-
-  function num_potions() returns(uint) {
-    return potions.length;
+    objects[objects.length++] = Object(location, 4);
   }
 
   function add_shield(uint16 location) mutates {
-    uint index = shields.length;
-    shields.length++;
-    shields[index] = location;
+    objects[objects.length++] = Object(location, 5);
   }
 
   function add_sword(uint16 location) mutates {
-    uint index = swords.length;
-    swords.length++;
-    swords[index] = location;
-  }
-
-  function num_swords() returns(uint) {
-    return swords.length;
+    objects[objects.length++] = Object(location, 6);
   }
 
   function add_staircase(uint16 location) mutates {
-    uint index = staircases.length;
-    staircases.length++;
-    staircases[index] = location;
-  }
-
-  function set_staircases(uint16[] _staircases) mutates {
-    staircases = _staircases;
-  }
-
-  function num_staircases() returns(uint) {
-    return staircases.length;
+    objects[objects.length++] = Object(location, 2);
   }
 
   function add_wall(uint16 location) mutates {
-    uint index = walls.length;
-    walls.length++;
-    walls[index] = location;
+    objects[objects.length++] = Object(location, 1);
   }
 
-  function num_walls() returns(uint) {
-    return walls.length;
+  function num_objects() returns(uint) {
+    return objects.length;
+  }
+
+  function object_locations(uint id) returns(uint16) {
+    return objects[id].location;
+  }
+
+  function object_types(uint id) returns(uint16) {
+    return objects[id].object_type;
   }
 
   function add_monster(uint16 location, uint16 attack, uint16 hp) mutates {
@@ -88,14 +67,10 @@ contract Level {
   }
 
   function clear() mutates {
-    staircases.length = 0;
-    walls.length = 0;
     monsters.length = 0;
     monster_attack.length = 0;
     monster_hp.length = 0;
-    potions.length = 0;
-    shields.length = 0;
-    swords.length = 0;
+    objects.length = 0;
   }
 
   function finalize() mutates {
