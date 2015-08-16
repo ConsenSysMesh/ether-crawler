@@ -209,3 +209,143 @@ button.button-primary {
     }
   }
 }
+
+.start-modal {
+  top: -90px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  padding: 10px;
+  border: solid 5px $red;
+  background: #efefef;
+  color: $gray;
+  box-shadow: 5px 5px 2px black;
+  text-align: center;
+
+  &.hidden {
+    display: none;
+  }
+ 
+
+  .start-title {
+    font-size: 32px;
+    color: $red;
+    margin: 20px auto;
+    font-weight: 700;
+  }
+  .start-subtitle {
+    font-weight: 300;
+    color: $gray;
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+  .start-choose-character {
+    margin: 40px auto 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 24px;
+    color: $gray;
+
+  }
+
+  ul.characters {
+    list-style: none;
+
+    li {
+      display: inline-block;
+      margin: 0 50px 10px;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    .smallphoto {
+      width: 50px;
+      height: 50px;
+      box-shadow: 2px 2px 1px #666;
+      margin-bottom: 10px;
+
+      &.nick {
+        background: #333 url(images/characters/szabo.png) no-repeat center center;
+        background-size: 50px 50px;
+        color: $light-blue;
+      }
+      &.vitalik {
+        background: #333 url(images/characters/vitalik.png) no-repeat center center;
+        background-size: 50px 50px;
+      }
+      &.satoshi {
+        background: #666 url(images/characters/satoshi.png) no-repeat center center;
+      }
+
+      &.active {
+        border: 10px solid $light-blue;
+        color: $light-blue
+      }
+    }
+  }
+
+  .start-paragraph {
+    font-weight: 400;
+    text-transform: uppercase;
+    color: $gray;
+
+    .bolder {
+      font-weight: 700;
+    }
+  }
+
+  .start-play {
+    padding-top: 10px;
+    font-size: 48px;
+    color: $red;
+    margin: 10px auto;
+    font-family: "Creepster", "HelveticaNeue", "Helvetica Neue", Arial, sans-serif; 
+    cursor: pointer;
+  }
+  p.err {
+    color: $red;
+    margin-top: 0;
+  }
+}
+
+
+
+/* Blinking */
+
+$blink_duration: .8s;
+
+.blink_me {
+  -webkit-animation-name: blinker;
+  -webkit-animation-duration: $blink_duration;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+
+  -moz-animation-name: blinker;
+  -moz-animation-duration: $blink_duration;
+  -moz-animation-timing-function: linear;
+  -moz-animation-iteration-count: infinite;
+
+  animation-name: blinker;
+  animation-duration: $blink_duration;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {  
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes blinker {  
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
+
+@keyframes blinker {  
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
