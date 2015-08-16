@@ -114,6 +114,7 @@ var Playgrid = React.createClass({
     // get ether waged
     var challenge = this.props.challenge;
     var ether_waged = 0;
+    var bet_value = 0;
     var self = this;
 
     challenge.best_offer.call().then(function(offer) {
@@ -123,8 +124,14 @@ var Playgrid = React.createClass({
         console.log("Error getting/formatting offer amount");
       }
     }).then(function() {
+      return challenge.bet_value.call();
+    }).then(function(bet) {
+      bet_value = bet;
       return game.won.call();
     }).then(function(playerWon) {
+      if (playerWon == false) {
+        ether_waged = web3.fromWei(bet_value.toString(), "ether");
+      }
       self.setState({ outcome_modal:
         <PlayOutcomeModal playerWon={playerWon} ether={ether_waged} />});
     });
