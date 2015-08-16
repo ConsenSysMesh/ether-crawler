@@ -28,3 +28,7 @@ Cheers!
 ### Music
 
 by https://freemusicarchive.org/music/Crazy_Games/Micro_Invasion_-_East_Jakarta_Chiptunes_Compilation/02_Micro_Invasion_-_Crazy_Games_-_Wake_Up#
+
+### Graphics
+
+from http://opengameart.org/content/dungeon-crawl-32x32-tiles
