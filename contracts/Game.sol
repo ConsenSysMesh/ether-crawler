@@ -1,17 +1,17 @@
-import "level";
+import "Level";
 
 contract Game {
   Level[] public levels;
-  uint8 public level_number;
-  uint8[160] public squares;
-  uint8[1000] public monster_hp;
-  uint8[1000] public monster_attack;
-  uint8[1000] public monster_square;
+  uint16 public level_number;
+  uint16[160] public squares;
+  uint16[1000] public monster_hp;
+  uint16[1000] public monster_attack;
+  uint16[1000] public monster_square;
   uint public num_monsters;
-  uint8 public adventurer_attack;
-  uint8 public adventurer_hp;
-  uint8 public adventurer_level;
-  uint8 public adventurer_square;
+  uint16 public adventurer_attack;
+  uint16 public adventurer_hp;
+  uint16 public adventurer_level;
+  uint16 public adventurer_square;
   bool public over;
   bool public won;
   address public player;
@@ -25,7 +25,7 @@ contract Game {
     verify = 42;
   }
 
-  function get_all_squares() returns(uint8[160]) {
+  function get_all_squares() returns(uint16[160]) {
     return squares;
   }
 
@@ -48,7 +48,7 @@ contract Game {
     delete won;
   }
 
-  function set_adventurer(uint8 attack, uint8 hp) auth(admin) {
+  function set_adventurer(uint16 attack, uint16 hp) auth(admin) {
     adventurer_attack = attack;
     adventurer_hp = hp;
     adventurer_level = 1;
@@ -58,9 +58,9 @@ contract Game {
     player = _player;
   }
 
-  function move(uint8 direction) auth(player) {
+  function move(uint16 direction) auth(player) {
     if (direction == 0 && ((adventurer_square % 16) != 0)) {
-      uint8 target = adventurer_square - 1;
+      uint16 target = adventurer_square - 1;
       move_to(target);
     }
 
@@ -82,7 +82,7 @@ contract Game {
     move_monsters();
   }
 
-  function move_to(uint8 target) private {
+  function move_to(uint16 target) private {
     uint target_object = squares[target];
     // empty
     if (target_object == 0) {
@@ -103,7 +103,7 @@ contract Game {
 
     // monster
     if (target_object > 99) {
-      uint8 damage = random_damage(adventurer_attack);
+      uint16 damage = random_damage(adventurer_attack);
       if (monster_hp[target_object] <= damage) {
         monster_hp[target_object] = 0;
         squares[target] = 0;
@@ -115,13 +115,13 @@ contract Game {
   }
 
   function move_monsters() private {
-    for (uint8 i = 0; i < num_monsters; i++) {
+    for (uint16 i = 0; i < num_monsters; i++) {
       if (monster_hp[100 + i] == 0) { return; }
 
-      uint8 square = monster_square[100 + i];
+      uint16 square = monster_square[100 + i];
       
-      uint8 lr_loc;
-      uint8 ud_loc;
+      uint16 lr_loc;
+      uint16 ud_loc;
 
       if (square % 16 > adventurer_square % 16) { //adventurer is to the left
         lr_loc = square - 1;
@@ -147,7 +147,7 @@ contract Game {
     }
   }
 
-  function move_monster(uint8 id, uint8 target) private {
+  function move_monster(uint16 id, uint16 target) private {
     if (squares[target] == 0) {
       squares[monster_square[id]] = 0;
       squares[target] = id;
@@ -155,7 +155,7 @@ contract Game {
     }
 
     if (squares[target] == 3) {
-      uint8 damage = random_damage(monster_attack[id]);
+      uint16 damage = random_damage(monster_attack[id]);
       if (adventurer_hp <= damage) {
         adventurer_hp = 0;
         over = true;
@@ -165,12 +165,12 @@ contract Game {
     }
   }
 
-  function random_damage(uint attack) private returns(uint8) {
+  function random_damage(uint attack) private returns(uint16) {
     uint base = attack * 8 / 10;  
     uint bonus_percent = uint(block.blockhash(block.number - 1)) % 42;
     uint result = base + (attack * bonus_percent / 100);
 
-    return uint8(result);
+    return uint16(result);
   }
 
 
@@ -181,14 +181,14 @@ contract Game {
     adventurer_hp += (adventurer_hp / 10);
   }
 
-  function load_level(uint8 id) private {
+  function load_level(uint16 id) private {
     clear_level();
 
     level_number = id;
     Level current_level = levels[id];
 
     uint num_walls = current_level.num_walls();
-    for (uint8 i = 0; i < num_walls; i++) {
+    for (uint16 i = 0; i < num_walls; i++) {
       squares[current_level.walls(i)] = 1;
     }
 
@@ -200,7 +200,7 @@ contract Game {
     num_monsters = current_level.num_monsters();
     for (i = 0; i < num_monsters; i++) {
       id = 100 + i;
-      uint8 square = current_level.monsters(i);
+      uint16 square = current_level.monsters(i);
       squares[square] = id;
       monster_square[id] = square;
       monster_hp[id] = current_level.monster_hp(i);

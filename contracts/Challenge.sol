@@ -2,7 +2,7 @@ import "Game";
 
 contract Challenge {
   Level[] public levels;
-  uint8 public character;
+  uint16 public character;
   uint public bet_value;
   address public player;
   struct Offer { address sender; uint value; }
@@ -12,7 +12,7 @@ contract Challenge {
   
   modifier auth(address user) { if (msg.sender == user) _ }
 
-  function Challenge(uint8 _character, Level[] _levels) {
+  function Challenge(uint16 _character, Level[] _levels) {
     character = _character;
     levels = _levels;
     bet_value = msg.value;
