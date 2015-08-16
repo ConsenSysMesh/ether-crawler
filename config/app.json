@@ -38,7 +38,8 @@
     "Level",
     "Game",
     "LevelRegistry",
-    "Challenge"
+    "Challenge",
+    "Gamebuilder"
   ],
   "provider": "./app/provider.js"
 }
