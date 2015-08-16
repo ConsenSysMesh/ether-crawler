@@ -71,6 +71,7 @@ contract Level {
     monster_attack.length = 0;
     monster_hp.length = 0;
     objects.length = 0;
+    total_royalties = 0;
   }
 
   function finalize() mutates {

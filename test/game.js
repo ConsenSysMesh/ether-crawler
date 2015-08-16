@@ -6,8 +6,7 @@ contract('Game', function(accounts) {
     level.add_staircase(37).
       then(function() { return level.add_wall(22) }).
       then(function() { return level.add_monster(25, 0, 0) }).
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.squares.call(22) }).
       then(function(result) { assert.equal(result, 1) }). // 1 is magic value for walls
       then(function() { return game.squares.call(25) }).
@@ -25,8 +24,7 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(37, 80, 40) }).
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.squares.call(37) }).
       then(function(result) { assert.equal(result, 100) }). // monster ids start at 100
       then(function() { return game.monster_hp.call(100) }).
@@ -40,14 +38,14 @@ contract('Game', function(accounts) {
 
   it("stores information about adventurer", function(done) {
     var game = Game.at(Game.deployed_address);
+    var level = Level.at(Level.deployed_address);
 
-    game.clear().
-      then(function() { return game.set_adventurer(100, 50) }).
+    game.initialize(0, accounts[0], [level.address]).
       then(function() { return game.adventurer_hp.call() }).
-      then(function(result) { assert.equal(result, 50) }).
+      then(function(result) { assert.equal(result, 150) }).
       then(function() { return game.adventurer_attack.call() }).
       then(function(result) {
-        assert.equal(result, 100);
+        assert.equal(result, 15);
         done();
       }).catch(done)
   });
@@ -56,8 +54,7 @@ contract('Game', function(accounts) {
     var level = Level.at(Level.deployed_address);
     var game = Game.at(Game.deployed_address);
 
-    game.clear().
-      then(function() { return game.add_level(level.address) }).
+    return game.initialize(0, accounts[0], [level.address]).
       then(function() { return game.squares.call(0) }).
       then(function(result) {
         assert.equal(result, 3);
@@ -70,9 +67,7 @@ contract('Game', function(accounts) {
     var game = Game.at(Game.deployed_address);
 
     level.clear().
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
-      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.move(3) }).
       then(function() { return game.squares.call(16) }).
       then(function(result) {
@@ -87,16 +82,13 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_potion(16) }).
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
-      then(function() { return game.set_adventurer(20, 50) }).
-      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.move(3) }).
       then(function() { return game.squares.call(16) }).
       then(function(result) { assert.equal(result, 3) }). // magic value for adventurer
       then(function() { return game.adventurer_hp.call() }).
       then(function(result) {
-        assert.equal(result, 80);
+        assert.equal(result, 180);
         done();
     }).catch(done)
   });
@@ -106,10 +98,8 @@ contract('Game', function(accounts) {
     var game = Game.at(Game.deployed_address);
 
     level.clear().
-      then(function() { return game.clear() }).
       then(function() { return level.add_wall(1) }).
-      then(function() { return game.add_level(level.address) }).
-      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.move(1) }).
       then(function() { return game.squares.call(0) }).
       then(function(result) {
@@ -123,9 +113,7 @@ contract('Game', function(accounts) {
     var game = Game.at(Game.deployed_address);
 
     level.clear().
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
-      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.move(0) }).
       then(function() { return game.squares.call(0) }).
       then(function(result) {
@@ -143,10 +131,7 @@ contract('Game', function(accounts) {
     then(function (level_2) {
       level_1.add_staircase(16).
       then(function() { return level_2.add_wall(42) }).
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level_1.address) }).
-      then(function() { return game.add_level(level_2.address) }).
-      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.initialize(0, accounts[0], [level_1.address, level_2.address]) }).
       then(function() { return game.move(3) }).
       then(function() { return game.squares.call(16) }).
       then(function(result) { assert.equal(result, 0) }).
@@ -164,16 +149,13 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(1, 50, 100) }).
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
-      then(function() { return game.set_adventurer(20, 50) }).
-      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.move(1) }).
       then(function() { return game.squares.call(0) }).
       then(function(result) { assert.equal(result, 3) }).
       then(function() { return game.monster_hp.call(100) }).
       then(function(result) {
-        assert.closeTo(result.toNumber(), 80, 6);
+        assert.closeTo(result.toNumber(), 85, 6);
         done();
     }).catch(done)
   });
@@ -185,17 +167,14 @@ contract('Game', function(accounts) {
     level.clear().
       then(function() { return level.add_monster(2, 50, 1000) }).
       then(function() { return level.add_sword(1) }).
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
-      then(function() { return game.set_adventurer(200, 50) }).
-      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.move(1) }).
       then(function() { return game.move(1) }).
       then(function() { return game.equipped_item.call() }).
       then(function(result) { assert.equal(result, 6) }).
       then(function() { return game.monster_hp.call(100) }).
       then(function(result) {
-        assert.closeTo(result.toNumber(), 750, 60);
+        assert.closeTo(result.toNumber(), 979, 6);
         done();
     }).catch(done)
   });
@@ -206,10 +185,7 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(16, 50, 10) }).
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
-      then(function() { return game.set_adventurer(20, 50) }).
-      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.move(3) }).
       then(function() { return game.squares.call(0) }).
       then(function(result) { assert.equal(result, 3) }).
@@ -228,18 +204,15 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(16, 50, 10) }).
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
-      then(function() { return game.set_adventurer(20, 50) }).
-      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.initialize(2, accounts[0], [level.address]) }).
       then(function() { return game.move(3) }).
       then(function() { return game.adventurer_level.call() }).
       then(function(result) { assert.equal(result, 2) }).
       then(function() { return game.adventurer_attack.call() }).
-      then(function(result) { assert.equal(result, 22) }).
+      then(function(result) { assert.equal(result, 33) }).
       then(function() { return game.adventurer_hp.call() }).
       then(function(result) {
-        assert.equal(result, 55);
+        assert.equal(result, 110);
         done();
     }).catch(done)
   });
@@ -250,9 +223,7 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(18, 50, 10) }).
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
-      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.move(1) }).
       then(function() { return game.monster_square.call(100) }).
       then(function(result) { assert.include([2, 17], result.toNumber()) }).
@@ -269,16 +240,13 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(17, 10, 50) }).
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
-      then(function() { return game.set_player(accounts[0]) }).
-      then(function() { return game.set_adventurer(20, 50) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.move(1) }).
       then(function() { return game.monster_square.call(100) }).
       then(function(result) { assert.equal(result, 17) }).
       then(function() { return game.adventurer_hp.call() }).
       then(function(result) {
-        assert.closeTo(result.toNumber(), 40, 3);
+        assert.closeTo(result.toNumber(), 140, 3);
         done();
     }).catch(done)
   })
@@ -288,18 +256,15 @@ contract('Game', function(accounts) {
     var game = Game.at(Game.deployed_address);
 
     level.clear().
-      then(function() { return level.add_monster(17, 100, 50) }).
+      then(function() { return level.add_monster(17, 10, 50) }).
       then(function() { return level.add_shield(1) }).
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
-      then(function() { return game.set_player(accounts[0]) }).
-      then(function() { return game.set_adventurer(20, 500) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.move(1) }).
       then(function() { return game.equipped_item.call() }).
       then(function(result) { assert.equal(result, 5) }).
       then(function() { return game.adventurer_hp.call() }).
       then(function(result) {
-        assert.closeTo(result.toNumber(), 425, 30);
+        assert.closeTo(result.toNumber(), 143, 3);
         done();
     }).catch(done)
   })
@@ -309,11 +274,8 @@ contract('Game', function(accounts) {
     var game = Game.at(Game.deployed_address);
 
     level.clear().
-      then(function() { return level.add_monster(2, 10, 50) }).
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
-      then(function() { return game.set_adventurer(20, 5) }).
-      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return level.add_monster(2, 300, 50) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.move(1) }).
       then(function() { return game.over.call() }).
       then(function(result) { assert.equal(result, true) }).
@@ -330,8 +292,7 @@ contract('Game', function(accounts) {
 
     level.clear().
       then(function() { return level.add_monster(2, 10, 50) }).
-      then(function() { return game.clear() }).
-      then(function() { return game.add_level(level.address) }).
+      then(function() { return game.initialize(0, accounts[0], [level.address]) }).
       then(function() { return game.get_all_squares.call() }).
       then(function(result) {
         assert.equal(result.length, 160);

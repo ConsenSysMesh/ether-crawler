@@ -7,6 +7,8 @@ contract LevelStub {
   function monsters(uint id) returns(uint16) {}
   function monster_hp(uint id) returns(uint16) {}
   function monster_attack(uint id) returns(uint16) {}
+
+  function pay_royalties() {}
 }
 
 contract Game {
@@ -29,41 +31,34 @@ contract Game {
 
   modifier auth(address user) { if (msg.sender == user) _ }
 
-  function Game() {
+  function Game() {  
     admin = msg.sender;
   }
 
+  function initialize(uint16 character, address _player, LevelStub[] _levels) {
+    player = _player;
+
+    levels = _levels;
+
+    if (character == 0) {
+      adventurer_attack = 15;
+      adventurer_hp = 150;
+    } else if (character == 1) {
+      adventurer_attack = 45;
+      adventurer_hp = 50;
+    } else {
+      adventurer_attack = 30;
+      adventurer_hp = 100;
+    }
+
+    adventurer_level = 1;
+
+    load_level(0);
+  }
+
+
   function get_all_squares() returns(uint16[160]) {
     return squares;
-  }
-
-  function add_level(address level) auth(admin) {
-    levels[levels.length++] = LevelStub(level);
-    if (levels.length == 1) {
-      load_level(0);
-    }
-  }
-
-  function clear() auth(admin) {
-    clear_level();
-    delete levels;
-    delete level_number;
-    delete adventurer_attack;
-    delete adventurer_hp;
-    delete adventurer_level;
-    delete adventurer_square;
-    delete over;
-    delete won;
-  }
-
-  function set_adventurer(uint16 attack, uint16 hp) auth(admin) {
-    adventurer_attack = attack;
-    adventurer_hp = hp;
-    adventurer_level = 1;
-  }
-
-  function set_player(address _player) auth(admin) {
-    player = _player;
   }
 
   function move(uint16 direction) auth(player) {

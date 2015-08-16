@@ -1,6 +1,7 @@
 contract GameStub {
   function over() returns(bool) {}
   function won() returns(bool) {}
+  function initialize(uint16 character, address player, LevelStub[] levels) {}
 }
 
 contract LevelStub {
@@ -9,7 +10,7 @@ contract LevelStub {
 }
 
 contract GamebuilderStub {
-  function create_game(uint16 character, address player, LevelStub[] levels) returns (GameStub) {}
+  function create_game() returns (GameStub) {}
 }
 
 contract Challenge {
@@ -34,6 +35,7 @@ contract Challenge {
 
   function set_gamebuilder(GamebuilderStub _gamebuilder) {
     gamebuilder = _gamebuilder;
+    game = gamebuilder.create_game();
   }
 
   function num_levels() returns(uint) {
@@ -50,7 +52,7 @@ contract Challenge {
 
   function accept() auth(player) {
     started = true;
-    game = gamebuilder.create_game(character, player, levels);
+    game.initialize(character, player, levels);
   }
 
   function claim() {
