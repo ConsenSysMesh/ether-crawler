@@ -1,6 +1,6 @@
 var PlayOutcomeModal = React.createClass({
   playAgain: function() {
-    // TODO
+    window.location.reload();
   },
   render: function() {
     var self = this;
