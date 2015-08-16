@@ -43,7 +43,13 @@
     "images/": "images/"
   },
   "deploy": [
-    "LevelRegistry"
+    "LevelRegistry",
+    "ChallengeRegistry",
+    "Gamebuilder"
   ],
-  "provider": "./app/provider.js"
+  "rpc": {
+    "host": "localhost",
+    "port": 8545
+  }
+  // provider ./app/provider.js
 }

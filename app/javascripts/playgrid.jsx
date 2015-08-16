@@ -13,7 +13,6 @@ var Playgrid = React.createClass({
       defense: 1000,
       attack: 1000,
       level: "Some Level Name",
-      game: null,
       adventurer_hp: null,
       adventurer_attack: null,
       adventurer_level: null,
@@ -34,26 +33,22 @@ var Playgrid = React.createClass({
     return this.state.level;
   },
   componentDidMount: function() {
+    var self = this;
+    var game = this.props.game;
 
-    // var address = prompt("Please enter your game address", "0x792de2f00f40319ec0eeff15291da431e45fc6cc");
-    //
-    // var self = this;
-    // var game = Game.at(address);
-    //
-    // this.setState({
-    //   game: game,
-    //   modal: <SimpleModal title="Loading level..." />
-    // }, function() {
-    //   var self = this;
-    //   this.reloadGrid().then(function() {
-    //     return self.updateStats();
-    //   }).then(function() {
-    //     self.setState({
-    //       turn_changing: false,
-    //       modal: null
-    //     });
-    //   });
-    // });
+    this.setState({
+      modal: <SimpleModal title="Loading level..." />
+    }, function() {
+      var self = this;
+      this.reloadGrid().then(function() {
+        return self.updateStats();
+      }).then(function() {
+        self.setState({
+          turn_changing: false,
+          modal: null
+        });
+      });
+    });
 
     document.addEventListener('keydown', this.onKeyDown);
   },
@@ -88,7 +83,7 @@ var Playgrid = React.createClass({
   updateStats: function() {
     var self = this;
     return new Promise(function(resolve, reject) {
-      var game = self.state.game;
+      var game = self.props.game;
       var adventurer_hp;
       var adventurer_attack;
       var adventurer_level;
@@ -116,7 +111,7 @@ var Playgrid = React.createClass({
 
         if (adventurer_hp <= 0) {
           this.setState({ playerWon: ether_waged, playerEtherOutcome: challenge });
-          this.setState({ outcome_modal: 
+          this.setState({ outcome_modal:
             <PlayOutcomeModal playerWon={this.state.playerWon} ether={this.state.playerEtherOutcome} />});
         }
         */
@@ -127,7 +122,7 @@ var Playgrid = React.createClass({
   reloadGrid: function() {
     var self = this;
     return new Promise(function(resolve, reject) {
-      self.state.game.get_all_squares.call().then(function(squares) {
+      self.props.game.get_all_squares.call().then(function(squares) {
         var grid = [];
 
         for (var location = 0; location < squares.length; location++) {
@@ -180,7 +175,7 @@ var Playgrid = React.createClass({
 
   takeTurn: function(direction) {
     var self = this;
-    var game = this.state.game;
+    var game = this.props.game;
 
     this.setState({
       turn_changing: true,

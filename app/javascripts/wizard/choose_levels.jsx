@@ -24,7 +24,8 @@ var ChooseLevels = React.createClass({
       }
       self.setState({
         levels: levels,
-        level_names: level_names
+        level_names: level_names,
+        chosen_levels: [levels[0], null, null, null]
       });
     }).catch(function(e) {
       alert("Error loading levels!");
@@ -33,7 +34,15 @@ var ChooseLevels = React.createClass({
   },
 
   handleNext: function() {
-    this.props.next(this.state.chosen_levels);
+    var chosen_levels = [];
+    for (var i = 0; i < this.state.chosen_levels.length; i++) {
+      var level = this.state.chosen_levels[i];
+      if (level != null) {
+        chosen_levels.push(level);
+      }
+    }
+
+    this.props.next(chosen_levels);
   },
 
   handleSelectOne: function(event) {
@@ -78,7 +87,7 @@ var ChooseLevels = React.createClass({
 
     for (var i = 0; i < self.state.levels.length; i++) {
       options.push(<option value={self.state.levels[i]}>{self.state.level_names[i]}</option>);
-      options_and_none.push(<option>{self.state.level_names[i]}</option>);
+      options_and_none.push(<option value={self.state.levels[i]}>{self.state.level_names[i]}</option>);
     }
 
     return (

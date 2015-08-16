@@ -5,7 +5,8 @@ var Wizard = React.createClass({
       character: null,
       levels: [],
       modal: null,
-      bet: 1
+      bet: 1,
+      poll_interval_id: null
     }
   },
   handleCharacterChoice: function(character) {
@@ -21,19 +22,52 @@ var Wizard = React.createClass({
     });
   },
   handleBetChoice: function(bet) {
+    var self = this;
+
     this.setState({
       bet: bet,
       view: <CreatingChallenge next={this.handleChallengeCreated}/>
     });
-  },
-  handleChallengeCreated: function(challenge) {
-    this.setState({
-      challenge: challenge,
-      view: <WaitForChallenger next={this.handleChallenger}/>
-    });
+
+    // Create challenge here.
+    var character_id = 0; // vitalik
+    if (this.state.character == "satoshi") {
+      character_id = 1;
+    } else if (this.state.character == "nick") {
+      character_id = 2;
+    }
+
+    var challenge;
+    console.log(this.state.levels);
+    Challenge.new(ChallengeRegistry.deployed_address, character_id, {value: bet}).then(function(c) {
+      challenge = c;
+      return challenge.add_levels(self.state.levels);
+    }).then(function() {
+      return challenge.set_gamebuilder(Gamebuilder.deployed_address);
+    }).then(function() {
+      self.setState({
+        challenge: challenge,
+        view: <WaitForChallenger next={self.handleChallenger} challenge={challenge}/>
+      });
+    }).catch(function(e) {
+      alert("Error creating challenge! Oh no!");
+      console.log(e);
+    })
   },
   handleChallenger: function() {
-
+    var self = this;
+    var challenge = this.state.challenge;
+    challenge.accept().then(function() {
+      return challenge.game.call();
+    }).then(function(game_address) {
+      var game = Game.at(game_address);
+      self.setState({
+        view: <Playgrid game={game} challenge={challenge}/>
+      });
+    }).catch(function(e) {
+      alert("Error accepting offer! Oh no!");
+      console.log(e);
+    });
   },
   render: function() {
     var self = this;

@@ -31,6 +31,7 @@ $gridbackground: #000;
 
 input {
   display: inline-block;
+  color: black;
 }
 
 label {
@@ -248,7 +249,7 @@ button.button-primary {
     margin: 20px auto 10px;
     font-family: "Creepster", "HelveticaNeue", "Helvetica Neue", Arial, sans-serif;
 
-    &.win { 
+    &.win {
       color: $green;
     }
   }
@@ -256,22 +257,22 @@ button.button-primary {
     text-transform: uppercase;
     font-size: 18px;
     .ether {
-      &.win::after { 
+      &.win::after {
         content: ' won ';
       }
-      &.lose::after { 
+      &.lose::after {
         content: ' lost ';
       }
     }
     .tofrom {
-      &.win::after { 
+      &.win::after {
         content: ' from ';
       }
-      &.lose::after { 
+      &.lose::after {
         content: ' to ';
       }
     }
-    
+
   }
   .outcome_image {
     &.win {

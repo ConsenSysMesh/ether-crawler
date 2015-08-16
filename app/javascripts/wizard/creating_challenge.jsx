@@ -1,14 +1,4 @@
 var CreatingChallenge = React.createClass({
-  componentDidMount: function() {
-    // if (this.state.challenger == null) {
-    //   return;
-    // }
-    // this.props.next(this.state.challenger);
-    var self = this;
-    setTimeout(function() {
-      self.props.next("0x...");
-    }, 3000);
-  },
   render: function() {
     var self = this;
 
