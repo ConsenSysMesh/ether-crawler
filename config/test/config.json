@@ -9,7 +9,8 @@
     "Level",
     "Game",
     "LevelRegistry",
-    "Challenge"
+    "Challenge",
+    "Gamebuilder"
   ],
 
   "provider": null
