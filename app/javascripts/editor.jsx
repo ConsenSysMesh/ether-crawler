@@ -4,7 +4,8 @@ var Editor = React.createClass({
       menu: null,
       modal: null,
       focussed_cell: null,
-      hasStaircase: false
+      hasStaircase: false,
+      level_name: ""
     };
   },
   componentDidMount: function() {
@@ -75,6 +76,9 @@ var Editor = React.createClass({
       focussed_cell: null
     });
   },
+  handleNameChange: function(event) {
+    this.setState({level_name: event.target.value});
+  },
   submitLevel: function() {
     var self = this;
     var grid = this.refs.grid.state.grid;
@@ -127,38 +131,53 @@ var Editor = React.createClass({
         callNext();
       });
     }).then(function() {
-      return Game.new()
-    }).then(function(g) {
-      game = g;
-      console.log("Created Game: " + g.address);
-      console.log(game);
-    }).then(function(g) {
-      return new Promise(function(resolve, reject) {
-        web3.eth.getCoinbase(function(error, coinbase) {
-          console.log("got coinbase", coinbase);
-          if (error != null) {
-            reject(error);
-          } else {
-            resolve(coinbase);
-          }
-        });
-      });
-    }).then(function(coinbase) {
-      console.log(coinbase);
-      return game.set_player(coinbase);
+      console.log("Setting level name: " + self.state.level_name);
+      return level.set_name(self.state.level_name);
     }).then(function() {
-      console.log("Adding level...")
-      return game.add_level(level.address);
+      console.log("Adding level to the registry.")
+      registry = LevelRegistry.at(LevelRegistry.deployed_address);
+      return registry.add_level(level.address, self.state.level_name);
     }).then(function() {
-      console.log("Adding level...")
-      return game.add_level(level.address);
-    }).then(function() {
-      console.log("Setting adventurer...")
-      return game.set_adventurer(20, 100);
-    }).then(function() {
+    // }).then(function() {
+    //   return Game.new()
+    // }).then(function(g) {
+    //   game = g;
+    //   console.log("Created Game: " + g.address);
+    //   console.log(game);
+    // }).then(function(g) {
+    //   return new Promise(function(resolve, reject) {
+    //     web3.eth.getCoinbase(function(error, coinbase) {
+    //       console.log("got coinbase", coinbase);
+    //       if (error != null) {
+    //         reject(error);
+    //       } else {
+    //         resolve(coinbase);
+    //       }
+    //     });
+    //   });
+    // }).then(function(coinbase) {
+    //   console.log(coinbase);
+    //   return game.set_player(coinbase);
+    // }).then(function() {
+    //   console.log("Adding level...")
+    //   return game.add_level(level.address);
+    // }).then(function() {
+    //   console.log("Adding level...")
+    //   return game.add_level(level.address);
+    // }).then(function() {
+    //   console.log("Setting adventurer...")
+    //   return game.set_adventurer(20, 100);
+    // }).then(function() {
       self.setState({
-        modal: null
+        modal: <SimpleModal title="Level Added!" />
       });
+
+      setTimeout(function() {
+        self.setState({
+          modal: null
+        })
+      }, 2000);
+
       console.log("Finished!");
     });
   },
@@ -177,7 +196,7 @@ var Editor = React.createClass({
           </ol>
         </div>
         <div className="six columns right">
-          <label for="level_name">Level Name:</label><input id="level_name" type="text" />
+          <label for="level_name">Level Name:</label><input className="level_name" value={this.state.level_name} onChange={this.handleNameChange} type="text" />
           <br/>
           <label for="submit_level"><small>Finished designing?</small></label>
           <button id="submit_level" className="button-primary" onClick={this.submitLevel}>Submit Level</button>

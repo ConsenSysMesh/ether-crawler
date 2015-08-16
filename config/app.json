@@ -35,10 +35,7 @@
     "images/": "images/"
   },
   "deploy": [
-    "Level",
-    "Game",
-    "LevelRegistry",
-    "Challenge"
+    "LevelRegistry"
   ],
   "provider": "./app/provider.js"
 }
