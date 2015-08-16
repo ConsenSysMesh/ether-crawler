@@ -47,4 +47,12 @@ contract ChallengeRegistry {
   function get_all_bet_values() returns(uint[]) {
     return bet_values;
   }
+
+  function get_all_best_offers() returns(uint[]) {
+    return best_offers;
+  }
+
+  function get_all_accepted() returns(bool[]) {
+    return accepted;
+  }
 }
