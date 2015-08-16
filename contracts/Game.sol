@@ -18,7 +18,6 @@ contract Game {
   address public admin;
   uint public verify;
 
-
   modifier auth(address user) { if (msg.sender == user) _ }
 
   function Game() {
@@ -139,10 +138,10 @@ contract Game {
         move_monster(100 + i, ud_loc);
       } else if (square / 16 == adventurer_square / 16) { //same row
         move_monster(100 + i, lr_loc);
-      } else if (uint(block.blockhash(block.number)) % 2 == 0) {
-        move_monster(100 + i, ud_loc);
-      } else {
+      } else if ((uint(block.blockhash(block.number - 1)) % 2) == 0) {
         move_monster(100 + i, lr_loc);
+      } else {
+        move_monster(100 + i, ud_loc);
       }
     }
   }

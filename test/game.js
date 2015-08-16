@@ -215,12 +215,10 @@ contract('Game', function(accounts) {
       then(function() { return game.set_player(accounts[0]) }).
       then(function() { return game.move(1) }).
       then(function() { return game.monster_square.call(100) }).
-      then(function(result) {assert.equal(result, 2) }).
+      then(function(result) { assert.include([2, 17], result.toNumber()) }).
       then(function() { return game.squares.call(16) }).
-      then(function(result) { assert.equal(result, 0) }).
-      then(function() { return game.squares.call(2) }).
       then(function(result) {
-        assert.equal(result, 100);
+        assert.equal(result, 0);
         done();
     }).catch(done)
   })
