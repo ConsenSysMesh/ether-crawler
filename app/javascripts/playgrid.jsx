@@ -101,23 +101,32 @@ var Playgrid = React.createClass({
           adventurer_attack: adventurer_attack,
           adventurer_level: adventurer_level
         }, resolve);
-        // Won or Lost
 
-        // get ether waged
-        /*
-        console.log(Challenge.deployed_address);
-        var challenge = Challenge.at(Challenge.deployed_address);
-        var ether_waged = challenge.best_offer.call();
-        console.log(ether_waged);
-
+        var player_won_or_lost = false;
         if (adventurer_hp <= 0) {
-          this.setState({ playerWon: ether_waged, playerEtherOutcome: challenge });
-          this.setState({ outcome_modal:
-            <PlayOutcomeModal playerWon={this.state.playerWon} ether={this.state.playerEtherOutcome} />});
+          this.endGame(player_won_or_lost);
         }
-        */
 
       }).catch(reject);
+    });
+  },
+  endGame: function(game) {
+    // get ether waged
+    var challenge = this.props.challenge;
+    var ether_waged = 0;
+    var self = this;
+
+    challenge.best_offer.call().then(function(offer) {
+      if (web3.toDecimal(offer[0]) != 0) {
+        ether_waged = web3.fromWei(offer[1].toString(), "ether");
+      } else {
+        console.log("Error getting/formatting offer amount");
+      }
+    }).then(function() {
+      return game.won.call();
+    }).then(function(playerWon) {
+      self.setState({ outcome_modal:
+        <PlayOutcomeModal playerWon={playerWon} ether={ether_waged} />});
     });
   },
   reloadGrid: function() {
@@ -187,8 +196,14 @@ var Playgrid = React.createClass({
       console.log("move done");
       return self.reloadGrid();
     }).then(function() {
+      console.log("update stats");
       return self.updateStats();
     }).then(function() {
+      return game.over.call();
+    }).then(function(over) {
+      if (over) {
+        self.endGame(game);
+      }
       return game.equipped_item.call();
     }).then(function(equipped) {
       self.setState({

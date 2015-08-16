@@ -140,33 +140,34 @@ contract Game {
 
   function move_monsters() private {
     for (uint16 i = 0; i < num_monsters; i++) {
-      if (monster_hp[100 + i] == 0) { return; }
+      if (monster_hp[100 + i] != 0) {
 
-      uint16 square = monster_square[100 + i];
+        uint16 square = monster_square[100 + i];
 
-      uint16 lr_loc;
-      uint16 ud_loc;
+        uint16 lr_loc;
+        uint16 ud_loc;
 
-      if (square % 16 > adventurer_square % 16) { //adventurer is to the left
-        lr_loc = square - 1;
-      } else {
-        lr_loc = square + 1;
-      }
+        if (square % 16 > adventurer_square % 16) { //adventurer is to the left
+          lr_loc = square - 1;
+        } else {
+          lr_loc = square + 1;
+        }
 
-      if (square > adventurer_square && square > 16) { //adventurer is above
-        ud_loc = square - 16;
-      } else {
-        ud_loc = square + 16;
-      }
+        if (square > adventurer_square && square > 16) { //adventurer is above
+          ud_loc = square - 16;
+        } else {
+          ud_loc = square + 16;
+        }
 
-      if (square % 16 == adventurer_square % 16) { //same column
-        move_monster(100 + i, ud_loc);
-      } else if (square / 16 == adventurer_square / 16) { //same row
-        move_monster(100 + i, lr_loc);
-      } else if ((uint(block.blockhash(block.number - 1)) % 2) == 0) {
-        move_monster(100 + i, lr_loc);
-      } else {
-        move_monster(100 + i, ud_loc);
+        if (square % 16 == adventurer_square % 16) { //same column
+          move_monster(100 + i, ud_loc);
+        } else if (square / 16 == adventurer_square / 16) { //same row
+          move_monster(100 + i, lr_loc);
+        } else if ((uint(block.blockhash(block.number - 1)) % 2) == 0) {
+          move_monster(100 + i, lr_loc);
+        } else {
+          move_monster(100 + i, ud_loc);
+        }
       }
     }
   }
