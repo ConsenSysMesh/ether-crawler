@@ -42,9 +42,11 @@ contract Challenge {
     }
 
     if (character == 0) {
-      game.set_adventurer(20, 100);
+      game.set_adventurer(15, 150);
+    } else if (character == 1) {
+      game.set_adventurer(45, 50);
     } else {
-      game.set_adventurer(40, 50);
+      game.set_adventurer(30, 100);
     }
   }
 
