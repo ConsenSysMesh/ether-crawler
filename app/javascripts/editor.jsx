@@ -24,6 +24,9 @@ var Editor = React.createClass({
       {id: "add_monster", name: "Add Monster"},
       {id: "add_wall", name: "Add Wall"},
       {id: "add_staircase", name: "Add Staircase"},
+      {id: "add_sword", name: "Add Sword"},
+      {id: "add_shield", name: "Add Shield"},
+      {id: "add_potion", name: "Add Potion"},
       {id: "set_empty", name: "Delete What's Here"},
     ];
 
@@ -65,6 +68,12 @@ var Editor = React.createClass({
       this.hasStaircase(true);
       focussed_cell.type = "staircase";
 
+    } else if (id == "add_sword") {
+      focussed_cell.type = "sword";
+    } else if (id == "add_shield") {
+      focussed_cell.type = "shield";
+    } else if (id == "add_potion") {
+      focussed_cell.type = "potion";
     } else if (id == "set_empty") {
       this.checkFromStaircase();
       focussed_cell.type = "empty";
@@ -93,7 +102,7 @@ var Editor = React.createClass({
     };
 
     var level = null;
-    var game = null;
+    console.log("Adding level...");
     Level.new().then(function(l) {
       level = l;
       console.log("Created level: " + level.address);
@@ -110,31 +119,50 @@ var Editor = React.createClass({
 
           if (cell.type == "empty") {
             callNext(index + 1);
+            return;
           }
 
           if (cell.type == "monster") {
             console.log("Adding monster @ " + cell.location);
             level.add_monster(cell.location, 10, 100).then(callNext).catch(reject);
+            return;
           }
 
           if (cell.type == "wall") {
             console.log("Adding wall @ " + cell.location);
             level.add_wall(cell.location).then(callNext).catch(reject);
+            return;
           }
 
           if (cell.type == "staircase") {
             console.log("Adding staircase @ " + cell.location);
             level.add_staircase(cell.location).then(callNext).catch(reject);
+            return;
+          }
+
+          if (cell.type == "sword") {
+            console.log("Adding sword @ " + cell.location);
+            level.add_sword(cell.location).then(callNext).catch(reject);
+            return;
+          }
+
+          if (cell.type == "shield") {
+            console.log("Adding shield @ " + cell.location);
+            level.add_shield(cell.location).then(callNext).catch(reject);
+            return;
+          }
+
+          if (cell.type == "potion") {
+            console.log("Adding potion @ " + cell.location);
+            level.add_potion(cell.location).then(callNext).catch(reject);
+            return;
           }
         };
 
         callNext();
       });
     }).then(function() {
-      console.log("Setting level name: " + self.state.level_name);
-      return level.set_name(self.state.level_name);
-    }).then(function() {
-      console.log("Adding level to the registry.")
+      console.log("Adding level to the registry: " + level.address + " , " + self.state.level_name);
       registry = LevelRegistry.at(LevelRegistry.deployed_address);
       return registry.add_level(level.address, self.state.level_name);
     }).then(function() {

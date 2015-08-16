@@ -11,7 +11,11 @@ contract LevelRegistry {
     return levels.length;
   }
 
-  function get_all_levels() returns(bytes32[]) {
+  function get_all_levels() returns(address[]) {
+    return levels;
+  }
+
+  function get_all_names() returns(bytes32[]) {
     return level_names;
   }
 }

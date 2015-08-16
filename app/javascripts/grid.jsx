@@ -62,6 +62,18 @@ var Grid = React.createClass({
           if (cell.type == "character") {
             return <Character key={key} cell={cell} handleClick={self.cellClicked}/>
           }
+
+          if (cell.type == "potion") {
+            return <Potion key={key} cell={cell} handleClick={self.cellClicked}/>
+          }
+
+          if (cell.type == "shield") {
+            return <Shield key={key} cell={cell} handleClick={self.cellClicked}/>
+          }
+
+          if (cell.type == "sword") {
+            return <Sword key={key} cell={cell} handleClick={self.cellClicked}/>
+          }
         })
       }
       </div>

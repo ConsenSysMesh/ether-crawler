@@ -129,6 +129,18 @@ var Playgrid = React.createClass({
             type = "character";
           }
 
+          if (type_id == 4) {
+            type = "potion";
+          }
+
+          if (type_id == 5) {
+            type = "shield";
+          }
+
+          if (type_id == 6) {
+            type = "sword";
+          }
+
           if (type_id >= 100) {
             type = "monster";
           }

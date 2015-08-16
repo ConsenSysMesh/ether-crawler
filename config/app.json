@@ -18,6 +18,9 @@
       "javascripts/cells/wall.jsx",
       "javascripts/cells/staircase.jsx",
       "javascripts/cells/character.jsx",
+      "javascripts/cells/sword.jsx",
+      "javascripts/cells/shield.jsx",
+      "javascripts/cells/potion.jsx",
       "javascripts/editor.jsx",
       "javascripts/context_menu.jsx",
       "javascripts/playgrid.jsx",
@@ -36,8 +39,7 @@
     "images/": "images/"
   },
   "deploy": [
-    "LevelRegistry",
-    "Gamebuilder"
+    "LevelRegistry"
   ],
   "provider": "./app/provider.js"
 }

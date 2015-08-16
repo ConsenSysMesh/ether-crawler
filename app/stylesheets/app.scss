@@ -108,6 +108,18 @@ button.button-primary {
       background: $gridbackground url(images/characters/vitalik.png) no-repeat center center;
       background-size: 50px 50px;
     }
+    &.sword {
+      background: $gridbackground url(images/items/sword.png) no-repeat center center;
+      background-size: 50px 50px;
+    }
+    &.shield {
+      background: $gridbackground url(images/items/shield.png) no-repeat center center;
+      background-size: 50px 50px;
+    }
+    &.potion {
+      background: $gridbackground url(images/items/potion.png) no-repeat center center;
+      background-size: 50px 50px;
+    }
   }
 }
 
@@ -312,6 +324,10 @@ button.button-primary {
   p.err {
     color: $red;
     margin-top: 0;
+  }
+
+  select {
+    width: 200px;
   }
 }
 

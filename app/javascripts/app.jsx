@@ -21,7 +21,7 @@ var App = React.createClass({
 
   showBetView: function() {
     this.setState( { view: <Bet bets={this.state.bets} />, activeTab: "tab-bet" });
-  }, 
+  },
 
   render: function() {
     var self=this;
@@ -33,7 +33,7 @@ var App = React.createClass({
         <div className="logo">EtherCrawler</div>
         <div className="tab-container">
           <div className={"tab " + activeEditorTab} onClick={self.showEditorView}>Design Game Levels</div>
-          <div className={"tab " + activePlayTab} onClick={self.showPlayView}>Play a Game</div>
+          <div className={"tab " + activePlayTab} onClick={self.showWizard}>Play a Game</div>
           <div className={"tab " + activeBetTab} onClick={self.showBetView}>Bet on Games</div>
         </div>
         {this.state.view}

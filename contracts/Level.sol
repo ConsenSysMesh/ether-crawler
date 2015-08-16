@@ -10,7 +10,6 @@ contract Level {
   uint public total_royalties;
   address public owner;
   bool public finalized;
-  string public name;
 
   modifier mutates { if ((owner == msg.sender) && (finalized == false)) _ }
 
@@ -24,18 +23,10 @@ contract Level {
     }
   }
 
-  function set_name(string _name) mutates {
-    name = _name;
-  }
-
   function add_potion(uint16 location) mutates {
     uint index = potions.length;
     potions.length++;
     potions[index] = location;
-  }
-
-  function set_potions(uint16[] _potions) mutates {
-    potions = _potions;
   }
 
   function num_potions() returns(uint) {
@@ -48,22 +39,10 @@ contract Level {
     shields[index] = location;
   }
 
-  function set_shields(uint16[] _shields) mutates {
-    shields = _shields;
-  }
-
-  function num_shields() returns(uint) {
-    return shields.length;
-  }
-
   function add_sword(uint16 location) mutates {
     uint index = swords.length;
     swords.length++;
     swords[index] = location;
-  }
-
-  function set_swords(uint16[] _swords) mutates {
-    swords = _swords;
   }
 
   function num_swords() returns(uint) {
@@ -88,10 +67,6 @@ contract Level {
     uint index = walls.length;
     walls.length++;
     walls[index] = location;
-  }
-
-  function set_walls(uint16[] _walls) mutates {
-    walls = _walls;
   }
 
   function num_walls() returns(uint) {
@@ -126,7 +101,7 @@ contract Level {
   function finalize() mutates {
     finalized = true;
   }
-  
+
   function pay_royalty() {
     total_royalties += msg.value;
     owner.send(msg.value);

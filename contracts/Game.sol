@@ -165,7 +165,7 @@ contract Game {
       if (monster_hp[100 + i] == 0) { return; }
 
       uint16 square = monster_square[100 + i];
-      
+
       uint16 lr_loc;
       uint16 ud_loc;
 
@@ -205,7 +205,7 @@ contract Game {
       if (equipped_item == 5) {
         damage -= (damage * 25 / 100); //protected by shield
       }
-      
+
       if (adventurer_hp <= damage) {
         adventurer_hp = 0;
         over = true;
@@ -216,7 +216,7 @@ contract Game {
   }
 
   function random_damage(uint attack) private returns(uint16) {
-    uint base = attack * 8 / 10;  
+    uint base = attack * 8 / 10;
     uint bonus_percent = uint(block.blockhash(block.number - 1)) % 42;
     uint result = base + (attack * bonus_percent / 100);
 
