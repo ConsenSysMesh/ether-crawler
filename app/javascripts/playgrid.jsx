@@ -20,7 +20,13 @@ var Playgrid = React.createClass({
       modal: null,
       outcome_modal: null,
       playerWon: false,
-      playerEtherOutcome: 0
+      playerEtherOutcome: 0,
+      items: [ 
+        { name: "sword", attack: "40", hp: "50" },
+        { name: "potion", attack: "20", hp: "30" },
+        { name: "shield", attack: "0", hp: "60" },
+        { name: "pizza", attack: "20", hp: "30" }
+      ]
     };
   },
   getAttack: function() {
@@ -232,17 +238,38 @@ var Playgrid = React.createClass({
 
   render: function() {
     var self = this;
+    var item_id = 0;
     return (
       <div className="playgrid">
         <div className="four columns">
-          <dl className="your_score">
+          <dl className="infobox your_score">
             <dt><strong>YOU (Vitalik)</strong><span className="num">{self.state.adventurer_hp}</span></dt>
             <dt>Attack: <span className="num">{self.state.adventurer_attack}</span></dt>
             <dt>Level: <span className="num">{self.state.adventurer_level}</span></dt>
           </dl>
         </div>
         <div className="four columns">
-
+          <dl className="infobox your_items">
+            <dt>
+              <strong>Your Items</strong> 
+              <div className="row_stats">
+                <span className="label">Attack</span>
+                <span className="label label_second">HP</span>
+              </div>
+            </dt>
+            {
+              this.state.items.map(function(item) {
+                item_id++;
+                return <dt key={item_id} className="item item_row">
+                  <span className="name">{item.name}</span>
+                  <div className="row_stats">
+                    <span className="num item_stat"> &#43; {item.hp}</span> 
+                    <span className="num item_stat"> &#43; {item.attack}</span></div>
+                </dt>
+                  
+              })
+            }
+          </dl>
         </div>
         <div className="four columns right end">
           <p>LEVEL: <span className="levelname">{self.getLevelName()}</span></p>

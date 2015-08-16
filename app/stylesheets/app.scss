@@ -177,26 +177,69 @@ button.button-primary {
 
 .playgrid {
   .four.columns {
-    margin-right: 2%;
-    margin-left: 2%;
-    width: 28%;
+    margin-right: 1%;
+    margin-left: 1%;
+    width: 233;
   }
 
-  dl.your_score, dl.opponent_score {
+  dl.infobox {
     border: 1px solid $gray;
     padding: 5px;
     font-size: 0.9em;
     margin: 0 auto 1rem;
     color: $light-gray;
-    .num {
-      float: right;
+    height: 78px;
+
+    &.your_score {
+      color: $green;
     }
-  }
-  dl.your_score {
-    color: $green;
-  }
-  dl.opponent_score {
-    color: $light-blue;
+    &.opponent_score {
+      color: $light-blue;
+    }
+    &.your_items, .label {
+      color: $light-gray;
+      overflow-y: scroll;
+      overflow: -moz-scrollbars-vertical;
+      &::-webkit-scrollbar {
+       // -webkit-appearance: none;
+        width: 7px;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, .5);
+        -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+      }
+      .name {
+        width: 40px;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .item_row {
+      margin-left: 10px;
+    }
+    .item_stat, .label {
+      color: $green;
+      margin-left: 20px;
+    }
+    .label {
+      margin-left: 20px;
+      &.label_second {
+        margin-left: 30px;
+        margin-right: 20px;
+      }
+    }
+    .row_stats {
+      float: right;
+
+      span.item_stat {
+        margin-left: 20px;
+        min-width: 40px;
+        max-width: 40px;
+        width: 40px;
+        display: inline-block;
+      }
+    }
   }
 
   .four.columns.end {
@@ -423,6 +466,7 @@ button.button-primary {
     height: 32px;
     margin-bottom: 10px;
     width: 100px;
+    color: $dark-gray;
   }
 
   .simple-modal {

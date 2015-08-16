@@ -1,21 +1,24 @@
-import "Challenge";
+contract ChallengeStub {
+  function player() returns(address) {}
+  function bet_value() returns(uint) {}
+}
 
 contract ChallengeRegistry {
-  Challenge[] public challenges;
+  ChallengeStub[] public challenges;
   uint[] public num_levels;
   address[] public players;
   uint[] public bet_values;
   uint[] public best_offers;
   bool[] public accepted;
 
-  function register() returns (uint id) {
-    Challenge challenge = Challenge(msg.sender);
+  function register(address player, uint bet_value) returns (uint id) {
+    ChallengeStub challenge = ChallengeStub(msg.sender);
     id = challenges.length;
 
     challenges[challenges.length++] = challenge;
     num_levels[num_levels.length++] = 0;
-    players[players.length++] = challenge.player();
-    bet_values[bet_values.length++] = challenge.bet_value();
+    players[players.length++] = player;
+    bet_values[bet_values.length++] = bet_value;
     accepted[accepted.length++] = false;
     best_offers[best_offers.length++] = 0;
 
@@ -38,7 +41,7 @@ contract ChallengeRegistry {
     return challenges.length;
   }
 
-  function get_all_challenges() returns(Challenge[]) {
+  function get_all_challenges() returns(ChallengeStub[]) {
     return challenges;
   }
 

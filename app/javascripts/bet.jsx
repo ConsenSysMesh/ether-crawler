@@ -66,6 +66,7 @@ var Bet = React.createClass({
   render: function() {
     var self = this;
     var hide_modal = this.state.showModal ? ' ' : 'hidden';
+    var bet_key = 0;
 
     var challenges = [];
 
@@ -117,14 +118,15 @@ var Bet = React.createClass({
             <tbody>
               {
                 challenges.map(function(challenge) {
-                  return <tr className="bet">
-                    <td className="game_id">{challenge.address}</td>
-                    <td className="levels">{challenge.num_levels}</td>
-                    <td className="player_id">{challenge.player}</td>
-                    <td className="player_stake">1 <span>ETH</span></td>
-                    <td className="bet_input"><input type="number" min="0" className="u-full-width" ref={"input_" + challenge.address}/></td>
-                    <td className="bet_button"><button className="button-primary" onClick={self.submitBet.bind(null, challenge.address)}>Challenge</button></td>
-                  </tr>
+                  return ( <tr className="bet">
+                      <td className="game_id">{challenge.address}</td>
+                      <td className="levels">{challenge.num_levels}</td>
+                      <td className="player_id">{challenge.player}</td>
+                      <td className="player_stake">1 <span>ETH</span></td>
+                      <td className="bet_input"><input type="number" min="0" className="u-full-width" ref={"input_" + challenge.address}/></td>
+                      <td className="bet_button"><button className="button-primary" onClick={self.submitBet.bind(null, challenge.address)}>Challenge</button></td>
+                    </tr>
+                  )
                 })
               }
             </tbody>

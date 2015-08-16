@@ -1,9 +1,12 @@
 contract('Challenge', function(accounts) {
   it("expects character, levels, and bet", function(done) {
-    Challenge.new(accounts[0], 1, [Level.deployed_address], {value: 1000}).
+    var level = Level.at(Level.deployed_address);
+
+    Challenge.new(accounts[0], 1, {value: 1000}).
       then(function(challenge) {
         challenge.bet_value.call().
         then(function(result) { assert.equal(result, 1000) }).
+        then(function() { return challenge.add_level(level.address) }).
         then(function() { return challenge.num_levels.call() }).
         then(function(result) { assert.equal(result, 1) }).
         then(function() { return challenge.character.call() }).
@@ -29,10 +32,12 @@ contract('Challenge', function(accounts) {
 
   it("lets player accept an offer, and initializes a game", function(done) {
     var gamebuilder = Gamebuilder.at(Gamebuilder.deployed_address);
+    var level = Level.at(Level.deployed_address);
 
-    Challenge.new(accounts[0], 1, [Level.deployed_address], {value: 1000}).
+    Challenge.new(accounts[0], 1, {value: 1000}).
       then(function(challenge) {
         challenge.make_offer({value: 2000}).
+        then(function() { return challenge.add_level(level.address) }).
         then(function() { return challenge.set_gamebuilder(gamebuilder.address) }).
         then(function() { return challenge.accept() }).
         then(function() { return challenge.game.call() }).
@@ -50,7 +55,7 @@ contract('Challenge', function(accounts) {
   it("doesn't blow up when you claim", function(done) {
     var challenge = Challenge.at(Challenge.deployed_address);
 
-    Challenge.new(accounts[0], 1, [Level.deployed_address], {value: 1000}).
+    Challenge.new(accounts[0], 1, {value: 1000}).
       then(function(challenge) {
         challenge.make_offer({value: 2000}).
         then(function() { return challenge.accept() }).
@@ -65,9 +70,10 @@ contract('Challenge', function(accounts) {
 
     level.clear().
     then(function() { return level.add_monster(2, 200, 50) }).
-    then(function() { return Challenge.new(accounts[0], 1, [level.address], {value: 5000}) }).
+    then(function() { return Challenge.new(accounts[0], 1, {value: 5000}) }).
     then(function(challenge) {
       challenge.make_offer({value: 5000}).
+      then(function() { return challenge.add_level(level.address) }).
       then(function() { return challenge.set_gamebuilder(gamebuilder.address) }).
       then(function() { return challenge.accept() }).
       then(function() { return challenge.game.call() }).
