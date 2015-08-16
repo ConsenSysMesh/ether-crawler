@@ -17,6 +17,7 @@ contract Game {
   address public player;
   address public admin;
   uint public verify;
+  uint16 public equipped_item;
 
   modifier auth(address user) { if (msg.sender == user) _ }
 
@@ -109,6 +110,13 @@ contract Game {
       adventurer_square = target;
     }
 
+    // shield
+    if (target_object == 5) {
+      equipped_item = 5;
+      squares[adventurer_square] = 0;
+      squares[target] = 3;
+      adventurer_square = target;
+    }
 
     // monster
     if (target_object > 99) {
@@ -165,6 +173,10 @@ contract Game {
 
     if (squares[target] == 3) {
       uint16 damage = random_damage(monster_attack[id]);
+      if (equipped_item == 5) {
+        damage -= (damage * 25 / 100); //protected by shield
+      }
+      
       if (adventurer_hp <= damage) {
         adventurer_hp = 0;
         over = true;
@@ -207,6 +219,11 @@ contract Game {
     uint num_potions = current_level.num_potions();
     for (i = 0; i < num_potions; i++) {
       squares[current_level.potions(i)] = 4;
+    }
+
+    uint num_shields = current_level.num_shields();
+    for (i = 0; i < num_shields; i++) {
+      squares[current_level.shields(i)] = 5;
     }
 
     num_monsters = current_level.num_monsters();

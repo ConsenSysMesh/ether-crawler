@@ -5,6 +5,7 @@ contract Level {
   uint16[] public monster_attack;
   uint16[] public monster_hp;
   uint16[] public potions;
+  uint16[] public shields;
   uint public total_royalties;
   address public owner;
   bool public finalized;
@@ -38,6 +39,20 @@ contract Level {
 
   function num_potions() returns(uint) {
     return potions.length;
+  }
+
+  function add_shield(uint16 location) mutates {
+    uint index = shields.length;
+    shields.length++;
+    shields[index] = location;
+  }
+
+  function set_shields(uint16[] _shields) mutates {
+    shields = _shields;
+  }
+
+  function num_shields() returns(uint) {
+    return shields.length;
   }
 
   function add_staircase(uint16 location) mutates {
@@ -89,6 +104,7 @@ contract Level {
     monster_attack.length = 0;
     monster_hp.length = 0;
     potions.length = 0;
+    shields.length = 0;
   }
 
   function finalize() mutates {

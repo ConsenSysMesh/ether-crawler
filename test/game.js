@@ -263,6 +263,27 @@ contract('Game', function(accounts) {
     }).catch(done)
   })
 
+  it("lets player equip shields", function(done) {
+    var level = Level.at(Level.deployed_address);
+    var game = Game.at(Game.deployed_address);
+
+    level.clear().
+      then(function() { return level.add_monster(17, 100, 50) }).
+      then(function() { return level.add_shield(1) }).
+      then(function() { return game.clear() }).
+      then(function() { return game.add_level(level.address) }).
+      then(function() { return game.set_player(accounts[0]) }).
+      then(function() { return game.set_adventurer(20, 500) }).
+      then(function() { return game.move(1) }).
+      then(function() { return game.equipped_item.call() }).
+      then(function(result) { assert.equal(result, 5) }).
+      then(function() { return game.adventurer_hp.call() }).
+      then(function(result) {
+        assert.closeTo(result.toNumber(), 425, 30);
+        done();
+    }).catch(done)
+  })
+
   it("ends game if player goes to 0hp", function(done) {
     var level = Level.at(Level.deployed_address);
     var game = Game.at(Game.deployed_address);
