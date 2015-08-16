@@ -1,7 +1,7 @@
 import "Game";
 
 contract Gamebuilder {
-  function create_game(uint16 character, address player, Level[] levels) returns (Game) {
+  function create_game(uint16 character, address player, address[] levels) returns (Game) {
     Game game = new Game();
     game.set_player(player);
 

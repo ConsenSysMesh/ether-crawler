@@ -1,7 +1,23 @@
-import "Level";
+contract LevelStub {
+  function num_walls() returns(uint) {}
+  function num_staircases() returns(uint) {}
+  function num_potions() returns(uint) {}
+  function num_shields() returns(uint) {}
+  function num_swords() returns(uint) {}
+  function num_monsters() returns(uint) {}
+
+  function walls(uint id) returns(uint16) {}
+  function staircases(uint id) returns(uint16) {}
+  function potions(uint id) returns(uint16) {}
+  function shields(uint id) returns(uint16) {}
+  function swords(uint id) returns(uint16) {}
+  function monsters(uint id) returns(uint16) {}
+  function monster_hp(uint id) returns(uint16) {}
+  function monster_attack(uint id) returns(uint16) {}
+}
 
 contract Game {
-  Level[] public levels;
+  LevelStub[] public levels;
   uint16 public level_number;
   uint16[160] public squares;
   uint16[1000] public monster_hp;
@@ -31,7 +47,7 @@ contract Game {
   }
 
   function add_level(address level) auth(admin) {
-    levels[levels.length++] = Level(level);
+    levels[levels.length++] = LevelStub(level);
     if (levels.length == 1) {
       load_level(0);
     }
@@ -217,7 +233,7 @@ contract Game {
     clear_level();
 
     level_number = id;
-    Level current_level = levels[id];
+    LevelStub current_level = levels[id];
 
     uint num_walls = current_level.num_walls();
     for (uint16 i = 0; i < num_walls; i++) {

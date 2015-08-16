@@ -167,7 +167,7 @@
         "type": "constructor"
       }
     ],
-    "address": "0xac8cda6992770716cdbba3aa47d8e4f33f04f78d"
+    "address": "0x336833ec81fbbb7b1b4854b1c645fa5199dec626"
   },
   "Game": {
     "source": "/Users/peterbb/ether-crawler/contracts/Game.sol",
@@ -478,7 +478,7 @@
         "type": "constructor"
       }
     ],
-    "address": "0xb120db90ffcc6663a9fe559df59d8fa672459d01"
+    "address": "0x4932e9120de47a6877a54bf24d896761e89ac53c"
   },
   "Gamebuilder": {
     "source": "/Users/peterbb/ether-crawler/contracts/Gamebuilder.sol",
@@ -510,7 +510,7 @@
         "type": "function"
       }
     ],
-    "address": "0xc226417c4bd7b9f8acf4cf756956a26cd3b26f7a"
+    "address": "0xd0ad3775afe7ceb9a85a71895d02e510c35c601b"
   },
   "Level": {
     "source": "/Users/peterbb/ether-crawler/contracts/Level.sol",
@@ -962,7 +962,7 @@
         "type": "constructor"
       }
     ],
-    "address": "0x593f38808493226603e4de580d3f23620a7eccbe"
+    "address": "0x91f5a26aac4cb453a1ab7a45bc4c08eb335eb3e8"
   },
   "LevelRegistry": {
     "source": "/Users/peterbb/ether-crawler/contracts/LevelRegistry.sol",
@@ -1043,6 +1043,6 @@
         "type": "function"
       }
     ],
-    "address": "0x9d35d15bfd3b23e43fce6e890d37ce7ece7b8c7e"
+    "address": "0xa7afe7ba606e5303b982867f97652971c2b9ceaf"
   }
 }
