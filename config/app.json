@@ -26,7 +26,6 @@
       "javascripts/wizard.jsx",
       "javascripts/wizard/choose_character.jsx",
       "javascripts/wizard/choose_levels.jsx",
-      "javascripts/modal.jsx",
       "javascripts/bet.jsx"
     ],
     "app.css": [
