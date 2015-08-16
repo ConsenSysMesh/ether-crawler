@@ -1,4 +1,10 @@
 var SimpleModal = React.createClass({
+  getInitialState: function() {
+    return {
+      top: null,
+      left: null
+    }
+  },
   render: function() {
     var self = this;
     return (

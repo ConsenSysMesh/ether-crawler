@@ -31,6 +31,7 @@ var Playgrid = React.createClass({
     return this.state.level;
   },
   componentDidMount: function() {
+
     // var address = prompt("Please enter your game address", "0x792de2f00f40319ec0eeff15291da431e45fc6cc");
     //
     // var self = this;
