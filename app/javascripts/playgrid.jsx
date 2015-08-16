@@ -7,9 +7,7 @@ var KEYS = {
 };
 
 var Playgrid = React.createClass({
-
   getInitialState: function() {
-
     return {
       focussed_cell: null,
       defense: 1000,
@@ -32,41 +30,28 @@ var Playgrid = React.createClass({
   getLevelName: function() {
     return this.state.level;
   },
-
   componentDidMount: function() {
-    var address = prompt("Please enter your game address", "0x792de2f00f40319ec0eeff15291da431e45fc6cc");
-
-    var self = this;
-    var game = Game.at(address);
-
-    this.setState({
-      game: game,
-      modal: <SimpleModal title="Loading level..." />
-    }, function() {
-      var self = this;
-      this.reloadGrid().then(function() {
-        return self.updateStats();
-      }).then(function() {
-        self.setState({
-          turn_changing: false,
-          modal: null
-        });
-      });
-    });
+    // var address = prompt("Please enter your game address", "0x792de2f00f40319ec0eeff15291da431e45fc6cc");
+    //
+    // var self = this;
+    // var game = Game.at(address);
+    //
+    // this.setState({
+    //   game: game,
+    //   modal: <SimpleModal title="Loading level..." />
+    // }, function() {
+    //   var self = this;
+    //   this.reloadGrid().then(function() {
+    //     return self.updateStats();
+    //   }).then(function() {
+    //     self.setState({
+    //       turn_changing: false,
+    //       modal: null
+    //     });
+    //   });
+    // });
 
     document.addEventListener('keydown', this.onKeyDown);
-
-    var choices = [
-      {id: "add_monster", name: "Add Monster"},
-      {id: "add_wall", name: "Add Wall"},
-      {id: "add_staircase", name: "Add Staircase"},
-      {id: "set_empty", name: "Delete What's Here"}
-    ];
-
-    // Launch Game Start Modal
-    this.setState({
-      menu: <Modal choices={choices} top="100px" left="100px" choiceClicked={this.modalItemClicked}/>
-    });
   },
 
   modalItemClicked: function(id, event) {

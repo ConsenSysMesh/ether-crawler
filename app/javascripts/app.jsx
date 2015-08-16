@@ -2,13 +2,17 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      view: <Playgrid />,
+      view: <Wizard />,
       activeTab: "tab-play"
     }
   },
 
   showEditorView: function() {
     this.setState( { view: <Editor />, activeTab: "tab-editor"});
+  },
+
+  showWizard: function() {
+    this.setState( { view: <Wizard />, activeTab: "tab-play" });
   },
 
   showPlayView: function() {
@@ -26,7 +30,7 @@ var App = React.createClass({
     var activeBetTab = this.state.activeTab==="tab-bet"? "active" : "";
     return (
       <div className="app container">
-        <div className="title">EtherCrawler</div>
+        <div className="logo">EtherCrawler</div>
         <div className="tab-container">
           <div className={"tab " + activeEditorTab} onClick={self.showEditorView}>Design Game Levels</div>
           <div className={"tab " + activePlayTab} onClick={self.showPlayView}>Play a Game</div>

@@ -22,7 +22,7 @@ $gridbackground: #000;
   max-width: ($grid-width * $cell-width) + $grid-width; // Borders will be removed eventually.
 }
 
-.title {
+.logo {
   font-family: "Creepster", "HelveticaNeue", "Helvetica Neue", Arial, sans-serif;
   font-size: 48px;
   text-align: center;
@@ -52,7 +52,6 @@ button.button-primary {
 }
 
 .tab-container {
-
   display: flex;
   flex-flow: row wrap;
   margin-bottom: 15px;
@@ -217,13 +216,7 @@ button.button-primary {
   transform: translate(-50%, -50%);
 }
 
-.start-modal {
-  top: -90px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  padding: 10px;
+.wizard-screen {
   border: solid 5px $red;
   background: #efefef;
   color: $gray;
@@ -234,29 +227,29 @@ button.button-primary {
     display: none;
   }
 
-
-  .start-title {
+  .title {
     font-size: 32px;
     color: $red;
     margin: 20px auto;
     font-weight: 700;
   }
-  .start-subtitle {
+  .subtitle {
     font-weight: 300;
     color: $gray;
     font-size: 18px;
     margin-bottom: 5px;
   }
-  .start-choose-character {
+  .choose-character {
     margin: 40px auto 20px;
     font-weight: 700;
     text-transform: uppercase;
     font-size: 24px;
     color: $gray;
-
   }
 
   ul.characters {
+    margin-top: 40px;
+    margin-bottom: 30px;
     list-style: none;
 
     li {
@@ -270,15 +263,19 @@ button.button-primary {
       width: 50px;
       height: 50px;
       box-shadow: 2px 2px 1px #666;
+      margin-left: auto;
+      margin-right: auto;
       margin-bottom: 10px;
+      border: 10px solid transparent;
+      cursor: pointer;
 
       &.nick {
-        background: #333 url(images/characters/szabo.png) no-repeat center center;
+        background: #666 url(images/characters/szabo.png) no-repeat center center;
         background-size: 50px 50px;
         color: $light-blue;
       }
       &.vitalik {
-        background: #333 url(images/characters/vitalik.png) no-repeat center center;
+        background: #666 url(images/characters/vitalik.png) no-repeat center center;
         background-size: 50px 50px;
       }
       &.satoshi {
@@ -286,13 +283,14 @@ button.button-primary {
       }
 
       &.active {
+        background-color: $light-blue;
         border: 10px solid $light-blue;
         color: $light-blue
       }
     }
   }
 
-  .start-paragraph {
+  .paragraph {
     font-weight: 400;
     text-transform: uppercase;
     color: $gray;
@@ -302,7 +300,7 @@ button.button-primary {
     }
   }
 
-  .start-play {
+  .play {
     padding-top: 10px;
     font-size: 48px;
     color: $red;

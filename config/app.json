@@ -21,9 +21,11 @@
       "javascripts/editor.jsx",
       "javascripts/context_menu.jsx",
       "javascripts/playgrid.jsx",
-      "javascripts/simple_modal.jsx"
-      "javascripts/modal.jsx",
-      "javascripts/playgrid.jsx"
+      "javascripts/simple_modal.jsx",
+      "javascripts/playgrid.jsx",
+      "javascripts/wizard.jsx",
+      "javascripts/wizard/choose_character.jsx",
+      "javascripts/wizard/choose_levels.jsx"
     ],
     "app.css": [
       "stylesheets/normalize.css",
