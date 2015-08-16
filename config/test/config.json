@@ -5,5 +5,12 @@
     "port": 8545
   },
 
+  "deploy": [
+    "Level",
+    "Game",
+    "LevelRegistry",
+    "Challenge"
+  ],
+
   "provider": null
 }

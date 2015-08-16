@@ -101,6 +101,15 @@ contract Game {
       }
     }
 
+    // potion
+    if (target_object == 4) {
+      adventurer_hp += 30;
+      squares[adventurer_square] = 0;
+      squares[target] = 3;
+      adventurer_square = target;
+    }
+
+
     // monster
     if (target_object > 99) {
       uint16 damage = random_damage(adventurer_attack);
@@ -173,8 +182,6 @@ contract Game {
     return uint16(result);
   }
 
-
-
   function level_up() private {
     adventurer_level++;
     adventurer_attack += (adventurer_attack / 10);
@@ -195,6 +202,11 @@ contract Game {
     uint num_staircases = current_level.num_staircases();
     for (i = 0; i < num_staircases; i++) {
       squares[current_level.staircases(i)] = 2;
+    }
+
+    uint num_potions = current_level.num_potions();
+    for (i = 0; i < num_potions; i++) {
+      squares[current_level.potions(i)] = 4;
     }
 
     num_monsters = current_level.num_monsters();
