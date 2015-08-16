@@ -18,6 +18,8 @@ contract ChallengeRegistry {
     bet_values[bet_values.length++] = challenge.bet_value();
     accepted[accepted.length++] = false;
     best_offers[best_offers.length++] = 0;
+
+    return id;
   }
 
   function set_num_levels(uint id, uint num) {

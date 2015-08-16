@@ -2,7 +2,7 @@ contract RegistryStub {
   function register() returns(uint) {}
   function new_offer(uint id, uint amount) {}
   function accept(uint id) {}
-  function set_level_nums(uint id, uint num) {}
+  function set_num_levels(uint id, uint num) {}
 }
 
 contract GameStub {
@@ -46,12 +46,12 @@ contract Challenge {
 
   function add_level(LevelStub _level) {
     levels[levels.length++] = _level;
-    registry.set_level_nums(reg_id, levels.length);
+    registry.set_num_levels(reg_id, levels.length);
   }
 
   function add_levels(LevelStub[] _levels) {
     levels = _levels;
-    registry.set_level_nums(reg_id, levels.length);
+    registry.set_num_levels(reg_id, levels.length);
   }
 
   function set_gamebuilder(GamebuilderStub _gamebuilder) {
