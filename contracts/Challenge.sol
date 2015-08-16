@@ -34,14 +34,23 @@ contract Challenge {
   
   modifier auth(address user) { if (msg.sender == user) _ }
 
-  function Challenge(RegistryStub _registry, uint16 _character, LevelStub[] _levels) {
+  function Challenge(RegistryStub _registry, uint16 _character) {
     registry = _registry;
     character = _character;
-    levels = _levels;
     bet_value = msg.value;
     player = msg.sender;
 
     reg_id = registry.register();
+  }
+
+  function add_level(LevelStub _level) {
+    levels[levels.length++] = level;
+    registry.set_level_nums(id, levels.length);
+  }
+
+  function add_levels(LevelStub[] _level) {
+    levels = _levels;
+    registry.set_level_nums(id, levels.length);
   }
 
   function set_gamebuilder(GamebuilderStub _gamebuilder) {

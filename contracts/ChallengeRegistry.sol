@@ -13,11 +13,15 @@ contract ChallengeRegistry {
     id = challenges.length;
 
     challenges[challenges.length++] = challenge;
-    num_levels[num_levels.length++] = challenge.num_levels();
+    num_levels[num_levels.length++] = 0;
     players[players.length++] = challenge.player();
     bet_values[bet_values.length++] = challenge.bet_value();
     accepted[accepted.length++] = false;
     best_offers[best_offers.length++] = 0;
+  }
+
+  function set_num_levels(uint id, uint num) {
+    num_levels[id] = num;
   }
 
   function new_offer(uint id, uint amount) {
