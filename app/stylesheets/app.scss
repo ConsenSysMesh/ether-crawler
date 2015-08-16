@@ -190,6 +190,40 @@ button.button-primary {
     width: 233;
   }
 
+  .your_items {
+    color: $light-gray;
+    overflow-y: scroll;
+    overflow: -moz-scrollbars-vertical;
+    &::-webkit-scrollbar {
+     // -webkit-appearance: none;
+      width: 7px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background-color: rgba(0, 0, 0, .5);
+      -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+    }
+    .name {
+      width: 40px;
+      text-overflow: ellipsis;
+    }
+
+    .image {
+      width: 50px;
+      height: 50px;
+      display: inline-block;
+
+      &.sword {
+        background: url(images/items/sword.png) no-repeat center center;
+        background-size: 50px 50px;
+      }
+      &.shield {
+        background: url(images/items/shield.png) no-repeat center center;
+        background-size: 50px 50px;
+      }
+    }
+  }
+
   dl.infobox {
     border: 1px solid $gray;
     padding: 5px;
@@ -198,31 +232,16 @@ button.button-primary {
     color: $light-gray;
     height: 78px;
 
+    .num {
+      float: right;
+    }
+
     &.your_score {
       color: $green;
     }
     &.opponent_score {
       color: $light-blue;
     }
-    &.your_items, .label {
-      color: $light-gray;
-      overflow-y: scroll;
-      overflow: -moz-scrollbars-vertical;
-      &::-webkit-scrollbar {
-       // -webkit-appearance: none;
-        width: 7px;
-      }
-      &::-webkit-scrollbar-thumb {
-        border-radius: 4px;
-        background-color: rgba(0, 0, 0, .5);
-        -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-      }
-      .name {
-        width: 40px;
-        text-overflow: ellipsis;
-      }
-    }
-
     .item_row {
       margin-left: 10px;
     }

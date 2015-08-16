@@ -21,13 +21,7 @@ var Playgrid = React.createClass({
       outcome_modal: null,
       playerWon: false,
       playerEtherOutcome: 0,
-      audio: null,
-      items: [
-        { name: "sword", attack: "40", hp: "50" },
-        { name: "potion", attack: "20", hp: "30" },
-        { name: "shield", attack: "0", hp: "60" },
-        { name: "pizza", attack: "20", hp: "30" }
-      ]
+      equipped_item_id: null
     };
   },
   getAttack: function() {
@@ -128,6 +122,7 @@ var Playgrid = React.createClass({
     // get ether waged
     var challenge = this.props.challenge;
     var ether_waged = 0;
+    var bet_value = 0;
     var self = this;
 
     challenge.best_offer.call().then(function(offer) {
@@ -137,8 +132,14 @@ var Playgrid = React.createClass({
         console.log("Error getting/formatting offer amount");
       }
     }).then(function() {
+      return challenge.bet_value.call();
+    }).then(function(bet) {
+      bet_value = bet;
       return game.won.call();
     }).then(function(playerWon) {
+      if (playerWon == false) {
+        ether_waged = web3.fromWei(bet_value.toString(), "ether");
+      }
       self.setState({ outcome_modal:
         <PlayOutcomeModal playerWon={playerWon} ether={ether_waged} />});
     });
@@ -225,10 +226,12 @@ var Playgrid = React.createClass({
       if (over) {
         self.endGame(game);
       }
-    }).then(function() {
+      return game.equipped_item.call();
+    }).then(function(equipped) {
       self.setState({
         turn_changing: false,
-        modal: false
+        modal: false,
+        equipped_item_id: equipped
       });
     }).catch(function(e) {
       alert("Error! Oh no!");
@@ -280,6 +283,34 @@ var Playgrid = React.createClass({
       name = "Satoshi";
     }
 
+    var equipped_item = (
+      <div>
+
+      </div>
+    )
+
+    if (this.state.equipped_item_id == 5) {
+      equipped_item = (
+        <dl className="infobox your_items">
+          <div className="image shield"></div>
+          <div>
+            -25% Damage!
+          </div>
+        </dl>
+      )
+    }
+
+    if (this.state.equipped_item_id == 6) {
+      equipped_item = (
+        <dl className="infobox your_items">
+          <div className="image sword"></div>
+          <div>
+            +25% Attack!
+          </div>
+        </dl>
+      )
+    }
+
     return (
       <div className="playgrid">
         <div className="four columns">
@@ -290,35 +321,8 @@ var Playgrid = React.createClass({
           </dl>
         </div>
         <div className="four columns">
-          <dl className="infobox your_items">
-            <dt>
-              <strong>Your Items</strong>
-              <div className="row_stats">
-                <span className="label">Attack</span>
-                <span className="label label_second">HP</span>
-              </div>
-            </dt>
-            {
-              this.state.items.map(function(item) {
-                item_id++;
-                return <dt key={item_id} className="item item_row">
-                  <span className="name">{item.name}</span>
-                  <div className="row_stats">
-                    <span className="num item_stat"> &#43; {item.hp}</span>
-                    <span className="num item_stat"> &#43; {item.attack}</span></div>
-                </dt>
-
-              })
-            }
-          </dl>
+          {equipped_item}
         </div>
-        <div className="four columns right end">
-          <p>LEVEL: <span className="levelname">{self.getLevelName()}</span></p>
-
-          <button id="end_game" className="button-primary">End Game</button>
-          <label for="end_game"><small>Give up?</small></label>
-        </div>
-
         <div className="grid-container twelve columns" ref="grid_container">
           <Grid key="__editor" editor={false} cellClicked={this.cellClicked} character={self.props.character} ref="grid"/>
           {this.state.menu}
