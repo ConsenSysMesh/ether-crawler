@@ -13,7 +13,7 @@ $ git clone https://github.com/ConsenSys/ether-crawler.git
 $ npm install
 ```
 
-### Run testrpc
+### Run testrpc (Optional - to run without blockapps)
 
 ```
 $ pip install eth-testrpc 
@@ -27,7 +27,7 @@ then
 $ testrpc
 ```
 
-### Deploy contracts
+### Deploy contracts (Optional - to run without blockapps)
 
 ```
 $ npm install -g truffle  // If you haven't already
