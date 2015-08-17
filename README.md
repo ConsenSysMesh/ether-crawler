@@ -4,6 +4,8 @@ A dungeon crawler and challenge market based on Ethereum.
 
 ![example](http://i.imgur.com/WstmuKv.png)
 
+Video: https://youtu.be/W-gjyVQBsZo
+
 ### Install
 
 ```
