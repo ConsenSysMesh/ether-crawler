@@ -11,10 +11,30 @@ $ git clone https://github.com/ConsenSys/ether-crawler.git
 $ npm install
 ```
 
-### Build frontend
+### Run testrpc
+
+```
+$ pip install eth-testrpc 
+```
+or
+```
+$ pip install eth-testrpc --upgrade
+```
+then
+```
+$ testrpc
+```
+
+### Deploy contracts
 
 ```
 $ npm install -g truffle  // If you haven't already
+$ truffle deploy
+```
+
+### Build frontend
+
+```
 $ truffle build
 ```
 
