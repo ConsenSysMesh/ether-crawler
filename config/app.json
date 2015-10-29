@@ -38,7 +38,7 @@
     "app.css": [
       "stylesheets/normalize.css",
       "stylesheets/skeleton.css",
-      "stylesheets/app.scss"
+      "stylesheets/app.css"
     ],
     "images/": "images/"
   },

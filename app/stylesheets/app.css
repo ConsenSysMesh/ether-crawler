@@ -1,0 +1,550 @@
+.container {
+  max-width: 816px;
+}
+
+.logo {
+  font-family: "Creepster", "HelveticaNeue", "Helvetica Neue", Arial, sans-serif;
+  font-size: 48px;
+  text-align: center;
+  color: #e53b51;
+}
+
+input {
+  display: inline-block;
+  color: black;
+}
+
+label {
+  display: inline-block;
+  font-weight: 300;
+  margin-right: 10px;
+}
+
+p, ol, ul, dl {
+  margin-bottom: 1rem;
+}
+
+li {
+  margin-bottom: .5rem;
+}
+
+button.button-primary {
+  background-color: #223765;
+  border: 2px solid #454545;
+}
+
+.tab-container {
+  display: flex;
+  flex-flow: row wrap;
+  margin-bottom: 15px;
+}
+
+.tab-container .tab {
+  flex-grow: 1;
+  text-align: center;
+  color: #333;
+  background-color: #666;
+  border: solid 1px #333;
+  padding: 5px 10px;
+  text-transform: uppercase;
+  font-size: .9em;
+  cursor: pointer;
+  max-width: 33%;
+}
+
+.tab-container .tab.active {
+  background-color: #e53b51;
+  cursor: arrow;
+}
+
+.grid {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 0px;
+  background: #000;
+}
+
+.grid .cell {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-right: solid 1px #666;
+  border-bottom: solid 1px #666;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.grid .cell.monster {
+  background: #000 url(images/monsters/kraken.png) no-repeat center center;
+  background-size: 50px 50px;
+}
+
+.grid .cell.wall {
+  background: #000 url(images/wall/wall0.png) no-repeat center center;
+  background-size: 50px 50px;
+}
+
+.grid .cell.staircase {
+  background: #000 url(images/staircase.png) no-repeat center center;
+  background-size: 50px 50px;
+}
+
+.grid .cell.character {
+  background-size: 50px 50px;
+  background: #000 url(images/characters/vitalik.png) no-repeat center center;
+}
+
+.grid .cell.character.nick {
+  background: #000 url(images/characters/szabo.png) no-repeat center center;
+}
+
+.grid .cell.character.satoshi {
+  background: #000 url(images/characters/satoshi.png) no-repeat center center;
+}
+
+.grid .cell.sword {
+  background: #000 url(images/items/sword.png) no-repeat center center;
+  background-size: 50px 50px;
+}
+
+.grid .cell.shield {
+  background: #000 url(images/items/shield.png) no-repeat center center;
+  background-size: 50px 50px;
+}
+
+.grid .cell.potion {
+  background: #000 url(images/items/potion.png) no-repeat center center;
+  background-size: 50px 50px;
+}
+
+#output {
+  display: inline-block;
+  width: 200px;
+  min-height: 500px;
+  background-color: #ccc;
+}
+
+.editor {
+  display: inline-block;
+  max-width: 816px;
+}
+
+.editor .right {
+  text-align: right;
+}
+
+.editor .cell:hover {
+  background-color: rgba(0, 255, 255, 0.5);
+}
+
+.editor .level_name {
+  width: 250px;
+  height: 32px;
+  color: black;
+}
+
+.grid-container {
+  position: relative;
+}
+
+.context-menu {
+  position: absolute;
+  padding: 10px;
+  border: solid 1px black;
+  background: #FFF;
+  color: #333;
+  box-shadow: 3px 3px 1px #333;
+}
+
+.context-menu .choice {
+  width: 200px;
+}
+
+.context-menu .choice:hover {
+  background: #EEE;
+  cursor: pointer;
+}
+
+/*  Player Mode */
+.playgrid .four.columns {
+  margin-right: 1%;
+  margin-left: 1%;
+  width: 233;
+}
+
+.playgrid .your_items {
+  color: #ccc;
+  overflow-y: scroll;
+  overflow: -moz-scrollbars-vertical;
+}
+
+.playgrid .your_items::-webkit-scrollbar {
+  width: 7px;
+}
+
+.playgrid .your_items::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.playgrid .your_items .name {
+  width: 40px;
+  text-overflow: ellipsis;
+}
+
+.playgrid .your_items .image {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+}
+
+.playgrid .your_items .image.sword {
+  background: url(images/items/sword.png) no-repeat center center;
+  background-size: 50px 50px;
+}
+
+.playgrid .your_items .image.shield {
+  background: url(images/items/shield.png) no-repeat center center;
+  background-size: 50px 50px;
+}
+
+.playgrid dl.infobox {
+  border: 1px solid #666;
+  padding: 5px;
+  font-size: 0.9em;
+  margin: 0 auto 1rem;
+  color: #ccc;
+  height: 78px;
+}
+
+.playgrid dl.infobox .num {
+  float: right;
+}
+
+.playgrid dl.infobox.your_score {
+  color: #3CB371;
+}
+
+.playgrid dl.infobox.opponent_score {
+  color: #63a0d4;
+}
+
+.playgrid dl.infobox .item_row {
+  margin-left: 10px;
+}
+
+.playgrid dl.infobox .item_stat, .playgrid dl.infobox .label {
+  color: #3CB371;
+  margin-left: 20px;
+}
+
+.playgrid dl.infobox .label {
+  margin-left: 20px;
+}
+
+.playgrid dl.infobox .label.label_second {
+  margin-left: 30px;
+  margin-right: 20px;
+}
+
+.playgrid dl.infobox .row_stats {
+  float: right;
+}
+
+.playgrid dl.infobox .row_stats span.item_stat {
+  margin-left: 20px;
+  min-width: 40px;
+  max-width: 40px;
+  width: 40px;
+  display: inline-block;
+}
+
+.playgrid .four.columns.end {
+  float: right;
+  margin-right: 0;
+  margin-left: 0;
+  width: 33%;
+}
+
+.playgrid .four.columns.end p {
+  color: #666;
+  margin-left: 3px;
+}
+
+.playgrid .four.columns.end p .levelname {
+  color: #ccc;
+}
+
+.playgrid .four.columns.end label, .playgrid .four.columns.end #end_game {
+  float: right;
+}
+
+.playgrid .four.columns.end label {
+  line-height: 36px;
+  color: #666;
+}
+
+.simple-modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #EEE;
+  border-radius: 10px;
+  color: black;
+  padding: 20px;
+  margin: 0px;
+}
+
+.simple-modal h2 {
+  margin: 0px;
+}
+
+.play-outcome-modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(239, 239, 239, 0.8);
+  border: 5px solid #e53b51;
+  height: 600px;
+  width: 700px;
+  text-align: center;
+  color: #666;
+}
+
+.play-outcome-modal .title {
+  text-align: center;
+  font-size: 60px;
+  margin: 20px auto 10px;
+  font-family: "Creepster", "HelveticaNeue", "Helvetica Neue", Arial, sans-serif;
+}
+
+.play-outcome-modal .title.win {
+  color: #3CB371;
+}
+
+.play-outcome-modal .bet_outcome {
+  text-transform: uppercase;
+  font-size: 18px;
+}
+
+.play-outcome-modal .bet_outcome .ether.win::after {
+  content: ' won ';
+}
+
+.play-outcome-modal .bet_outcome .ether.lose::after {
+  content: ' lost ';
+}
+
+.play-outcome-modal .bet_outcome .tofrom.win::after {
+  content: ' from ';
+}
+
+.play-outcome-modal .bet_outcome .tofrom.lose::after {
+  content: ' to ';
+}
+
+.play-outcome-modal .outcome_image.win {
+  background: transparent url(images/outcomes/you_won.gif) no-repeat center center;
+  height: 325px;
+  width: 340px;
+  margin: -50px auto 50px;
+}
+
+.play-outcome-modal .outcome_image.lose {
+  background: transparent url(images/outcomes/you_lose.png) no-repeat center center;
+  height: 400px;
+  width: 640px;
+  margin: -30px auto 0;
+}
+
+.wizard-screen {
+  border: solid 5px #e53b51;
+  background: #efefef;
+  color: #666;
+  box-shadow: 5px 5px 2px black;
+  text-align: center;
+}
+
+.wizard-screen.hidden {
+  display: none;
+}
+
+.wizard-screen .title {
+  font-size: 32px;
+  color: #e53b51;
+  margin: 20px auto;
+  font-weight: 700;
+}
+
+.wizard-screen .subtitle {
+  font-weight: 300;
+  color: #666;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.wizard-screen .choose-character {
+  margin: 40px auto 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 24px;
+  color: #666;
+}
+
+.wizard-screen ul.characters {
+  margin-top: 40px;
+  margin-bottom: 30px;
+  list-style: none;
+}
+
+.wizard-screen ul.characters li {
+  display: inline-block;
+  margin: 0 50px 10px;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.wizard-screen ul.characters .smallphoto {
+  width: 50px;
+  height: 50px;
+  box-shadow: 2px 2px 1px #666;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  border: 10px solid transparent;
+  cursor: pointer;
+}
+
+.wizard-screen ul.characters .smallphoto.nick {
+  background: #666 url(images/characters/szabo.png) no-repeat center center;
+  background-size: 50px 50px;
+  color: #63a0d4;
+}
+
+.wizard-screen ul.characters .smallphoto.vitalik {
+  background: #666 url(images/characters/vitalik.png) no-repeat center center;
+  background-size: 50px 50px;
+}
+
+.wizard-screen ul.characters .smallphoto.satoshi {
+  background: #666 url(images/characters/satoshi.png) no-repeat center center;
+}
+
+.wizard-screen ul.characters .smallphoto.active {
+  background-color: #63a0d4;
+  border: 10px solid #63a0d4;
+  color: #63a0d4;
+}
+
+.wizard-screen .paragraph {
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.wizard-screen .paragraph .bolder {
+  font-weight: 700;
+}
+
+.wizard-screen .play {
+  padding-top: 10px;
+  font-size: 48px;
+  color: #e53b51;
+  margin: 10px auto;
+  font-family: "Creepster", "HelveticaNeue", "Helvetica Neue", Arial, sans-serif;
+  cursor: pointer;
+}
+
+.wizard-screen p.err {
+  color: #e53b51;
+  margin-top: 0;
+}
+
+.wizard-screen select {
+  width: 200px;
+}
+
+/* Bet Tab */
+.bet .tab-title {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #e53b51;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.bet td, .bet th {
+  text-align: center;
+  padding: 8px 15px;
+}
+
+.bet td.game_id, .bet td.player_id, .bet th.game_id, .bet th.player_id {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 80px;
+  cursor: pointer;
+}
+
+.bet input[type="number"] {
+  height: 32px;
+  margin-bottom: 10px;
+  width: 100px;
+  color: #333;
+}
+
+/* Blinking */
+.blink_me {
+  -webkit-animation-name: blinker;
+  -webkit-animation-duration: 0.8s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-name: blinker;
+  -moz-animation-duration: 0.8s;
+  -moz-animation-timing-function: linear;
+  -moz-animation-iteration-count: infinite;
+  animation-name: blinker;
+  animation-duration: 0.8s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {
+  0% {
+    opacity: 1.0;
+  }
+  50% {
+    opacity: 0.0;
+  }
+  100% {
+    opacity: 1.0;
+  }
+}
+
+@-webkit-keyframes blinker {
+  0% {
+    opacity: 1.0;
+  }
+  50% {
+    opacity: 0.0;
+  }
+  100% {
+    opacity: 1.0;
+  }
+}
+
+@keyframes blinker {
+  0% {
+    opacity: 1.0;
+  }
+  50% {
+    opacity: 0.0;
+  }
+  100% {
+    opacity: 1.0;
+  }
+}
