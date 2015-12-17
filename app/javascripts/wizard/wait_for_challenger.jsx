@@ -4,7 +4,8 @@ var WaitForChallenger = React.createClass({
       challenger: null,
       interval: null,
       best_offer_address: null,
-      best_offer_amount: null
+      best_offer_amount: null,
+      show_waiting: false
     }
   },
 
@@ -29,9 +30,13 @@ var WaitForChallenger = React.createClass({
   },
 
   handleNext: function() {
+    var self = this;
     if (this.state.best_offer_address == null) {
+      console.log("hello");
+      self.setState({ show_waiting: true });
       return;
     }
+    self.setState({ show_waiting: false });
     this.props.next();
   },
 
@@ -43,6 +48,10 @@ var WaitForChallenger = React.createClass({
       </div>
     );
 
+    var waiting = (
+      <p></p>
+    );
+
     if (this.state.best_offer_address != null) {
       offer = (
         <div>
@@ -50,6 +59,16 @@ var WaitForChallenger = React.createClass({
           <br/>
           From: {self.state.best_offer_address}
         </div>
+      );
+    }
+
+    if (this.state.show_waiting == true && this.state.best_offer_address == null) {
+      waiting = (
+        <p>Someone must wager against you for play to begin.<br/>
+        To speed things up open EtherCrawler in a new tab,<br/>
+        select &quot;Bet on Games&quot;, and enter a wager for the last game<br/>
+        in the list. The come back here and click &quot;Start Play&quot; below.
+        </p>
       );
     }
 
@@ -64,8 +83,9 @@ var WaitForChallenger = React.createClass({
         {offer}
 
         <br/>
+        {waiting}
         <br/>
-        <button onClick={self.handleNext}>Next</button>
+        <button onClick={self.handleNext}>START PLAY!</button>
       </div>
     );
   }
