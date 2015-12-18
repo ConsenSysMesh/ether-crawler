@@ -1,0 +1,18 @@
+{
+  "rpc": {
+    // Default RPC configuration.
+    "host": "localhost",
+    "port": 8545
+  },
+
+  "deploy": [
+    "Level",
+    "Game",
+    "LevelRegistry",
+    "Challenge",
+    "Gamebuilder",
+    "ChallengeRegistry"
+  ],
+
+  "provider": null
+}

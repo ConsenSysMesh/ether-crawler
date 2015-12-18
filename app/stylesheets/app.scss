@@ -299,7 +299,9 @@ button.button-primary {
   top: 50%;
   transform: translate(-50%, -50%);
   background: #EEE;
+  border: 2px solid black;
   border-radius: 10px;
+  box-shadow: 5px 5px 2px #333;
   color: black;
   padding: 20px;
   margin: 0px;

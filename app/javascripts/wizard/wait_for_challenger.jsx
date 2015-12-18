@@ -32,7 +32,6 @@ var WaitForChallenger = React.createClass({
   handleNext: function() {
     var self = this;
     if (this.state.best_offer_address == null) {
-      console.log("hello");
       self.setState({ show_waiting: true });
       return;
     }

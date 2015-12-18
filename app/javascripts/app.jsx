@@ -11,12 +11,12 @@ var App = React.createClass({
     this.setState( { view: <Editor />, activeTab: "tab-editor"});
   },
 
-  showWizard: function() {
-    this.setState( { view: <Wizard />, activeTab: "tab-play" });
+  showWizard: function(challenge) {
+    this.setState( { view: <Wizard challenge={challenge}/>, activeTab: "tab-play" });
   },
 
   showBetView: function() {
-    this.setState( { view: <Bet bets={this.state.bets} />, activeTab: "tab-bet" });
+    this.setState( { view: <Bet bets={this.state.bets} startGame={this.showWizard} />, activeTab: "tab-bet" });
   },
 
   render: function() {

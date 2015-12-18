@@ -65,6 +65,21 @@ var Bet = React.createClass({
     });
   },
 
+  play: function(address, event) {
+    var self = this;
+    var challenge = Challenge.at(address);
+
+    challenge.best_offer.call().then(function(offer) {
+      if (web3.toDecimal(offer[0]) == 0) {
+        self.setState({
+          modal: <SimpleModal title="Waiting for wager!"/>
+        });
+      } else {
+        self.props.startGame(challenge);
+      }
+    });
+  },
+
   render: function() {
     var self = this;
     var hide_modal = this.state.showModal ? ' ' : 'hidden';
@@ -115,6 +130,7 @@ var Bet = React.createClass({
                 <th>Player&apos;s Stake</th>
                 <th>Your Ether Wager</th>
                 <th>Place Your Bet</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -127,6 +143,7 @@ var Bet = React.createClass({
                       <td className="player_stake">{challenge.stake} <span>ETH</span></td>
                       <td className="bet_input"><input type="number" min="0" className="u-full-width" ref={"input_" + challenge.address}/></td>
                       <td className="bet_button"><button className="button-primary" onClick={self.submitBet.bind(null, challenge.address)}>Challenge</button></td>
+                      <td className="bet_button"><button className="button-primary" onClick={self.play.bind(null, challenge.address)}>Play</button></td>
                     </tr>
                   )
                 })

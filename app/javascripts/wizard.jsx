@@ -52,28 +52,46 @@ var Wizard = React.createClass({
     }).catch(function(e) {
       alert("Error creating challenge! Oh no!");
       console.log(e);
-    })
+    });
   },
-  handleChallenger: function() {
+  handleChallenger: function(_challenge) {
     var self = this;
-    var challenge = this.state.challenge;
+    var challenge = _challenge? _challenge : this.state.challenge;
+    var game, character;
+
+    self.setState({
+      modal: <SimpleModal title="Loading game..."/>
+    });
+
     challenge.accept().then(function() {
       return challenge.game.call();
     }).then(function(game_address) {
-      var game = Game.at(game_address);
+      game = Game.at(game_address);
+      return challenge.character.call();
+    }).then(function(_character) {
+      character = _character;
       self.setState({
-        view: <Playgrid game={game} challenge={challenge} character={self.state.character}/>
+        view: <Playgrid game={game} challenge={challenge} character={character}/>,
+        modal: null
       });
     }).catch(function(e) {
       alert("Error accepting offer! Oh no!");
       console.log(e);
     });
   },
+  componentDidMount: function() {
+    var challenge = this.props.challenge;
+    if (challenge) {
+      this.handleChallenger(challenge);
+    }
+  },
   render: function() {
     var self = this;
+
     return (
       <div className="wizard">
         {self.state.view}
+        {self.state.modal}
       </div>
     );
   }
