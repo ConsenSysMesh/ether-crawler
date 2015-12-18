@@ -40620,12 +40620,12 @@ var App = React.createClass({
     this.setState({ view: React.createElement(Editor, null), activeTab: "tab-editor" });
   },
 
-  showWizard: function showWizard() {
-    this.setState({ view: React.createElement(Wizard, null), activeTab: "tab-play" });
+  showWizard: function showWizard(challenge) {
+    this.setState({ view: React.createElement(Wizard, { challenge: challenge }), activeTab: "tab-play" });
   },
 
   showBetView: function showBetView() {
-    this.setState({ view: React.createElement(Bet, { bets: this.state.bets }), activeTab: "tab-bet" });
+    this.setState({ view: React.createElement(Bet, { bets: this.state.bets, startGame: this.showWizard }), activeTab: "tab-bet" });
   },
 
   render: function render() {
@@ -42062,27 +42062,45 @@ var Wizard = React.createClass({
       console.log(e);
     });
   },
-  handleChallenger: function handleChallenger() {
+  handleChallenger: function handleChallenger(_challenge) {
     var self = this;
-    var challenge = this.state.challenge;
+    var challenge = _challenge ? _challenge : this.state.challenge;
+    var game, character;
+
+    self.setState({
+      modal: React.createElement(SimpleModal, { title: "Loading game..." })
+    });
+
     challenge.accept().then(function () {
       return challenge.game.call();
     }).then(function (game_address) {
-      var game = Game.at(game_address);
+      game = Game.at(game_address);
+      return challenge.character.call();
+    }).then(function (_character) {
+      character = _character;
       self.setState({
-        view: React.createElement(Playgrid, { game: game, challenge: challenge, character: self.state.character })
+        view: React.createElement(Playgrid, { game: game, challenge: challenge, character: character }),
+        modal: null
       });
     })["catch"](function (e) {
       alert("Error accepting offer! Oh no!");
       console.log(e);
     });
   },
+  componentDidMount: function componentDidMount() {
+    var challenge = this.props.challenge;
+    if (challenge) {
+      this.handleChallenger(challenge);
+    }
+  },
   render: function render() {
     var self = this;
+
     return React.createElement(
       "div",
       { className: "wizard" },
-      self.state.view
+      self.state.view,
+      self.state.modal
     );
   }
 });
@@ -42501,7 +42519,6 @@ var WaitForChallenger = React.createClass({
   handleNext: function handleNext() {
     var self = this;
     if (this.state.best_offer_address == null) {
-      console.log("hello");
       self.setState({ show_waiting: true });
       return;
     }
@@ -42645,6 +42662,21 @@ var Bet = React.createClass({
     });
   },
 
+  play: function play(address, event) {
+    var self = this;
+    var challenge = Challenge.at(address);
+
+    challenge.best_offer.call().then(function (offer) {
+      if (web3.toDecimal(offer[0]) == 0) {
+        self.setState({
+          modal: React.createElement(SimpleModal, { title: "Waiting for wager!" })
+        });
+      } else {
+        self.props.startGame(challenge);
+      }
+    });
+  },
+
   render: function render() {
     var self = this;
     var hide_modal = this.state.showModal ? ' ' : 'hidden';
@@ -42733,7 +42765,8 @@ var Bet = React.createClass({
                 "th",
                 null,
                 "Place Your Bet"
-              )
+              ),
+              React.createElement("th", null)
             )
           ),
           React.createElement(
@@ -42782,6 +42815,15 @@ var Bet = React.createClass({
                     { className: "button-primary", onClick: self.submitBet.bind(null, challenge.address) },
                     "Challenge"
                   )
+                ),
+                React.createElement(
+                  "td",
+                  { className: "bet_button" },
+                  React.createElement(
+                    "button",
+                    { className: "button-primary", onClick: self.play.bind(null, challenge.address) },
+                    "Play"
+                  )
                 )
               );
             })
@@ -42804,4 +42846,4 @@ if (typeof web3 !== 'undefined') {
 }
 
 Pudding.setWeb3(window.web3);
-Pudding.load([Challenge, Game, ChallengeRegistry, Gamebuilder, LevelRegistry, Level], window);
+Pudding.load([Challenge, ChallengeRegistry, Game, Gamebuilder, Level, LevelRegistry], window);
