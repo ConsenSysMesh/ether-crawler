@@ -6,6 +6,8 @@ A dungeon crawler and challenge market based on Ethereum.
 
 Video: https://youtu.be/W-gjyVQBsZo
 
+Morden live instance (works with Mist): http://consensys.github.io/ether-crawler/morden/
+
 ### Install
 
 ```
